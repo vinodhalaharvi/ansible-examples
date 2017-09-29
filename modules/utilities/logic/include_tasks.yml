@@ -1,0 +1,19 @@
+# include task list in play
+- hosts: all
+  tasks:
+    - debug:
+        msg: task1
+
+    - include_tasks: stuff.yml
+
+    - debug:
+        msg: task10
+
+# dyanmic include task list in play
+- hosts: all
+  tasks:
+    - debug:
+        msg: task1
+
+    - include_tasks: "{{ hostvar }}.yml"
+      when: hostvar is defined

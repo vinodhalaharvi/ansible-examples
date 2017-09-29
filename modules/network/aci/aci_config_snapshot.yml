@@ -1,0 +1,33 @@
+- name: Create a Snapshot
+  aci_config_snapshot:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    state: present
+    export_policy: config_backup
+    max_count: 10
+    description: Backups taken before new configs are applied.
+
+- name: Query all Snapshots
+  aci_config_snapshot:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    state: query
+
+- name: Query Snapshots associated with a particular Export Policy
+  aci_config_snapshot:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    state: query
+    export_policy: config_backup
+
+- name: Delete a Snapshot
+  aci_config_snapshot:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    state: absent
+    export_policy: config_backup
+    snapshot: run-2017-08-24T17-20-05

@@ -1,0 +1,17 @@
+- name: Launch an Ubuntu 12.04 (Precise Pangolin) EC2 instance
+  hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Get the Ubuntu precise AMI
+    ec2_ami_search:
+      distro: ubuntu
+      release: precise
+      region: us-west-1
+      store: instance-store
+    register: ubuntu_image
+
+  - name: Start the EC2 instance
+    ec2:
+      image: "{{ ubuntu_image.ami }}"
+      instance_type: m1.small
+      key_name: mykey

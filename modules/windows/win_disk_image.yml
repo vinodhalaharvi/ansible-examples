@@ -1,0 +1,17 @@
+# ensure an iso is mounted
+- win_disk_image:
+    image_path: C:\install.iso
+    state: present
+  register: disk_image_out
+
+# run installer from mounted iso
+- win_package:
+    path: '{{ disk_image_out.mount_path }}setup\setup.exe'
+    product_id: '35a4e767-0161-46b0-979f-e61f282fee21'
+    state: present
+
+# unmount iso
+- win_disk_image:
+    image_path: C:\install.iso
+    state: absent
+

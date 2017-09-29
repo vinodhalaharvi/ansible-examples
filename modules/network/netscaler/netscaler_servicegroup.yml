@@ -1,0 +1,32 @@
+# The LB Monitors monitor-1 and monitor-2 must already exist
+# Service members defined by C(ip) must not redefine an existing server's ip address.
+# Service members defined by C(servername) must already exist.
+
+- name: Setup http service with ip members
+  delegate_to: localhost
+  netscaler_servicegroup:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+
+    state: present
+
+    servicegroupname: service-group-1
+    servicetype: HTTP
+    servicemembers:
+      - ip: 10.78.78.78
+        port: 80
+        weight: 50
+      - ip: 10.79.79.79
+        port: 80
+        weight: 40
+      - servername: server-1
+        port: 80
+        weight: 10
+
+    monitorbindings:
+      - monitorname: monitor-1
+        weight: 50
+      - monitorname: monitor-2
+        weight: 50
+

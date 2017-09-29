@@ -1,0 +1,36 @@
+# Basic Snapshot Copy
+- ec2_snapshot_copy:
+    source_region: eu-central-1
+    region: eu-west-1
+    source_snapshot_id: snap-xxxxxxx
+
+# Copy Snapshot and wait until available
+- ec2_snapshot_copy:
+    source_region: eu-central-1
+    region: eu-west-1
+    source_snapshot_id: snap-xxxxxxx
+    wait: yes
+  register: snapshot_id
+
+# Tagged Snapshot copy
+- ec2_snapshot_copy:
+    source_region: eu-central-1
+    region: eu-west-1
+    source_snapshot_id: snap-xxxxxxx
+    tags:
+        Name: Snapshot-Name
+
+# Encrypted Snapshot copy
+- ec2_snapshot_copy:
+    source_region: eu-central-1
+    region: eu-west-1
+    source_snapshot_id: snap-xxxxxxx
+    encrypted: yes
+
+# Encrypted Snapshot copy with specified key
+- ec2_snapshot_copy:
+    source_region: eu-central-1
+    region: eu-west-1
+    source_snapshot_id: snap-xxxxxxx
+    encrypted: yes
+    kms_key_id: arn:aws:kms:eu-central-1:XXXXXXXXXXXX:key/746de6ea-50a4-4bcb-8fbc-e3b29f2d367b

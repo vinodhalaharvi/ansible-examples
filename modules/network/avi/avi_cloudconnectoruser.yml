@@ -1,0 +1,11 @@
+  - name: Create a Cloud connector user that is used for integration into cloud platforms
+    avi_cloudconnectoruser:
+      controller: ''
+      name: root
+      password: ''
+      private_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        -----END RSA PRIVATE KEY-----'
+      public_key: 'ssh-rsa ...'
+      tenant_ref: admin
+      username: ''

@@ -1,0 +1,47 @@
+- name: Ensure ipv4 address is configured on Ethernet1/32
+  nxos_ip_interface:
+    interface: Ethernet1/32
+    transport: nxapi
+    version: v4
+    state: present
+    addr: 20.20.20.20
+    mask: 24
+
+- name: Ensure ipv6 address is configured on Ethernet1/31
+  nxos_ip_interface:
+    interface: Ethernet1/31
+    transport: cli
+    version: v6
+    state: present
+    addr: '2001::db8:800:200c:cccb'
+    mask: 64
+
+- name: Ensure ipv4 address is configured with tag
+  nxos_ip_interface:
+    interface: Ethernet1/32
+    transport: nxapi
+    version: v4
+    state: present
+    tag: 100
+    addr: 20.20.20.20
+    mask: 24
+
+- name: Ensure ipv4 address is configured on sub-intf with dot1q encapsulation
+  nxos_ip_interface:
+    interface: Ethernet1/32.10
+    transport: nxapi
+    version: v4
+    state: present
+    dot1q: 10
+    addr: 20.20.20.20
+    mask: 24
+
+- name: Configure ipv4 address as secondary if needed
+  nxos_ip_interface:
+    interface: Ethernet1/32
+    transport: nxapi
+    version: v4
+    state: present
+    allow_secondary: true
+    addr: 21.21.21.21
+    mask: 24

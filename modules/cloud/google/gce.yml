@@ -1,0 +1,123 @@
+# Basic provisioning example.  Create a single Debian 8 instance in the
+# us-central1-a Zone of the n1-standard-1 machine type.
+# Create multiple instances by specifying multiple names, separated by
+# commas in the instance_names field
+# (e.g. my-test-instance1,my-test-instance2)
+    gce:
+      instance_names: my-test-instance1
+      zone: us-central1-a
+      machine_type: n1-standard-1
+      image: debian-8
+      state: present
+      service_account_email: "your-sa@your-project-name.iam.gserviceaccount.com"
+      credentials_file: "/path/to/your-key.json"
+      project_id: "your-project-name"
+      disk_size: 32
+
+# Create a single instance of an image from the "my-base-image" image family
+# in the us-central1-a Zone of the n1-standard-1 machine type.
+# This image family is in the "my-other-project" GCP project.
+    gce:
+      instance_names: my-test-instance1
+      zone: us-central1-a
+      machine_type: n1-standard-1
+      image_family: my-base-image
+      external_projects:
+        - my-other-project
+      state: present
+      service_account_email: "your-sa@your-project-name.iam.gserviceaccount.com"
+      credentials_file: "/path/to/your-key.json"
+      project_id: "your-project-name"
+      disk_size: 32
+
+# Create a single Debian 8 instance in the us-central1-a Zone
+# Use existing disks, custom network/subnetwork, set service account permissions
+# add tags and metadata.
+    gce:
+      instance_names: my-test-instance
+      zone: us-central1-a
+      machine_type: n1-standard-1
+      state: present
+      metadata: '{"db":"postgres", "group":"qa", "id":500}'
+      tags:
+        - http-server
+        - my-other-tag
+      disks:
+        - name: disk-2
+          mode: READ_WRITE
+        - name: disk-3
+          mode: READ_ONLY
+      disk_auto_delete: false
+      network: foobar-network
+      subnetwork: foobar-subnetwork-1
+      preemptible: true
+      ip_forward: true
+      service_account_permissions:
+        - storage-full
+        - taskqueue
+        - bigquery
+        - https://www.googleapis.com/auth/ndev.clouddns.readwrite
+      service_account_email: "your-sa@your-project-name.iam.gserviceaccount.com"
+      credentials_file: "/path/to/your-key.json"
+      project_id: "your-project-name"
+
+---
+# Example Playbook
+- name: Compute Engine Instance Examples
+  hosts: localhost
+  vars:
+    service_account_email: "your-sa@your-project-name.iam.gserviceaccount.com"
+    credentials_file: "/path/to/your-key.json"
+    project_id: "your-project-name"
+  tasks:
+    - name: create multiple instances
+      # Basic provisioning example.  Create multiple Debian 8 instances in the
+      # us-central1-a Zone of n1-standard-1 machine type.
+      gce:
+        instance_names: test1,test2,test3
+        zone: us-central1-a
+        machine_type: n1-standard-1
+        image: debian-8
+        state: present
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+        metadata : '{ "startup-script" : "apt-get update" }'
+      register: gce
+
+    - name: Save host data
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: gce_instances_ips
+      with_items: "{{ gce.instance_data }}"
+
+    - name: Wait for SSH for instances
+      wait_for:
+        delay: 1
+        host: "{{ item.public_ip }}"
+        port: 22
+        state: started
+        timeout: 30
+      with_items: "{{ gce.instance_data }}"
+
+    - name: Configure Hosts
+      hosts: gce_instances_ips
+      become: yes
+      become_method: sudo
+      roles:
+        - my-role-one
+        - my-role-two
+      tags:
+        - config
+
+    - name: delete test-instances
+      # Basic termination of instance.
+      gce:
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+        instance_names: "{{ gce.instance_names }}"
+        zone: us-central1-a
+        state: absent
+      tags:
+        - delete

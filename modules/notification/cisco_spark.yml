@@ -1,0 +1,35 @@
+# Note: The following examples assume a variable file has been imported
+# that contains the appropriate information.
+
+- name: Cisco Spark - Markdown Message to a Room
+  cisco_spark:
+    recipient_type: roomId
+    recipient_id: "{{ room_id }}"
+    message_type: markdown
+    personal_token: "{{ token }}"
+    message: "**Cisco Spark Ansible Module - Room Message in Markdown**"
+
+- name: Cisco Spark - Text Message to a Room
+  cisco_spark:
+    recipient_type: roomId
+    recipient_id: "{{ room_id }}"
+    message_type: text
+    personal_token: "{{ token }}"
+    message: "Cisco Spark Ansible Module - Room Message in Text"
+
+- name: Cisco Spark - Text Message by an Individuals ID
+  cisco_spark:
+    recipient_type: toPersonId
+    recipient_id: "{{ person_id}}"
+    message_type: text
+    personal_token: "{{ token }}"
+    message: "Cisco Spark Ansible Module - Text Message to Individual by ID"
+
+- name: Cisco Spark - Text Message by an Individuals E-Mail Address
+  cisco_spark:
+    recipient_type: toPersonEmail
+    recipient_id: "{{ person_email }}"
+    message_type: text
+    personal_token: "{{ token }}"
+    message: "Cisco Spark Ansible Module - Text Message to Individual by E-Mail"
+

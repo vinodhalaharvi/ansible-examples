@@ -1,0 +1,19 @@
+- name: vxlan global module test
+  hosts: ce128
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: Create bridge domain and set tunnel mode to VXLAN
+    ce_vxlan_global:
+      bridge_domain_id: 100
+      nvo3_acl_extend: enable
+      provider: "{{ cli }}"

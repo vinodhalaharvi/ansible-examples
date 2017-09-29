@@ -1,0 +1,40 @@
+- name: Create project
+  oc:
+    state: present
+    inline:
+      kind: ProjectRequest
+      metadata:
+        name: ansibletestproject
+      displayName: Ansible Test Project
+      description: This project was created using Ansible
+    token: << redacted >>
+
+- name: Delete a service
+  oc:
+    state: absent
+    name: myservice
+    namespace: mynamespace
+    kind: Service
+    token: << redacted >>
+
+- name: Add project role Admin to a user
+  oc:
+    state: present
+    inline:
+      kind: RoleBinding
+      metadata:
+        name: admin
+        namespace: mynamespace
+      roleRef:
+        name: admin
+      userNames:
+        - "myuser"
+      token: << redacted >>
+
+- name: Obtain an object definition
+  oc:
+   state: present
+   name: myroute
+   namespace: mynamespace
+   kind: Route
+   token: << redacted >>

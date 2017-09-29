@@ -1,0 +1,22 @@
+# send an email to a single recipient that the deployment was successful
+- sendgrid:
+    username: "{{ sendgrid_username }}"
+    password: "{{ sendgrid_password }}"
+    from_address: "ansible@mycompany.com"
+    to_addresses:
+      - "ops@mycompany.com"
+    subject: "Deployment success."
+    body: "The most recent Ansible deployment was successful."
+  delegate_to: localhost
+
+# send an email to more than one recipient that the build failed
+- sendgrid:
+      username: "{{ sendgrid_username }}"
+      password: "{{ sendgrid_password }}"
+      from_address: "build@mycompany.com"
+      to_addresses:
+        - "ops@mycompany.com"
+        - "devteam@mycompany.com"
+      subject: "Build failure!."
+      body: "Unable to pull source repository from Git server."
+  delegate_to: localhost

@@ -1,0 +1,21 @@
+# Create a group named "demo"
+- os_group:
+    cloud: mycloud
+    state: present
+    name: demo
+    description: "Demo Group"
+    domain_id: demoid
+
+# Update the description on existing "demo" group
+- os_group:
+    cloud: mycloud
+    state: present
+    name: demo
+    description: "Something else"
+    domain_id: demoid
+
+# Delete group named "demo"
+- os_group:
+    cloud: mycloud
+    state: absent
+    name: demo

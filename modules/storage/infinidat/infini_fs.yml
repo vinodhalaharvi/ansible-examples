@@ -1,0 +1,9 @@
+- name: Create new file system named foo under pool named bar
+  infini_fs:
+    name: foo
+    size: 1TB
+    pool: bar
+    state: present
+    user: admin
+    password: secret
+    system: ibox001

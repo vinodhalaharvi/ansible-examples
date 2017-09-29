@@ -1,0 +1,145 @@
+- name: Install plugin
+  jenkins_plugin:
+    name: build-pipeline-plugin
+
+- name: Install plugin without its dependencies
+  jenkins_plugin:
+    name: build-pipeline-plugin
+    with_dependencies: no
+
+- name: Make sure the plugin is always up-to-date
+  jenkins_plugin:
+    name: token-macro
+    state: latest
+
+- name: Install specific version of the plugin
+  jenkins_plugin:
+    name: token-macro
+    version: "1.15"
+
+- name: Pin the plugin
+  jenkins_plugin:
+    name: token-macro
+    state: pinned
+
+- name: Unpin the plugin
+  jenkins_plugin:
+    name: token-macro
+    state: unpinned
+
+- name: Enable the plugin
+  jenkins_plugin:
+    name: token-macro
+    state: enabled
+
+- name: Disable the plugin
+  jenkins_plugin:
+    name: token-macro
+    state: disabled
+
+- name: Uninstall plugin
+  jenkins_plugin:
+    name: build-pipeline-plugin
+    state: absent
+
+#
+# Example of how to authenticate
+#
+# my_jenkins_params:
+#   url_username: admin
+#
+- name: Install plugin
+  jenkins_plugin:
+    name: build-pipeline-plugin
+    params: "{{ my_jenkins_params }}"
+    url_password: p4ssw0rd
+    url: http://localhost:8888
+# Note that url_password **can not** be placed in params as params could end up in a log file
+
+#
+# Example of a Play which handles Jenkins restarts during the state changes
+#
+- name: Jenkins Master play
+  hosts: jenkins-master
+  vars:
+    my_jenkins_plugins:
+      token-macro:
+        enabled: yes
+      build-pipeline-plugin:
+        version: "1.4.9"
+        pinned: no
+        enabled: yes
+  tasks:
+    - name: Install plugins without a specific version
+      jenkins_plugin:
+        name: "{{ item.key }}"
+      register: my_jenkins_plugin_unversioned
+      when: >
+        'version' not in item.value
+      with_dict: "{{ my_jenkins_plugins }}"
+
+    - name: Install plugins with a specific version
+      jenkins_plugin:
+        name: "{{ item.key }}"
+        version: "{{ item.value['version'] }}"
+      register: my_jenkins_plugin_versioned
+      when: >
+        'version' in item.value
+      with_dict: "{{ my_jenkins_plugins }}"
+
+    - name: Initiate the fact
+      set_fact:
+        jenkins_restart_required: no
+
+    - name: Check if restart is required by any of the versioned plugins
+      set_fact:
+        jenkins_restart_required: yes
+      when: item.changed
+      with_items: "{{ my_jenkins_plugin_versioned.results }}"
+
+    - name: Check if restart is required by any of the unversioned plugins
+      set_fact:
+        jenkins_restart_required: yes
+      when: item.changed
+      with_items: "{{ my_jenkins_plugin_unversioned.results }}"
+
+    - name: Restart Jenkins if required
+      service:
+        name: jenkins
+        state: restarted
+      when: jenkins_restart_required
+
+    - name: Wait for Jenkins to start up
+      uri:
+        url: http://localhost:8080
+        status_code: 200
+        timeout: 5
+      register: jenkins_service_status
+      # Keep trying for 5 mins in 5 sec intervals
+      retries: 60
+      delay: 5
+      until: >
+         'status' in jenkins_service_status and
+         jenkins_service_status['status'] == 200
+      when: jenkins_restart_required
+
+    - name: Reset the fact
+      set_fact:
+        jenkins_restart_required: no
+      when: jenkins_restart_required
+
+    - name: Plugin pinning
+      jenkins_plugin:
+        name: "{{ item.key }}"
+        state: "{{ 'pinned' if item.value['pinned'] else 'unpinned'}}"
+      when: >
+        'pinned' in item.value
+      with_dict: "{{ my_jenkins_plugins }}"
+
+    - name: Plugin enabling
+      jenkins_plugin:
+        name: "{{ item.key }}"
+        state: "{{ 'enabled' if item.value['enabled'] else 'disabled'}}"
+      when: >
+        'enabled' in item.value
+      with_dict: "{{ my_jenkins_plugins }}"

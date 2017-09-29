@@ -1,0 +1,11 @@
+- name: display content of all .txt files in dir
+  debug: msg={{lookup('fileglob', '/my/path/*.txt')}}
+
+- name: Copy each file over that matches the given pattern
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/fooapp/"
+    owner: "root"
+    mode: 0600
+  with_fileglob:
+    - "/playbooks/files/fooapp/*"

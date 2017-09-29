@@ -1,0 +1,12 @@
+
+- name: Create a session with the AOS-server
+  aos_login:
+    server: "{{ inventory_hostname }}"
+    user: admin
+    passwd: admin
+
+- name: Use the newly created session (register is not mandatory)
+  aos_ip_pool:
+    session: "{{ aos_session }}"
+    name: my_ip_pool
+    state: present

@@ -1,0 +1,46 @@
+- name: Create a new host or update an existing host's info
+  local_action:
+    module: zabbix_host
+    server_url: http://monitor.example.com
+    login_user: username
+    login_password: password
+    host_name: ExampleHost
+    visible_name: ExampleName
+    host_groups:
+      - Example group1
+      - Example group2
+    link_templates:
+      - Example template1
+      - Example template2
+    status: enabled
+    state: present
+    inventory_mode: automatic
+    interfaces:
+      - type: 1
+        main: 1
+        useip: 1
+        ip: 10.xx.xx.xx
+        dns: ""
+        port: 10050
+      - type: 4
+        main: 1
+        useip: 1
+        ip: 10.xx.xx.xx
+        dns: ""
+        port: 12345
+    proxy: a.zabbix.proxy
+
+- name: Create a new host or update an existing host's tls settings
+  local_action:
+    module: zabbix_host
+    server_url: http://monitor.example.com
+    login_user: username
+    login_password: password
+    host_name: ExampleHost
+    visible_name: ExampleName
+    host_groups:
+      - Example group1
+    tls_psk_identity: test
+    tls_connect: 2
+    tls_psk: 123456789abcdef123456789abcdef12
+

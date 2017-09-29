@@ -1,0 +1,19 @@
+# create a new private / public key pair:
+- cs_sshkeypair:
+    name: linus@example.com
+  delegate_to: localhost
+  register: key
+- debug:
+    msg: 'Private key is {{ key.private_key }}'
+
+# remove a public key by its name:
+- cs_sshkeypair:
+    name: linus@example.com
+    state: absent
+  delegate_to: localhost
+
+# register your existing local public key:
+- cs_sshkeypair:
+    name: linus@example.com
+    public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  delegate_to: localhost

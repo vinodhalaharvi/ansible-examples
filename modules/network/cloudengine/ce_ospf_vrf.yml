@@ -1,0 +1,21 @@
+- name: ospf vrf module test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: Configure ospf route id
+    ce_ospf_vrf:
+      ospf: 2
+      route_id: 2.2.2.2
+      lsaointervalflag: False
+      lsaointerval: 2
+      provider: "{{ cli }}"

@@ -1,0 +1,9 @@
+- name: Example of the change in the description
+  debug: msg="{{ [1,2,3]|lookup('cartesian', [a, b])}}"
+
+- name: loops over the cartesian product of the supplied lists
+  debug: msg="{{item}}"
+  with_cartesian:
+    - "{{list1}}"
+    - "{{list2}}"
+    - [1,2,3,4,5,6]

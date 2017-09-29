@@ -1,0 +1,15 @@
+  # This will also create a default DB user with the same
+  # name as the database, and the specified password.
+
+  - name: Create a database
+    webfaction_db:
+      name: "{{webfaction_user}}_db1"
+      password: mytestsql
+      type: mysql
+      login_name: "{{webfaction_user}}"
+      login_password: "{{webfaction_passwd}}"
+      machine: "{{webfaction_machine}}"
+
+  # Note that, for symmetry's sake, deleting a database using
+  # 'state: absent' will also delete the matching user.
+

@@ -1,0 +1,20 @@
+- name: configure hostname and domain-name
+  iosxr_system:
+    hostname: iosxr01
+    domain_name: test.example.com
+    domain-search:
+      - ansible.com
+      - redhat.com
+      - cisco.com
+- name: remove configuration
+  iosxr_system:
+    state: absent
+- name: configure DNS lookup sources
+  iosxr_system:
+    lookup_source: MgmtEth0/0/CPU0/0
+    lookup_enabled: yes
+- name: configure name servers
+  iosxr_system:
+    name_servers:
+      - 8.8.8.8
+      - 8.8.4.4

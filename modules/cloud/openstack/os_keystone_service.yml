@@ -1,0 +1,13 @@
+# Create a service for glance
+- os_keystone_service:
+     cloud: mycloud
+     state: present
+     name: glance
+     service_type: image
+     description: OpenStack Image Service
+# Delete a service
+- os_keystone_service:
+     cloud: mycloud
+     state: absent
+     name: glance
+     service_type: image

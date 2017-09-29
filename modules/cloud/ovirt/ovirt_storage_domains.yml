@@ -1,0 +1,85 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Add data NFS storage domain
+- ovirt_storage_domains:
+    name: data_nfs
+    host: myhost
+    data_center: mydatacenter
+    nfs:
+      address: 10.34.63.199
+      path: /path/data
+
+# Add data NFS storage domain with id for data center
+- ovirt_storage_domains:
+    name: data_nfs
+    host: myhost
+    data_center: 11111
+    nfs:
+      address: 10.34.63.199
+      path: /path/data
+
+# Add data localfs storage domain
+- ovirt_storage_domains:
+    name: data_localfs
+    host: myhost
+    data_center: mydatacenter
+    localfs:
+      path: /path/to/data
+
+# Add data iSCSI storage domain:
+- ovirt_storage_domains:
+    name: data_iscsi
+    host: myhost
+    data_center: mydatacenter
+    iscsi:
+      target: iqn.2016-08-09.domain-01:nickname
+      lun_id:
+       - 1IET_000d0001
+       - 1IET_000d0002
+      address: 10.34.63.204
+
+# Add data glusterfs storage domain
+-  ovirt_storage_domains:
+    name: glusterfs_1
+    host: myhost
+    data_center: mydatacenter
+    glusterfs:
+      address: 10.10.10.10
+      path: /path/data
+
+# Create export NFS storage domain:
+- ovirt_storage_domains:
+    name: myexportdomain
+    domain_function: export
+    host: myhost
+    data_center: mydatacenter
+    nfs:
+      address: 10.34.63.199
+      path: /path/export
+
+# Import export NFS storage domain:
+- ovirt_storage_domains:
+    state: imported
+    domain_function: export
+    host: myhost
+    data_center: mydatacenter
+    nfs:
+      address: 10.34.63.199
+      path: /path/export
+
+# Create ISO NFS storage domain
+- ovirt_storage_domains:
+    name: myiso
+    domain_function: iso
+    host: myhost
+    data_center: mydatacenter
+    nfs:
+      address: 10.34.63.199
+      path: /path/iso
+
+# Remove storage domain
+- ovirt_storage_domains:
+    state: absent
+    name: mystorage_domain
+    format: true

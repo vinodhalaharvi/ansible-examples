@@ -1,0 +1,128 @@
+
+- name: Create VM with defaults
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm10
+    admin_username: chouseknecht
+    admin_password: <your password here>
+    image:
+      offer: CentOS
+      publisher: OpenLogic
+      sku: '7.1'
+      version: latest
+
+- name: Create a VM with managed disk
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm001
+    vm_size: Standard_D4
+    managed_disk_type: Standard_LRS
+    admin_username: adminUser
+    ssh_public_keys:
+      - path: /home/adminUser/.ssh/authorized_keys
+        key_data: < insert yor ssh public key here... >
+    image:
+      offer: CoreOS
+      publisher: CoreOS
+      sku: Stable
+      version: latest
+
+- name: Create a VM with existing storage account and NIC
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm002
+    vm_size: Standard_D4
+    storage_account: testaccount001
+    admin_username: adminUser
+    ssh_public_keys:
+      - path: /home/adminUser/.ssh/authorized_keys
+        key_data: < insert yor ssh public key here... >
+    network_interfaces: testvm001
+    image:
+      offer: CentOS
+      publisher: OpenLogic
+      sku: '7.1'
+      version: latest
+
+- name: Create a VM with OS and multiple data managed disks
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm001
+    vm_size: Standard_D4
+    managed_disk_type: Standard_LRS
+    admin_username: adminUser
+    ssh_public_keys:
+      - path: /home/adminUser/.ssh/authorized_keys
+        key_data: < insert yor ssh public key here... >
+    image:
+      offer: CoreOS
+      publisher: CoreOS
+      sku: Stable
+      version: latest
+    data_disks:
+        - lun: 0
+          disk_size_gb: 64
+          managed_disk_type: Standard_LRS
+        - lun: 1
+          disk_size_gb: 128
+          managed_disk_type: Premium_LRS
+
+- name: Create a VM with OS and multiple data storage accounts
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm001
+    vm_size: Standard_DS1_v2
+    admin_username: adminUser
+    ssh_password_enabled: false
+    ssh_public_keys:
+    - path: /home/adminUser/.ssh/authorized_keys
+      key_data: < insert yor ssh public key here... >
+    network_interfaces: testvm001
+    storage_container: osdisk
+    storage_blob: osdisk.vhd
+    image:
+    offer: CoreOS
+    publisher: CoreOS
+    sku: Stable
+    version: latest
+    data_disks:
+    - lun: 0
+      disk_size_gb: 64
+      storage_container_name: datadisk1
+      storage_blob_name: datadisk1.vhd
+    - lun: 1
+      disk_size_gb: 128
+      storage_container_name: datadisk2
+      storage_blob_name: datadisk2.vhd
+
+- name: Power Off
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm002
+    started: no
+
+- name: Deallocate
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm002
+    allocated: no
+
+- name: Power On
+  azure_rm_virtualmachine:
+    resource_group:
+    name: testvm002
+
+- name: Restart
+  azure_rm_virtualmachine:
+    resource_group:
+    name: testvm002
+    restarted: yes
+
+- name: remove vm and all resources except public ips
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: testvm002
+    state: absent
+    remove_on_absent:
+        - network_interfaces
+        - virtual_storage

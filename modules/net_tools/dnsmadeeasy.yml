@@ -1,0 +1,149 @@
+# fetch my.com domain records
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+  register: response
+
+# create / ensure the presence of a record
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+
+# update the previously created record
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_value: 192.0.2.23
+
+# fetch a specific record
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+  register: response
+
+# delete a record / ensure it is absent
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: absent
+    record_name: test
+
+# Add a failover
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+    failover: True
+    ip1: 127.0.0.2
+    ip2: 127.0.0.3
+
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+    failover: True
+    ip1: 127.0.0.2
+    ip2: 127.0.0.3
+    ip3: 127.0.0.4
+    ip4: 127.0.0.5
+    ip5: 127.0.0.6
+
+# Add a monitor
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+    monitor: yes
+    ip1: 127.0.0.2
+    protocol: HTTP  # default
+    port: 80  # default
+    maxEmails: 1
+    systemDescription: Monitor Test A record
+    contactList: my contact list
+
+# Add a monitor with http options
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+    monitor: yes
+    ip1: 127.0.0.2
+    protocol: HTTP  # default
+    port: 80  # default
+    maxEmails: 1
+    systemDescription: Monitor Test A record
+    contactList: 1174  # contact list id
+    httpFqdn: http://my.com
+    httpFile: example
+    httpQueryString: some string
+
+# Add a monitor and a failover
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+    failover: True
+    ip1: 127.0.0.2
+    ip2: 127.0.0.3
+    monitor: yes
+    protocol: HTTPS
+    port: 443
+    maxEmails: 1
+    systemDescription: monitoring my.com status
+    contactList: emergencycontacts
+
+# Remove a failover
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+    failover: no
+
+# Remove a monitor
+- dnsmadeeasy:
+    account_key: key
+    account_secret: secret
+    domain: my.com
+    state: present
+    record_name: test
+    record_type: A
+    record_value: 127.0.0.1
+    monitor: no

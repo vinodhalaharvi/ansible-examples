@@ -1,0 +1,56 @@
+- name: Create pool
+  bigip_pool:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      name: "my-pool"
+      partition: "Common"
+      lb_method: "least_connection_member"
+      slow_ramp_time: 120
+  delegate_to: localhost
+
+- name: Modify load balancer method
+  bigip_pool:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      name: "my-pool"
+      partition: "Common"
+      lb_method: "round_robin"
+  delegate_to: localhost
+
+- name: Add pool member
+  bigip_pool:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      name: "my-pool"
+      partition: "Common"
+      host: "{{ ansible_default_ipv4['address'] }}"
+      port: 80
+  delegate_to: localhost
+
+- name: Remove pool member from pool
+  bigip_pool:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "absent"
+      name: "my-pool"
+      partition: "Common"
+      host: "{{ ansible_default_ipv4['address'] }}"
+      port: 80
+  delegate_to: localhost
+
+- name: Delete pool
+  bigip_pool:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "absent"
+      name: "my-pool"
+      partition: "Common"
+  delegate_to: localhost

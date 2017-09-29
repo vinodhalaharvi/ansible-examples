@@ -1,0 +1,12 @@
+
+    - name: Create SVM
+      na_cdot_svm:
+        state: present
+        name: ansibleVServer
+        root_volume: vol1
+        root_volume_aggregate: aggr1
+        root_volume_security_style: mixed
+        hostname: "{{ netapp_hostname }}"
+        username: "{{ netapp_username }}"
+        password: "{{ netapp_password }}"
+

@@ -1,0 +1,69 @@
+- name: Configure directory number 1 for example.com
+  ldap_attr:
+    dn: olcDatabase={1}hdb,cn=config
+    name: olcSuffix
+    values: dc=example,dc=com
+    state: exact
+
+# The complex argument format is required here to pass a list of ACL strings.
+- name: Set up the ACL
+  ldap_attr:
+    dn: olcDatabase={1}hdb,cn=config
+    name: olcAccess
+    values:
+      - >-
+        {0}to attrs=userPassword,shadowLastChange
+        by self write
+        by anonymous auth
+        by dn="cn=admin,dc=example,dc=com" write
+        by * none'
+      - >-
+        {1}to dn.base="dc=example,dc=com"
+        by dn="cn=admin,dc=example,dc=com" write
+        by * read
+    state: exact
+
+- name: Declare some indexes
+  ldap_attr:
+    dn: olcDatabase={1}hdb,cn=config
+    name: olcDbIndex
+    values: "{{ item }}"
+  with_items:
+    - objectClass eq
+    - uid eq
+
+- name: Set up a root user, which we can use later to bootstrap the directory
+  ldap_attr:
+    dn: olcDatabase={1}hdb,cn=config
+    name: "{{ item.key }}"
+    values: "{{ item.value }}"
+    state: exact
+  with_dict:
+    olcRootDN: cn=root,dc=example,dc=com
+    olcRootPW: "{SSHA}tabyipcHzhwESzRaGA7oQ/SDoBZQOGND"
+
+- name: Get rid of an unneeded attribute
+  ldap_attr:
+    dn: uid=jdoe,ou=people,dc=example,dc=com
+    name: shadowExpire
+    values: ""
+    state: exact
+    server_uri: ldap://localhost/
+    bind_dn: cn=admin,dc=example,dc=com
+    bind_pw: password
+
+#
+# The same as in the previous example but with the authentication details
+# stored in the ldap_auth variable:
+#
+# ldap_auth:
+#   server_uri: ldap://localhost/
+#   bind_dn: cn=admin,dc=example,dc=com
+#   bind_pw: password
+- name: Get rid of an unneeded attribute
+  ldap_attr:
+    dn: uid=jdoe,ou=people,dc=example,dc=com
+    name: shadowExpire
+    values: ""
+    state: exact
+    params: "{{ ldap_auth }}"

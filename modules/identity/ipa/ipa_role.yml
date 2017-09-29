@@ -1,0 +1,35 @@
+# Ensure role is present
+- ipa_role:
+    name: dba
+    description: Database Administrators
+    state: present
+    user:
+    - pinky
+    - brain
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret
+
+# Ensure role with certain details
+- ipa_role:
+    name: another-role
+    description: Just another role
+    group:
+    - editors
+    host:
+    - host01.example.com
+    hostgroup:
+    - hostgroup01
+    privilege:
+    - Group Administrators
+    - User Administrators
+    service:
+    - service01
+
+# Ensure role is absent
+- ipa_role:
+    name: dba
+    state: absent
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret

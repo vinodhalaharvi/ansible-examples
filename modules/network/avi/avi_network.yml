@@ -1,0 +1,7 @@
+- name: Example to create Network object
+  avi_network:
+    controller: 10.10.25.42
+    username: admin
+    password: something
+    state: present
+    name: sample_network

@@ -1,0 +1,10 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Gather facts about all ENIs
+- ec2_eni_facts:
+
+# Gather facts about a particular ENI
+- ec2_eni_facts:
+    filters:
+      network-interface-id: eni-xxxxxxx
+

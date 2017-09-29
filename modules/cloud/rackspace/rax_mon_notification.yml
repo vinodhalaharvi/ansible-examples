@@ -1,0 +1,13 @@
+- name: Monitoring notification example
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+  - name: Email me when something goes wrong.
+    rax_mon_entity:
+      credentials: ~/.rax_pub
+      label: omg
+      type: email
+      details:
+        address: me@mailhost.com
+    register: the_notification

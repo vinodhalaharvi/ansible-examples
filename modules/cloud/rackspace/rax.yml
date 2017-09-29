@@ -1,0 +1,38 @@
+- name: Build a Cloud Server
+  gather_facts: False
+  tasks:
+    - name: Server build request
+      local_action:
+        module: rax
+        credentials: ~/.raxpub
+        name: rax-test1
+        flavor: 5
+        image: b11d9567-e412-4255-96b9-bd63ab23bcfe
+        key_name: my_rackspace_key
+        files:
+          /root/test.txt: /home/localuser/test.txt
+        wait: yes
+        state: present
+        networks:
+          - private
+          - public
+      register: rax
+
+- name: Build an exact count of cloud servers with incremented names
+  hosts: local
+  gather_facts: False
+  tasks:
+    - name: Server build requests
+      local_action:
+        module: rax
+        credentials: ~/.raxpub
+        name: test%03d.example.org
+        flavor: performance1-1
+        image: ubuntu-1204-lts-precise-pangolin
+        state: present
+        count: 10
+        count_offset: 10
+        exact_count: yes
+        group: test
+        wait: yes
+      register: rax

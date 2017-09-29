@@ -1,0 +1,16 @@
+- name: Create a service for glance
+  os_keystone_endpoint:
+     cloud: mycloud
+     service: glance
+     interface: public
+     url: http://controller:9292
+     region: RegionOne
+     state: present
+
+- name: Delete a service for nova
+  os_keystone_endpoint:
+     cloud: mycloud
+     service: nova
+     interface: public
+     region: RegionOne
+     state: absent

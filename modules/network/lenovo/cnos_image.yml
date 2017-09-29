@@ -1,0 +1,31 @@
+Tasks : The following are examples of using the module cnos_image. These are written in the main.yml file of the tasks directory.
+---
+- name: Test Image transfer
+  cnos_image:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_image_{{ inventory_hostname }}_output.txt"
+      protocol: "sftp"
+      serverip: "10.241.106.118"
+      imgpath: "/root/cnos_images/G8272-10.1.0.112.img"
+      imgtype: "os"
+      serverusername: "root"
+      serverpassword: "root123"
+
+- name: Test Image tftp
+  cnos_image:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_image_{{ inventory_hostname }}_output.txt"
+      protocol: "tftp"
+      serverip: "10.241.106.118"
+      imgpath: "/anil/G8272-10.2.0.34.img"
+      imgtype: "os"
+      serverusername: "root"
+      serverpassword: "root123"

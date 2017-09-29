@@ -1,0 +1,18 @@
+- name: Create a monitoring check
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+  - name: Associate a check with an existing entity.
+    rax_mon_check:
+      credentials: ~/.rax_pub
+      state: present
+      entity_id: "{{ the_entity['entity']['id'] }}"
+      label: the_check
+      check_type: remote.ping
+      monitoring_zones_poll: mziad,mzord,mzdfw
+      details:
+        count: 10
+      meta:
+        hurf: durf
+    register: the_check

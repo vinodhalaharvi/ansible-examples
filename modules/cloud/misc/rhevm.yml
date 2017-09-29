@@ -1,0 +1,110 @@
+# basic get info from VM
+  - rhevm:
+      name: "demo"
+      user: "{{ rhev.admin.name }}"
+      password: "{{ rhev.admin.pass }}"
+      server: "rhevm01"
+      state: "info"
+
+# basic create example from image
+  - rhevm:
+      name: "demo"
+      user: "{{ rhev.admin.name }}"
+      password: "{{ rhev.admin.pass }}"
+      server: "rhevm01"
+      state: "present"
+      image: "centos7_x64"
+      cluster: "centos"
+
+# power management
+  - rhevm:
+      name: "uptime_server"
+      user: "{{ rhev.admin.name }}"
+      password: "{{ rhev.admin.pass }}"
+      server: "rhevm01"
+      cluster: "RH"
+      state: "down"
+      image: "centos7_x64"
+      cluster: "centos"
+
+# multi disk, multi nic create example
+  - rhevm:
+      name: "server007"
+      user: "{{ rhev.admin.name }}"
+      password: "{{ rhev.admin.pass }}"
+      server: "rhevm01"
+      cluster: "RH"
+      state: "present"
+      type: "server"
+      vmcpu: 4
+      vmmem: 2
+      ifaces:
+        - name: "eth0"
+          vlan: "vlan2202"
+        - name: "eth1"
+          vlan: "vlan36"
+        - name: "eth2"
+          vlan: "vlan38"
+        - name: "eth3"
+          vlan: "vlan2202"
+      disks:
+        - name: "root"
+          size: 10
+          domain: "ssd-san"
+        - name: "swap"
+          size: 10
+          domain: "15kiscsi-san"
+        - name: "opt"
+          size: 10
+          domain: "15kiscsi-san"
+        - name: "var"
+          size: 10
+          domain: "10kiscsi-san"
+        - name: "home"
+          size: 10
+          domain: "sata-san"
+      boot_order:
+        - "network"
+        - "hd"
+
+# add a CD to the disk cd_drive
+  - rhevm:
+      name: 'server007'
+      user: "{{ rhev.admin.name }}"
+      password: "{{ rhev.admin.pass }}"
+      state: 'cd'
+      cd_drive: 'rhev-tools-setup.iso'
+
+# new host deployment + host network configuration
+  - rhevm:
+      name: "ovirt_node007"
+      password: "{{ rhevm.admin.pass }}"
+      type: "host"
+      state: present
+      cluster: "rhevm01"
+      ifaces:
+        - name: em1
+        - name: em2
+        - name: p3p1
+          ip: '172.31.224.200'
+          netmask: '255.255.254.0'
+        - name: p3p2
+          ip: '172.31.225.200'
+          netmask: '255.255.254.0'
+        - name: bond0
+          bond:
+            - em1
+            - em2
+          network: 'rhevm'
+          ip: '172.31.222.200'
+          netmask: '255.255.255.0'
+          management: True
+        - name: bond0.36
+          network: 'vlan36'
+          ip: '10.2.36.200'
+          netmask: '255.255.254.0'
+          gateway: '10.2.36.254'
+        - name: bond0.2202
+          network: 'vlan2202'
+        - name: bond0.38
+          network: 'vlan38'

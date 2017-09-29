@@ -1,0 +1,39 @@
+- name: Create a network
+  docker_network:
+    name: network_one
+
+- name: Remove all but selected list of containers
+  docker_network:
+    name: network_one
+    connected:
+      - container_a
+      - container_b
+      - container_c
+
+- name: Remove a single container
+  docker_network:
+    name: network_one
+    connected: "{{ fulllist|difference(['container_a']) }}"
+
+- name: Add a container to a network, leaving existing containers connected
+  docker_network:
+    name: network_one
+    connected:
+      - container_a
+    appends: yes
+
+- name: Create a network with options
+  docker_network:
+    name: network_two
+    driver_options:
+      com.docker.network.bridge.name: net2
+    ipam_options:
+      subnet: '172.3.26.0/16'
+      gateway: 172.3.26.1
+      iprange: '192.168.1.0/24'
+
+- name: Delete a network, disconnecting all containers
+  docker_network:
+    name: network_one
+    state: absent
+    force: yes

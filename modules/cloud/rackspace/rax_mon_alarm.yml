@@ -1,0 +1,19 @@
+- name: Alarm example
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+  - name: Ensure that a specific alarm exists.
+    rax_mon_alarm:
+      credentials: ~/.rax_pub
+      state: present
+      label: uhoh
+      entity_id: "{{ the_entity['entity']['id'] }}"
+      check_id: "{{ the_check['check']['id'] }}"
+      notification_plan_id: "{{ defcon1['notification_plan']['id'] }}"
+      criteria: >
+        if (rate(metric['average']) > 10) {
+          return new AlarmStatus(WARNING);
+        }
+        return new AlarmStatus(OK);
+    register: the_alarm

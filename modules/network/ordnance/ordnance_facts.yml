@@ -1,0 +1,27 @@
+---
+# Note: examples below use the following provider dict to handle
+#       transport and authentication to the node.
+vars:
+  cli:
+    host: "{{ inventory_hostname }}"
+    username: RouterName
+    password: ordnance
+    transport: cli
+
+---
+# Collect all facts from the device
+- ordnance_facts:
+    gather_subset: all
+    provider: "{{ cli }}"
+
+# Collect only the config and default facts
+- ordnance_facts:
+    gather_subset:
+      - config
+    provider: "{{ cli }}"
+
+# Do not collect hardware facts
+- ordnance_facts:
+    gather_subset:
+      - "!hardware"
+    provider: "{{ cli }}"

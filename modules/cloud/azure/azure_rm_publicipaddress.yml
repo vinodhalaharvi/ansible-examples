@@ -1,0 +1,12 @@
+    - name: Create a public ip address
+      azure_rm_publicipaddress:
+        resource_group: testing
+        name: my_public_ip
+        allocation_method: Static
+        domain_name: foobar
+
+    - name: Delete public ip
+      azure_rm_publicipaddress:
+        resource_group: testing
+        name: my_public_ip
+        state: absent

@@ -1,0 +1,2 @@
+- name: updating load_balance_policy
+  vertica_configuration: name=failovertostandbyafter value='8 hours'

@@ -1,0 +1,11 @@
+# Create a role named "demo"
+- os_keystone_role:
+    cloud: mycloud
+    state: present
+    name: demo
+
+# Delete the role named "demo"
+- os_keystone_role:
+    cloud: mycloud
+    state: absent
+    name: demo

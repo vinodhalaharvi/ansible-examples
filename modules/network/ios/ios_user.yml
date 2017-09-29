@@ -1,0 +1,45 @@
+- name: create a new user
+  ios_user:
+    name: ansible
+    nopassword: True
+    state: present
+
+- name: remove all users except admin
+  ios_user:
+    purge: yes
+
+- name: set multiple users to privilege level 15
+  ios_user:
+    aggregate:
+      - name: netop
+      - name: netend
+    privilege: 15
+    state: present
+
+- name: set user view/role
+  ios_user:
+    name: netop
+    view: network-operator
+    state: present
+
+- name: Change Password for User netop
+  ios_user:
+    name: netop
+    configured_password: "{{ new_password }}"
+    update_password: always
+    state: present
+
+- name: Aggregate of users
+  ios_user:
+    aggregate:
+      - name: ansibletest2
+      - name: ansibletest3
+    view: network-admin
+
+- name: Delete users with aggregate
+  ios_user:
+    aggregate:
+      - name: ansibletest1
+      - name: ansibletest2
+      - name: ansibletest3
+    state: absent

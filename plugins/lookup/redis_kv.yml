@@ -1,0 +1,2 @@
+- name: query redis for somekey
+  debug: msg="{{ lookup('redis_kv', 'redis://localhost:6379,somekey') }} is value in Redis for somekey"

@@ -1,0 +1,6 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Note: Only AWS S3 is currently supported
+
+# Lists all s3 buckets
+- aws_s3_bucket_facts:

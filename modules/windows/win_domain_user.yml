@@ -1,0 +1,29 @@
+- name: Ensure user bob is present with address information
+  win_domain_user:
+    name: bob
+    firstname: Bob
+    surname: Smith
+    company: BobCo
+    password: B0bP4ssw0rd
+    state: present
+    groups:
+      - Domain Admins
+    street: 123 4th St.
+    city: Sometown
+    state_province: IN
+    postal_code: 12345
+    country: US
+
+- name: Ensure user bob is present in OU ou=test,dc=domain,dc=local
+  win_domain_user:
+    name: bob
+    password: B0bP4ssw0rd
+    state: present
+    path: ou=test,dc=domain,dc=local
+    groups:
+      - Domain Admins
+
+- name: Ensure user bob is absent
+  win_domain_user:
+    name: bob
+    state: absent

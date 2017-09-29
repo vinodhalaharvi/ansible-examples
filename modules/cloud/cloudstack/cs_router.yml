@@ -1,0 +1,32 @@
+# Ensure the router has the desired service offering, no matter if
+# the router is running or not.
+- local_action:
+    module: cs_router
+    name: r-40-VM
+    service_offering: System Offering for Software Router
+
+# Ensure started
+- local_action:
+    module: cs_router
+    name: r-40-VM
+    state: started
+
+# Ensure started with desired service offering.
+# If the service offerings changes, router will be rebooted.
+- local_action:
+    module: cs_router
+    name: r-40-VM
+    service_offering: System Offering for Software Router
+    state: started
+
+# Ensure stopped
+- local_action:
+    module: cs_router
+    name: r-40-VM
+    state: stopped
+
+# Remove a router
+- local_action:
+    module: cs_router
+    name: r-40-VM
+    state: absent

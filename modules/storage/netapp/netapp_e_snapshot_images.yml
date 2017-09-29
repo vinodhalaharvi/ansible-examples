@@ -1,0 +1,9 @@
+    - name: Create Snapshot
+      netapp_e_snapshot_images:
+        ssid: "{{ ssid }}"
+        api_url: "{{ netapp_api_url }}"
+        api_username: "{{ netapp_api_username }}"
+        api_password: "{{ netapp_api_password }}"
+        validate_certs: "{{ validate_certs }}"
+        snapshot_group: "3300000060080E5000299C24000005B656D9F394"
+        state: 'create'

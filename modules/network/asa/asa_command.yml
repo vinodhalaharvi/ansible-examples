@@ -1,0 +1,29 @@
+# Note: examples below use the following provider dict to handle
+#       transport and authentication to the node.
+---
+vars:
+  cli:
+    host: "{{ inventory_hostname }}"
+    username: cisco
+    password: cisco
+    authorize: yes
+    auth_pass: cisco
+    transport: cli
+
+---
+- asa_command:
+    commands:
+      - show version
+    provider: "{{ cli }}"
+
+- asa_command:
+    commands:
+      - show asp drop
+      - show memory
+    provider: "{{ cli }}"
+
+- asa_command:
+    commands:
+      - show version
+    provider: "{{ cli }}"
+    context: system

@@ -1,0 +1,27 @@
+# create a network
+- local_action:
+    module: cs_network
+    name: my network
+    zone: gva-01
+    network_offering: DefaultIsolatedNetworkOfferingWithSourceNatService
+    network_domain: example.com
+
+# update a network
+- local_action:
+    module: cs_network
+    name: my network
+    display_text: network of domain example.local
+    network_domain: example.local
+
+# restart a network with clean up
+- local_action:
+    module: cs_network
+    name: my network
+    clean_up: yes
+    state: restared
+
+# remove a network
+- local_action:
+    module: cs_network
+    name: my network
+    state: absent

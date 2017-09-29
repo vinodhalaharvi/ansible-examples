@@ -1,0 +1,10 @@
+- name: Create a new group
+  win_group:
+    name: deploy
+    description: Deploy Group
+    state: present
+
+- name: Remove a group
+  win_group:
+    name: deploy
+    state: absent

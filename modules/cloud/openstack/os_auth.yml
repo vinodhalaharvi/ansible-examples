@@ -1,0 +1,7 @@
+- name: Authenticate to the cloud and retrieve the service catalog
+  os_auth:
+    cloud: rax-dfw
+
+- name: Show service catalog
+  debug:
+    var: service_catalog

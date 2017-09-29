@@ -1,0 +1,6 @@
+- cs_instance_facts:
+    name: web-vm-1
+  delegate_to: localhost
+
+- debug:
+    var: cloudstack_instance

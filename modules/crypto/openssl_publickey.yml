@@ -1,0 +1,29 @@
+# Generate an OpenSSL public key in PEM format.
+- openssl_publickey:
+    path: /etc/ssl/public/ansible.com.pem
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+
+# Generate an OpenSSL public key in OpenSSH v2 format.
+- openssl_publickey:
+    path: /etc/ssl/public/ansible.com.pem
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    format: OpenSSH
+
+# Generate an OpenSSL public key with a passphrase protected
+# private key
+- openssl_publickey:
+    path: /etc/ssl/public/ansible.com.pem
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    privatekey_passphrase: ansible
+
+# Force regenerate an OpenSSL public key if it already exists
+- openssl_publickey:
+    path: /etc/ssl/public/ansible.com.pem
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    force: True
+
+# Remove an OpenSSL public key
+- openssl_publickey:
+    path: /etc/ssl/public/ansible.com.pem
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    state: absent

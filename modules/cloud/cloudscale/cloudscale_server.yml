@@ -1,0 +1,48 @@
+# Start a server (if it does not exist) and register the server details
+- name: Start cloudscale.ch server
+  cloudscale_server:
+    name: my-shiny-cloudscale-server
+    image: debian-8
+    flavor: flex-4
+    ssh_keys: ssh-rsa XXXXXXXXXX...XXXX ansible@cloudscale
+    use_private_network: True
+    bulk_volume_size_gb: 100
+    api_token: xxxxxx
+  register: server1
+
+# Start another server in anti-affinity to the first one
+- name: Start second cloudscale.ch server
+  cloudscale_server:
+    name: my-other-shiny-server
+    image: ubuntu-16.04
+    flavor: flex-8
+    ssh_keys: ssh-rsa XXXXXXXXXXX ansible@cloudscale
+    anti_affinity_with: '{{ server1.uuid }}'
+    api_token: xxxxxx
+
+# Stop the first server
+- name: Stop my first server
+  cloudscale_server:
+    uuid: '{{ server1.uuid }}'
+    state: stopped
+    api_token: xxxxxx
+
+# Delete my second server
+- name: Delete my second server
+  cloudscale_server:
+    name: my-other-shiny-server
+    state: absent
+    api_token: xxxxxx
+
+# Start a server and wait for the SSH host keys to be generated
+- name: Start server and wait for SSH host keys
+  cloudscale_server:
+    name: my-cloudscale-server-with-ssh-key
+    image: debian-8
+    flavor: flex-4
+    ssh_keys: ssh-rsa XXXXXXXXXXX ansible@cloudscale
+    api_token: xxxxxx
+  register: server
+  until: server.ssh_fingerprints
+  retries: 60
+  delay: 2

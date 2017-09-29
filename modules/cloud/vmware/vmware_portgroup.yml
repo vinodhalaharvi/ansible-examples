@@ -1,0 +1,22 @@
+# Example from Ansible playbook
+
+    - name: Add Management Network VM Portgroup
+      local_action:
+        module: vmware_portgroup
+        hostname: esxi_hostname
+        username: esxi_username
+        password: esxi_password
+        switch_name: vswitch_name
+        portgroup_name: portgroup_name
+        vlan_id: vlan_id
+
+    - name: Add Portgroup with Promiscuous Mode Enabled
+      local_action:
+        module: vmware_portgroup
+        hostname: esxi_hostname
+        username: esxi_username
+        password: esxi_password
+        switch_name: vswitch_name
+        portgroup_name: portgroup_name
+        network_policy:
+            promiscuous_mode: True

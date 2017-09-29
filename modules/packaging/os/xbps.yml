@@ -1,0 +1,12 @@
+# Install package foo
+- xbps: name=foo state=present
+# Upgrade package foo
+- xbps: name=foo state=latest update_cache=yes
+# Remove packages foo and bar
+- xbps: name=foo,bar state=absent
+# Recursively remove package foo
+- xbps: name=foo state=absent recurse=yes
+# Update package cache
+- xbps: update_cache=yes
+# Upgrade packages
+- xbps: upgrade=yes

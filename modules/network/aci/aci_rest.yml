@@ -1,0 +1,104 @@
+- name: Add a tenant
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    method: post
+    path: /api/mo/uni.xml
+    src: /home/cisco/ansible/aci/configs/aci_config.xml
+  delegate_to: localhost
+
+- name: Add a tenant using inline YAML
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/mo/uni/tn-[Sales].json
+    method: post
+    content:
+      fvTenant:
+        attributes:
+          name: Sales
+          descr: Sales departement
+  delegate_to: localhost
+
+- name: Add a tenant using a JSON string
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/mo/uni/tn-[Sales].json
+    method: post
+    content: |
+      {
+        "fvTenant": {
+          "attributes": {
+            "name": "Sales",
+            "descr": "Sales departement"
+          }
+        }
+      }
+  delegate_to: localhost
+
+- name: Add a tenant using an XML string
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/mo/uni/tn-[Sales].xml
+    method: post
+    content: |
+      <fvTenant name="Sales" descr="Sales departement"/>
+  delegate_to: localhost
+
+- name: Get tenants
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    method: get
+    path: /api/node/class/fvTenant.json
+  delegate_to: localhost
+
+- name: Configure contracts
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    method: post
+    path: /api/mo/uni.xml
+    src: /home/cisco/ansible/aci/configs/contract_config.xml
+  delegate_to: localhost
+
+- name: Register leaves and spines
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    method: post
+    path: /api/mo/uni/controller/nodeidentpol.xml
+    content: |
+      <fabricNodeIdentPol>
+        <fabricNodeIdentP name="{{ item.name }}" nodeId="{{ item.nodeid }}" status="{{ item.status }}" serial="{{ item.serial }}"/>
+      </fabricNodeIdentPol>
+  with_items:
+  - '{{ apic_leavesspines }}'
+  delegate_to: localhost
+
+- name: Wait for all controllers to become ready
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/node/class/topSystem.json?query-target-filter=eq(topSystem.role,"controller")
+  register: apics
+  until: "'totalCount' in apics and apics.totalCount|int >= groups['apic']|count"
+  retries: 120
+  delay: 30
+  delegate_to: localhost
+  run_once: yes

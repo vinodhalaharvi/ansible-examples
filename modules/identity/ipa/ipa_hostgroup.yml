@@ -1,0 +1,20 @@
+# Ensure host-group databases is present
+- ipa_hostgroup:
+    name: databases
+    state: present
+    host:
+    - db.example.com
+    hostgroup:
+    - mysql-server
+    - oracle-server
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret
+
+# Ensure host-group databases is absent
+- ipa_hostgroup:
+    name: databases
+    state: absent
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret

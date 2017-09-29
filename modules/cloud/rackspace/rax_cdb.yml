@@ -1,0 +1,16 @@
+- name: Build a Cloud Databases
+  gather_facts: False
+  tasks:
+    - name: Server build request
+      local_action:
+        module: rax_cdb
+        credentials: ~/.raxpub
+        region: IAD
+        name: db-server1
+        flavor: 1
+        volume: 2
+        cdb_type: MySQL
+        cdb_version: 5.6
+        wait: yes
+        state: present
+      register: rax_db_server

@@ -1,0 +1,6 @@
+- name: obtain all WAF facts
+  aws_waf_facts:
+
+- name: obtain all facts for a single WAF
+  aws_waf_facts:
+    name: test_waf

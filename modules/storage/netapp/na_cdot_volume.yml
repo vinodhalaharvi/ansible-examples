@@ -1,0 +1,25 @@
+
+    - name: Create FlexVol
+      na_cdot_volume:
+        state: present
+        name: ansibleVolume
+        infinite: False
+        aggregate_name: aggr1
+        size: 20
+        size_unit: mb
+        vserver: ansibleVServer
+        hostname: "{{ netapp_hostname }}"
+        username: "{{ netapp_username }}"
+        password: "{{ netapp_password }}"
+
+    - name: Make FlexVol offline
+      na_cdot_volume:
+        state: present
+        name: ansibleVolume
+        infinite: False
+        online: False
+        vserver: ansibleVServer
+        hostname: "{{ netapp_hostname }}"
+        username: "{{ netapp_username }}"
+        password: "{{ netapp_password }}"
+

@@ -1,0 +1,9 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all NICs which names start with C(eth) for VM named C(centos7):
+- ovirt_nics_facts:
+    vm: centos7
+    name: eth*
+- debug:
+    var: ovirt_nics

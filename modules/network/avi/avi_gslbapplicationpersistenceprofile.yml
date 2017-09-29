@@ -1,0 +1,7 @@
+- name: Example to create GslbApplicationPersistenceProfile object
+  avi_gslbapplicationpersistenceprofile:
+    controller: 10.10.25.42
+    username: admin
+    password: something
+    state: present
+    name: sample_gslbapplicationpersistenceprofile

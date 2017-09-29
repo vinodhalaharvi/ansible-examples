@@ -1,0 +1,56 @@
+---
+# Simple example to create a lambda function and publish a version
+- hosts: localhost
+  gather_facts: no
+  vars:
+    state: present
+    project_folder: /path/to/deployment/package
+    deployment_package: lambda.zip
+    account: 123456789012
+    production_version: 5
+  tasks:
+  - name: AWS Lambda Function
+    lambda:
+      state: "{{ state | default('present') }}"
+      name: myLambdaFunction
+      publish: True
+      description: lambda function description
+      code_s3_bucket: package-bucket
+      code_s3_key: "lambda/{{ deployment_package }}"
+      local_path: "{{ project_folder }}/{{ deployment_package }}"
+      runtime: python2.7
+      timeout: 5
+      handler: lambda.handler
+      memory_size: 128
+      role: "arn:aws:iam::{{ account }}:role/API2LambdaExecRole"
+
+  - name: show results
+    debug:
+      var: lambda_facts
+
+# The following will set the Dev alias to the latest version ($LATEST) since version is omitted (or = 0)
+  - name: "alias 'Dev' for function {{ lambda_facts.FunctionName }} "
+    lambda_alias:
+      state: "{{ state | default('present') }}"
+      function_name: "{{ lambda_facts.FunctionName }}"
+      name: Dev
+      description: Development is $LATEST version
+
+# The QA alias will only be created when a new version is published (i.e. not = '$LATEST')
+  - name: "alias 'QA' for function {{ lambda_facts.FunctionName }} "
+    lambda_alias:
+      state: "{{ state | default('present') }}"
+      function_name: "{{ lambda_facts.FunctionName }}"
+      name: QA
+      version: "{{ lambda_facts.Version }}"
+      description: "QA is version {{ lambda_facts.Version }}"
+    when: lambda_facts.Version != "$LATEST"
+
+# The Prod alias will have a fixed version based on a variable
+  - name: "alias 'Prod' for function {{ lambda_facts.FunctionName }} "
+    lambda_alias:
+      state: "{{ state | default('present') }}"
+      function_name: "{{ lambda_facts.FunctionName }}"
+      name: Prod
+      version: "{{ production_version }}"
+      description: "Production is version {{ production_version }}"

@@ -1,0 +1,87 @@
+- name: Update pamd rule's control in /etc/pam.d/system-auth
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_faillock.so
+    new_control: sufficient
+
+- name: Update pamd rule's complex control in /etc/pam.d/system-auth
+  pamd:
+    name: system-auth
+    type: session
+    control: '[success=1 default=ignore]'
+    module_path: pam_succeed_if.so
+    new_control: '[success=2 default=ignore]'
+
+- name: Insert a new rule before an existing rule
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_faillock.so
+    new_type: auth
+    new_control: sufficient
+    new_module_path: pam_faillock.so
+    state: before
+
+- name: Insert a new rule pam_wheel.so with argument 'use_uid' after an \
+        existing rule pam_rootok.so
+  pamd:
+    name: su
+    type: auth
+    control: sufficient
+    module_path: pam_rootok.so
+    new_type: auth
+    new_control: required
+    new_module_path: pam_wheel.so
+    module_arguments: 'use_uid'
+    state: after
+
+- name: Remove module arguments from an existing rule
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_faillock.so
+    module_arguments: ''
+    state: updated
+
+- name: Replace all module arguments in an existing rule
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_faillock.so
+    module_arguments: 'preauth
+        silent
+        deny=3
+        unlock_time=604800
+        fail_interval=900'
+    state: updated
+
+- name: Remove specific arguments from a rule
+  pamd:
+    name: system-auth
+    type: session control='[success=1 default=ignore]'
+    module_path: pam_succeed_if.so
+    module_arguments: 'crond quiet'
+    state: args_absent
+
+- name: Ensure specific arguments are present in a rule
+  pamd:
+    name: system-auth
+    type: session
+    control: '[success=1 default=ignore]'
+    module_path: pam_succeed_if.so
+    module_arguments: 'crond quiet'
+    state: args_present
+
+- name: Update specific argument value in a rule
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_faillock.so
+    module_arguments: 'fail_interval=300'
+    state: args_present

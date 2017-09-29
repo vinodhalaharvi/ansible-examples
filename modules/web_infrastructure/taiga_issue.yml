@@ -1,0 +1,24 @@
+# Create an issue in the my hosted Taiga environment and attach an error log
+- taiga_issue:
+    taiga_host: https://mytaigahost.example.com
+    project: myproject
+    subject: An error has been found
+    issue_type: Bug
+    priority: High
+    status: New
+    severity: Important
+    description: An error has been found. Please check the attached error log for details.
+    attachment: /path/to/error.log
+    attachment_description: Error log file
+    tags:
+      - Error
+      - Needs manual check
+    state: present
+
+# Deletes the previously created issue
+- taiga_issue:
+    taiga_host: https://mytaigahost.example.com
+    project: myproject
+    subject: An error has been found
+    issue_type: Bug
+    state: absent

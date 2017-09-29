@@ -1,0 +1,51 @@
+# Create a 'legacy' Network
+- name: Create Legacy Network
+  gce_net:
+    name: legacynet
+    ipv4_range: '10.24.17.0/24'
+    mode: legacy
+    state: present
+
+# Create an 'auto' Network
+- name: Create Auto Network
+  gce_net:
+    name: autonet
+    mode: auto
+    state: present
+
+# Create a 'custom' Network
+- name: Create Custom Network
+  gce_net:
+    name: customnet
+    mode: custom
+    subnet_name: "customsubnet"
+    subnet_region: us-east1
+    ipv4_range: '10.240.16.0/24'
+    state: "present"
+
+# Create Firewall Rule with Source Tags
+- name: Create Firewall Rule w/Source Tags
+  gce_net:
+    name: default
+    fwname: "my-firewall-rule"
+    allowed: tcp:80
+    state: "present"
+    src_tags: "foo,bar"
+
+# Create Firewall Rule with Source Range
+- name: Create Firewall Rule w/Source Range
+  gce_net:
+    name: default
+    fwname: "my-firewall-rule"
+    allowed: tcp:80
+    state: "present"
+    src_range: ['10.1.1.1/32']
+
+# Create Custom Subnetwork
+- name: Create Custom Subnetwork
+  gce_net:
+    name: privatenet
+    mode: custom
+    subnet_name: subnet_example
+    subnet_region: us-central1
+    ipv4_range: '10.0.0.0/16'

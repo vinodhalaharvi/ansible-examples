@@ -1,0 +1,17 @@
+- name: Add a new vCenter license
+  vcenter_license:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    license: f600d-21ae3-5592b-249e0-cc341
+    state: present
+  delegate_to: localhost
+
+- name: Remove an (unused) vCenter license
+  vmware_license:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    license: f600d-21ae3-5592b-249e0-cc341
+    state: absent
+  delegate_to: localhost

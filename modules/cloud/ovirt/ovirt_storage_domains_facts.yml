@@ -1,0 +1,9 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all storage domains which names start with C(data) and
+# belong to data center C(west):
+- ovirt_storage_domains_facts:
+    pattern: name=data* and datacenter=west
+- debug:
+    var: ovirt_storage_domains

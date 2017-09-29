@@ -1,0 +1,12 @@
+- nxos_facts:
+    gather_subset: all
+
+# Collect only the config and default facts
+- nxos_facts:
+    gather_subset:
+      - config
+
+# Do not collect hardware facts
+- nxos_facts:
+    gather_subset:
+      - "!hardware"

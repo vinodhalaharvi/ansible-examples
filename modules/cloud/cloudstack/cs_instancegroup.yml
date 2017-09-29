@@ -1,0 +1,10 @@
+# Create an instance group
+- local_action:
+    module: cs_instancegroup
+    name: loadbalancers
+
+# Remove an instance group
+- local_action:
+    module: cs_instancegroup
+    name: loadbalancers
+    state: absent

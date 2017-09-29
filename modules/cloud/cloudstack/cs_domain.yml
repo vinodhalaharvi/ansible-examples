@@ -1,0 +1,17 @@
+- name: Create a domain
+  local_action:
+    module: cs_domain
+    path: ROOT/customers
+    network_domain: customers.example.com
+
+- name: Create another subdomain
+  local_action:
+    module: cs_domain
+    path: ROOT/customers/xy
+    network_domain: xy.customers.example.com
+
+- name: Remove a domain
+  local_action:
+    module: cs_domain
+    path: ROOT/customers/xy
+    state: absent

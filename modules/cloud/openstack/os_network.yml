@@ -1,0 +1,6 @@
+# Create an externally accessible network named 'ext_network'.
+- os_network:
+    cloud: mycloud
+    state: present
+    name: ext_network
+    external: true

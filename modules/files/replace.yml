@@ -1,0 +1,53 @@
+# Before 2.3, option 'dest', 'destfile' or 'name' was used instead of 'path'
+- replace:
+    path: /etc/hosts
+    regexp: '(\s+)old\.host\.name(\s+.*)?$'
+    replace: '\1new.host.name\2'
+    backup: yes
+
+# Replace after the expression till the end of the file (requires >=2.4)
+- replace:
+    path: /etc/hosts
+    regexp: '(\s+)old\.host\.name(\s+.*)?$'
+    replace: '\1new.host.name\2'
+    after: 'Start after line.*'
+    backup: yes
+
+# Replace before the expression till the begin of the file (requires >=2.4)
+- replace:
+    path: /etc/hosts
+    regexp: '(\s+)old\.host\.name(\s+.*)?$'
+    replace: '\1new.host.name\2'
+    before: 'Start before line.*'
+    backup: yes
+
+# Replace between the expressions (requires >=2.4)
+- replace:
+    path: /etc/hosts
+    regexp: '(\s+)old\.host\.name(\s+.*)?$'
+    replace: '\1new.host.name\2'
+    after: 'Start after line.*'
+    before: 'Start before line.*'
+    backup: yes
+
+- replace:
+    path: /home/jdoe/.ssh/known_hosts
+    regexp: '^old\.host\.name[^\n]*\n'
+    owner: jdoe
+    group: jdoe
+    mode: 0644
+
+- replace:
+    path: /etc/apache/ports
+    regexp: '^(NameVirtualHost|Listen)\s+80\s*$'
+    replace: '\1 127.0.0.1:8080'
+    validate: '/usr/sbin/apache2ctl -f %s -t'
+
+- name: short form task (in ansible 2+) necessitates backslash-escaped sequences
+  replace: dest=/etc/hosts regexp='\\b(localhost)(\\d*)\\b' replace='\\1\\2.localdomain\\2 \\1\\2'
+
+- name: long form task does not
+  replace:
+    dest: /etc/hosts
+    regexp: '\b(localhost)(\d*)\b'
+    replace: '\1\2.localdomain\2 \1\2'

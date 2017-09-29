@@ -1,0 +1,53 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create and attach new disk to VM
+- ovirt_disk:
+    name: myvm_disk
+    vm_name: rhel7
+    size: 10GiB
+    format: cow
+    interface: virtio
+    storage_domain: data
+
+# Attach logical unit to VM rhel7
+- ovirt_disk:
+    vm_name: rhel7
+    logical_unit:
+      target: iqn.2016-08-09.brq.str-01:omachace
+      id: 1IET_000d0001
+      address: 10.34.63.204
+    interface: virtio
+
+# Detach disk from VM
+- ovirt_disk:
+    state: detached
+    name: myvm_disk
+    vm_name: rhel7
+    size: 10GiB
+    format: cow
+    interface: virtio
+
+# Upload local image to disk and attach it to vm:
+# Since Ansible 2.3
+- ovirt_disk:
+    name: mydisk
+    vm_name: myvm
+    interface: virtio
+    size: 10GiB
+    format: cow
+    image_path: /path/to/mydisk.qcow2
+    storage_domain: data
+
+# Download disk to local file system:
+# Since Ansible 2.3
+- ovirt_disk:
+    id: 7de90f31-222c-436c-a1ca-7e655bd5b60c
+    download_image_path: /home/user/mydisk.qcow2
+
+# Export disk as image to Glance domain
+# Since Ansible 2.4
+- ovirt_disks:
+    id: 7de90f31-222c-436c-a1ca-7e655bd5b60c
+    image_provider: myglance
+    state: exported

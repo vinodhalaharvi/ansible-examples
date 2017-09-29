@@ -1,0 +1,28 @@
+# Add a new node to the load balancer
+- local_action:
+    module: rax_clb_nodes
+    load_balancer_id: 71
+    address: 10.2.2.3
+    port: 80
+    condition: enabled
+    type: primary
+    wait: yes
+    credentials: /path/to/credentials
+
+# Drain connections from a node
+- local_action:
+    module: rax_clb_nodes
+    load_balancer_id: 71
+    node_id: 410
+    condition: draining
+    wait: yes
+    credentials: /path/to/credentials
+
+# Remove a node from the load balancer
+- local_action:
+    module: rax_clb_nodes
+    load_balancer_id: 71
+    node_id: 410
+    state: absent
+    wait: yes
+    credentials: /path/to/credentials

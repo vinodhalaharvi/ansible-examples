@@ -1,0 +1,12 @@
+# Create a domain
+- os_keystone_domain:
+     cloud: mycloud
+     state: present
+     name: demo
+     description: Demo Domain
+
+# Delete a domain
+- os_keystone_domain:
+     cloud: mycloud
+     state: absent
+     name: demo

@@ -1,0 +1,48 @@
+# Basic user creation example
+tasks:
+- name: Create two new IAM users with API keys
+  iam:
+    iam_type: user
+    name: "{{ item }}"
+    state: present
+    password: "{{ temp_pass }}"
+    access_key_state: create
+  with_items:
+    - jcleese
+    - mpython
+
+# Advanced example, create two new groups and add the pre-existing user
+# jdavila to both groups.
+task:
+- name: Create Two Groups, Mario and Luigi
+  iam:
+    iam_type: group
+    name: "{{ item }}"
+    state: present
+  with_items:
+     - Mario
+     - Luigi
+  register: new_groups
+
+- name:
+  iam:
+    iam_type: user
+    name: jdavila
+    state: update
+    groups: "{{ item.created_group.group_name }}"
+  with_items: "{{ new_groups.results }}"
+
+# Example of role with custom trust policy for Lambda service
+- name: Create IAM role with custom trust relationship
+  iam:
+    iam_type: role
+    name: AAALambdaTestRole
+    state: present
+    trust_policy:
+      Version: '2012-10-17'
+      Statement:
+      - Action: sts:AssumeRole
+        Effect: Allow
+        Principal:
+          Service: lambda.amazonaws.com
+

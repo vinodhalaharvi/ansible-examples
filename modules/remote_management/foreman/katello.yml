@@ -1,0 +1,76 @@
+---
+# Simple Example:
+
+- name: "Create Product"
+  local_action:
+      module: katello
+      username: "admin"
+      password: "admin"
+      server_url: "https://fakeserver.com"
+      entity: "product"
+      params:
+        name: "Centos 7"
+
+# Abstraction Example:
+# katello.yml
+---
+- name: "{{ name }}"
+  local_action:
+      module: katello
+      username: "admin"
+      password: "admin"
+      server_url: "https://fakeserver.com"
+      entity: "{{ entity }}"
+      params: "{{ params }}"
+
+# tasks.yml
+---
+- include: katello.yml
+  vars:
+    name: "Create Dev Environment"
+    entity: "lifecycle_environment"
+    params:
+      name: "Dev"
+      prior: "Library"
+      organization: "Default Organization"
+
+- include: katello.yml
+  vars:
+    name: "Create Centos Product"
+    entity: "product"
+    params:
+      name: "Centos 7"
+      organization: "Default Organization"
+
+- include: katello.yml
+  vars:
+    name: "Create 7.2 Repository"
+    entity: "repository"
+    params:
+      name: "Centos 7.2"
+      product: "Centos 7"
+      organization: "Default Organization"
+      content_type: "yum"
+      url: "http://mirror.centos.org/centos/7/os/x86_64/"
+
+- include: katello.yml
+  vars:
+      name: "Create Centos 7 View"
+      entity: "content_view"
+      params:
+        name: "Centos 7 View"
+        organization: "Default Organization"
+        repositories:
+          - name: "Centos 7.2"
+            product: "Centos 7"
+
+- include: katello.yml
+  vars:
+      name: "Enable RHEL Product"
+      entity: "repository_set"
+      params:
+        name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        organization: "Default Organization"
+        basearch: "x86_64"
+        releasever: "7"

@@ -1,0 +1,33 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create(if not exists) and assign tag to vms vm1 and vm2:
+- ovirt_tags:
+    name: mytag
+    vms:
+      - vm1
+      - vm2
+
+# Attach a tag to VM 'vm1', keeping the rest already attached tags on VM:
+- ovirt_tags:
+    name: mytag
+    state: attached
+    vms:
+      - vm3
+
+# Detach a tag from VM 'vm1', keeping the rest already attached tags on VM:
+- ovirt_tags:
+    name: mytag
+    state: detached
+    vms:
+      - vm3
+
+# To detach all VMs from tag:
+- ovirt_tags:
+    name: mytag
+    vms: []
+
+# Remove tag
+- ovirt_tags:
+    state: absent
+    name: mytag

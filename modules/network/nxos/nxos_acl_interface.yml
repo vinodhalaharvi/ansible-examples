@@ -1,0 +1,6 @@
+- name: apply egress acl to ethernet1/41
+  nxos_acl_interface:
+    name: ANSIBLE
+    interface: ethernet1/41
+    direction: egress
+    state: present

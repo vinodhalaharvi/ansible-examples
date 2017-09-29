@@ -1,0 +1,28 @@
+# Create a health-check for host1.example.com and use it in record
+- route53_health_check:
+    state: present
+    fqdn: host1.example.com
+    type: HTTP_STR_MATCH
+    resource_path: /
+    string_match: "Hello"
+    request_interval: 10
+    failure_threshold: 2
+  register: my_health_check
+
+- route53:
+    action: create
+    zone: "example.com"
+    type: CNAME
+    record: "www.example.com"
+    value: host1.example.com
+    ttl: 30
+    # Routing policy
+    identifier: "host1@www"
+    weight: 100
+    health_check: "{{ my_health_check.health_check.id }}"
+
+# Delete health-check
+- route53_health_check:
+    state: absent
+    fqdn: host1.example.com
+

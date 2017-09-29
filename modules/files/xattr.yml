@@ -1,0 +1,15 @@
+- name: Obtain the extended attributes  of /etc/foo.conf
+  xattr:
+    path: /etc/foo.conf
+
+- name: Sets the key 'foo' to value 'bar'
+  xattr:
+    path: /etc/foo.conf
+    key: user.foo
+    value: bar
+
+- name: Removes the key 'foo'
+  xattr:
+    path: /etc/foo.conf
+    key: user.foo
+    state: absent

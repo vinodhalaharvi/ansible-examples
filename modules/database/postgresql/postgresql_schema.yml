@@ -1,0 +1,9 @@
+# Create a new schema with name "acme"
+- postgresql_schema:
+    name: acme
+
+# Create a new schema "acme" with a user "bob" who will own it
+- postgresql_schema:
+    name: acme
+    owner: bob
+

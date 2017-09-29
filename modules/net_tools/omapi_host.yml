@@ -1,0 +1,21 @@
+- name: Remove a host using OMAPI
+  omapi_host:
+    key_name: "defomapi"
+    key: "+bFQtBCta6j2vWkjPkNFtgA=="
+    host: "10.1.1.1"
+    macaddr: "00:66:ab:dd:11:44"
+    state: absent
+
+- name: Add a host using OMAPI
+  omapi_host:
+    key_name: "defomapi"
+    key: "+bFQtBCta6j2vWkjPkNFtgA=="
+    host: "10.98.4.55"
+    macaddr: "44:dd:ab:dd:11:44"
+    name: "server01"
+    ip: "192.168.88.99"
+    ddns: yes
+    statements:
+      - 'filename "pxelinux.0"'
+      - 'next-server 1.1.1.1'
+    state: present

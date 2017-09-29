@@ -1,0 +1,9 @@
+- name: setup security profile group
+  panos_pg:
+    ip_address: "192.168.1.1"
+    password: "admin"
+    username: "admin"
+    pg_name: "pg-default"
+    virus: "default"
+    spyware: "default"
+    vulnerability: "default"

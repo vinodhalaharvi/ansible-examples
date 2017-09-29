@@ -1,0 +1,65 @@
+- name: return information about an existing application pool
+  win_iis_webapppool:
+    name: DefaultAppPool
+    state: present
+
+- name: create a new application pool in 'Started' state
+  win_iis_webapppool:
+    name: AppPool
+    state: started
+
+- name: stop an application pool
+  win_iis_webapppool:
+    name: AppPool
+    state: stopped
+
+- name: restart an application pool (non-idempotent)
+  win_iis_webapppool:
+    name: AppPool
+    state: restart
+
+- name: change application pool attributes using new dict style
+  win_iis_webapppool:
+    name: AppPool
+    attributes:
+      managedRuntimeVersion: v4.0
+      autoStart: false
+
+# Note this format style has been deprecated, please use the newer dict style instead
+- name: change application pool attributes using older string style
+  win_iis_webapppool:
+    name: AppPool
+    attributes: 'managedRuntimeVersion:v4.0|autoStart:false'
+
+# This is the preferred style to use when setting attributes
+- name: creates an application pool, sets attributes and starts it
+  win_iis_webapppool:
+    name: AnotherAppPool
+    state: started
+    attributes:
+      managedRuntimeVersion: v4.0
+      autoStart: false
+
+# In the below example we are setting attributes in child element processModel
+# https://www.iis.net/configreference/system.applicationhost/applicationpools/add/processmodel
+- name: manage child element and set identity of application pool
+  win_iis_webapppool:
+    name: IdentitiyAppPool
+    state: started
+    attributes:
+      managedPipelineMode: Classic
+      processModel.identityType: SpecificUser
+      processModel.username: '{{ansible_user}}'
+      processModel.password: '{{ansible_password}}'
+      processModel.loadUserProfile: True
+
+- name: manage a timespan attribute
+  win_iis_webapppool:
+    name: TimespanAppPool
+    state: started
+    attributes:
+      # Timespan with full string "day:hour:minute:second.millisecond"
+      recycling.periodicRestart.time: "00:00:05:00.000000"
+      recycling.periodicRestart.schedule: ["00:10:00", "05:30:00"]
+      # Shortened timespan "hour:minute:second"
+      processModel.pingResponseTime: "00:03:00"

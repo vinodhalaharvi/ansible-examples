@@ -1,0 +1,16 @@
+- name: Logon to CyberArk Vault using PAS Web Services SDK - use_shared_logon_authentication
+  cyberark_authentication:
+    api_base_url: "{{ web_services_base_url }}"
+    use_shared_logon_authentication: yes
+
+- name: Logon to CyberArk Vault using PAS Web Services SDK - Not use_shared_logon_authentication
+  cyberark_authentication:
+    api_base_url: "{{ web_services_base_url }}"
+    username: "{{ password_object.password }}"
+    password: "{{ password_object.passprops.username }}"
+    use_shared_logon_authentication: no
+
+- name: Logoff from CyberArk Vault
+  cyberark_authentication:
+    state: absent
+    cyberark_session: "{{ cyberark_session }}"

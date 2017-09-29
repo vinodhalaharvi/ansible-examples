@@ -1,0 +1,38 @@
+- name: Create a new vgw attached to a specific VPC
+  ec2_vpc_vgw:
+    state: present
+    region: ap-southeast-2
+    profile: personal
+    vpc_id: vpc-12345678
+    name: personal-testing
+    type: ipsec.1
+  register: created_vgw
+
+- name: Create a new unattached vgw
+  ec2_vpc_vgw:
+    state: present
+    region: ap-southeast-2
+    profile: personal
+    name: personal-testing
+    type: ipsec.1
+    tags:
+      environment: production
+      owner: ABC
+  register: created_vgw
+
+- name: Remove a new vgw using the name
+  ec2_vpc_vgw:
+    state: absent
+    region: ap-southeast-2
+    profile: personal
+    name: personal-testing
+    type: ipsec.1
+  register: deleted_vgw
+
+- name: Remove a new vgw using the vpn_gateway_id
+  ec2_vpc_vgw:
+    state: absent
+    region: ap-southeast-2
+    profile: personal
+    vpn_gateway_id: vgw-3a9aa123
+  register: deleted_vgw

@@ -1,0 +1,8 @@
+- name: Fetch a qkview from the remote device
+  bigip_qkview:
+      asm_request_log: "yes"
+      exclude:
+          - audit
+          - secure
+      dest: "/tmp/localhost.localdomain.qkview"
+  delegate_to: localhost

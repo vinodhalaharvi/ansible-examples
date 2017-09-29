@@ -1,0 +1,9 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all VMs which relate to a storage domain and
+# are unregistered:
+- ovirt_vms_facts:
+    unregistered=True
+- debug:
+    var: ovirt_storage_vms

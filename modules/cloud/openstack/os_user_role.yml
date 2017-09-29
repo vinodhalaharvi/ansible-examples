@@ -1,0 +1,14 @@
+# Grant an admin role on the user admin in the project project1
+- os_user_role:
+    cloud: mycloud
+    user: admin
+    role: admin
+    project: project1
+
+# Revoke the admin role from the user barney in the newyork domain
+- os_user_role:
+    cloud: mycloud
+    state: absent
+    user: barney
+    role: admin
+    domain: newyork

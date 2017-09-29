@@ -1,0 +1,33 @@
+- name: Ensure a host is present but disabled
+  local_action:
+    module: cs_host
+    name: ix-pod01-esx01.example.com
+    cluster: vcenter.example.com/ch-zrh-ix/pod01-cluster01
+    pod: pod01
+    zone: ch-zrh-ix-01
+    hypervisor: VMware
+    allocation_state: disabled
+    host_tags:
+    - perf
+    - gpu
+
+- name: Ensure an existing host is disabled
+  local_action:
+    module: cs_host
+    name: ix-pod01-esx01.example.com
+    zone: ch-zrh-ix-01
+    allocation_state: disabled
+
+- name: Ensure an existing host is disabled
+  local_action:
+    module: cs_host
+    name: ix-pod01-esx01.example.com
+    zone: ch-zrh-ix-01
+    allocation_state: enabled
+
+- name: Ensure a host is absent
+  local_action:
+    module: cs_host
+    name: ix-pod01-esx01.example.com
+    zone: ch-zrh-ix-01
+    state: absent

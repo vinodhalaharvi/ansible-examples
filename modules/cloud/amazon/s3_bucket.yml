@@ -1,0 +1,28 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Create a simple s3 bucket
+- s3_bucket:
+    name: mys3bucket
+
+# Create a simple s3 bucket on Ceph Rados Gateway
+- s3_bucket:
+    name: mys3bucket
+    s3_url: http://your-ceph-rados-gateway-server.xxx
+    ceph: true
+
+# Remove an s3 bucket and any keys it contains
+- s3_bucket:
+    name: mys3bucket
+    state: absent
+    force: yes
+
+# Create a bucket, add a policy from a file, enable requester pays, enable versioning and tag
+- s3_bucket:
+    name: mys3bucket
+    policy: "{{ lookup('file','policy.json') }}"
+    requester_pays: yes
+    versioning: yes
+    tags:
+      example: tag1
+      another: tag2
+

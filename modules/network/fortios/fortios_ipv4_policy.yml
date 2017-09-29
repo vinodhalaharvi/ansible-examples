@@ -1,0 +1,27 @@
+- name: Allow external DNS call
+  fortios_ipv4_policy:
+    host: 192.168.0.254
+    username: admin
+    password: password
+    id: 42
+    src_addr: internal_network
+    dst_addr: all
+    service: dns
+    nat: True
+    state: present
+    policy_action: accept
+    logtraffic: disable
+
+- name: Public Web
+  fortios_ipv4_policy:
+    host: 192.168.0.254
+    username: admin
+    password: password
+    id: 42
+    src_addr: all
+    dst_addr: webservers
+    services:
+      - http
+      - https
+    state: present
+    policy_action: accept

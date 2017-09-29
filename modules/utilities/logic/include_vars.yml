@@ -1,0 +1,48 @@
+- name: Include vars of stuff.yml into the 'stuff' variable (2.2).
+  include_vars:
+    file: stuff.yml
+    name: stuff
+
+- name: Conditionally decide to load in variables into 'plans' when x is 0, otherwise do not. (2.2)
+  include_vars:
+    file: contingency_plan.yml
+    name: plans
+  when: x == 0
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - "default.yml"
+
+- name: bare include (free-form)
+  include_vars: myvars.yml
+
+- name: Include all .json and .jsn files in vars/all and all nested directories (2.3)
+  include_vars:
+    dir: 'vars/all'
+    extensions:
+        - json
+        - jsn
+
+- name: Include all default extension files in vars/all and all nested directories and save the output in test. (2.2)
+  include_vars:
+    dir: 'vars/all'
+    name: test
+
+- name: Include default extension files in vars/services (2.2)
+  include_vars:
+    dir: 'vars/services'
+    depth: 1
+
+- name: Include only files matching bastion.yml (2.2)
+  include_vars:
+    dir: 'vars'
+    files_matching: 'bastion.yml'
+
+- name: Include all .yml files except bastion.yml (2.3)
+  include_vars:
+    dir: 'vars'
+    ignore_files: 'bastion.yml'
+    extensions: ['yml']

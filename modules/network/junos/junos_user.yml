@@ -1,0 +1,29 @@
+- name: create new user account
+  junos_user:
+    name: ansible
+    role: super-user
+    sshkey: "{{ lookup('file', '~/.ssh/ansible.pub') }}"
+    state: present
+
+- name: remove a user account
+  junos_user:
+    name: ansible
+    state: absent
+
+- name: remove all user accounts except ansible
+  junos_user:
+    aggregate:
+    - name: ansible
+    purge: yes
+
+- name: Create list of users
+  junos_user:
+    aggregate:
+      - {name: test_user1, full_name: test_user2, role: operator, state: present}
+      - {name: test_user2, full_name: test_user2, role: read-only, state: present}
+
+- name: Delete list of users
+  junos_user:
+    aggregate:
+      - {name: test_user1, full_name: test_user2, role: operator, state: absent}
+      - {name: test_user2, full_name: test_user2, role: read-only, state: absent}

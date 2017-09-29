@@ -1,0 +1,22 @@
+- name: Make sure nfs client 10.0.0.1 is configured for export. Allow root access
+  infini_export_client:
+    client: 10.0.0.1
+    access_mode: RW
+    no_root_squash: yes
+    export: /data
+    user: admin
+    password: secret
+    system: ibox001
+
+- name: Add multiple clients with RO access. Squash root privileges
+  infini_export_client:
+    client: "{{ item }}"
+    access_mode: RO
+    no_root_squash: no
+    export: /data
+    user: admin
+    password: secret
+    system: ibox001
+  with_items:
+    - 10.0.0.2
+    - 10.0.0.3

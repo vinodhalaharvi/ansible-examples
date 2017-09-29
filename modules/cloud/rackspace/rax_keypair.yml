@@ -1,0 +1,34 @@
+- name: Create a keypair
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: keypair request
+      local_action:
+        module: rax_keypair
+        credentials: ~/.raxpub
+        name: my_keypair
+        region: DFW
+      register: keypair
+    - name: Create local public key
+      local_action:
+        module: copy
+        content: "{{ keypair.keypair.public_key }}"
+        dest: "{{ inventory_dir }}/{{ keypair.keypair.name }}.pub"
+    - name: Create local private key
+      local_action:
+        module: copy
+        content: "{{ keypair.keypair.private_key }}"
+        dest: "{{ inventory_dir }}/{{ keypair.keypair.name }}"
+
+- name: Create a keypair
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: keypair request
+      local_action:
+        module: rax_keypair
+        credentials: ~/.raxpub
+        name: my_keypair
+        public_key: "{{ lookup('file', 'authorized_keys/id_rsa.pub') }}"
+        region: DFW
+      register: keypair

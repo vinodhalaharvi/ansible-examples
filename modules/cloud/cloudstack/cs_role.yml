@@ -1,0 +1,16 @@
+# Ensure an user role is present
+- local_action:
+    module: cs_role
+    name: myrole_user
+
+# Ensure a role having particular ID is named as myrole_user
+- local_action:
+    module: cs_role
+    name: myrole_user
+    id: 04589590-ac63-4ffc-93f5-b698b8ac38b6
+
+# Ensure a role is absent
+- local_action:
+    module: cs_role
+    name: myrole_user
+    state: absent

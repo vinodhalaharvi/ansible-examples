@@ -1,0 +1,11 @@
+- name: Setup server
+  delegate_to: localhost
+  netscaler_server:
+      nsip: 172.18.0.2
+      nitro_user: nsroot
+      nitro_pass: nsroot
+
+      state: present
+
+      name: server-1
+      ipaddress: 192.168.1.1

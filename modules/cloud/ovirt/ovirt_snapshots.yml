@@ -1,0 +1,27 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create snapshot:
+- ovirt_snapshots:
+    vm_name: rhel7
+    description: MySnapshot
+  register: snapshot
+
+# Create snapshot and save memory:
+- ovirt_snapshots:
+    vm_name: rhel7
+    description: SnapWithMem
+    use_memory: true
+  register: snapshot
+
+# Restore snapshot:
+- ovirt_snapshots:
+    state: restore
+    vm_name: rhel7
+    snapshot_id: "{{ snapshot.id }}"
+
+# Remove snapshot:
+- ovirt_snapshots:
+    state: absent
+    vm_name: rhel7
+    snapshot_id: "{{ snapshot.id }}"

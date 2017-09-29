@@ -1,0 +1,13 @@
+- name: Install an MSI file
+  win_msi:
+    path: C:\7z920-x64.msi
+
+- name: Install an MSI, and wait for it to complete before continuing
+  win_msi:
+    path: C:\7z920-x64.msi
+    wait: yes
+
+- name: Uninstall an MSI file
+  win_msi:
+    path: C:\7z920-x64.msi
+    state: absent

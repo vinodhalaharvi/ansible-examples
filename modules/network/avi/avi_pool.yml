@@ -1,0 +1,17 @@
+- name: Create a Pool with two servers and HTTP monitor
+  avi_pool:
+    controller: 10.10.1.20
+    username: avi_user
+    password: avi_password
+    name: testpool1
+    description: testpool1
+    state: present
+    health_monitor_refs:
+        - '/api/healthmonitor?name=System-HTTP'
+    servers:
+        - ip:
+            addr: 10.10.2.20
+            type: V4
+        - ip:
+            addr: 10.10.2.21
+            type: V4

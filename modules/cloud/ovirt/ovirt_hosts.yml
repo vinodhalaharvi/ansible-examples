@@ -1,0 +1,80 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Add host with username/password supporting SR-IOV.
+# Note that override_iptables is false by default in oVirt/RHV:
+- ovirt_hosts:
+    cluster: Default
+    name: myhost
+    address: 10.34.61.145
+    password: secret
+    override_iptables: true
+    kernel_params:
+      - intel_iommu=on
+
+# Add host using public key
+- ovirt_hosts:
+    public_key: true
+    cluster: Default
+    name: myhost2
+    address: 10.34.61.145
+    override_iptables: true
+
+# Deploy hosted engine host
+- ovirt_hosts:
+    cluster: Default
+    name: myhost2
+    password: secret
+    address: 10.34.61.145
+    override_iptables: true
+    hosted_engine: deploy
+
+# Maintenance
+- ovirt_hosts:
+    state: maintenance
+    name: myhost
+
+# Restart host using power management:
+- ovirt_hosts:
+    state: restarted
+    name: myhost
+
+# Upgrade host
+- ovirt_hosts:
+    state: upgraded
+    name: myhost
+
+# discover iscsi targets
+- ovirt_hosts:
+    state: iscsidiscover
+    name: myhost
+    iscsi:
+      username: iscsi_user
+      password: secret
+      address: 10.34.61.145
+      port: 3260
+
+
+# login to iscsi targets
+- ovirt_hosts:
+    state: iscsilogin
+    name: myhost
+    iscsi:
+      username: iscsi_user
+      password: secret
+      address: 10.34.61.145
+      target: "iqn.2015-07.com.mlipchuk2.redhat:444"
+      port: 3260
+
+
+# Reinstall host using public key
+- ovirt_hosts:
+    state: reinstalled
+    name: myhost
+    public_key: true
+
+# Remove host
+- ovirt_hosts:
+    state: absent
+    name: myhost
+    force: True

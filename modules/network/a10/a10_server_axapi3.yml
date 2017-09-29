@@ -1,0 +1,18 @@
+# Create a new server
+- a10_server:
+    host: a10.mydomain.com
+    username: myadmin
+    password: mypassword
+    server: test
+    server_ip: 1.1.1.100
+    validate_certs: false
+    server_status: enable
+    write_config: yes
+    operation: create
+    server_ports:
+      - port-number: 8080
+        protocol: tcp
+        action: enable
+      - port-number: 8443
+        protocol: TCP
+

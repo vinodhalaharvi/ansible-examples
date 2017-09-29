@@ -1,0 +1,20 @@
+# Create instance.
+gcspanner:
+  instance_id: "{{ instance_id }}"
+  configuration: "{{ configuration }}"
+  state: present
+  node_count: 1
+
+# Create database.
+gcspanner:
+  instance_id: "{{ instance_id }}"
+  configuration: "{{ configuration }}"
+  database_name: "{{ database_name }}"
+  state: present
+
+# Delete instance (and all databases)
+gcspanner:
+  instance_id: "{{ instance_id }}"
+  configuration: "{{ configuration }}"
+  state: absent
+  force_instance_delete: yes

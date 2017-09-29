@@ -1,0 +1,34 @@
+
+- name: CloudEngine BGP test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: "Enable BGP"
+    ce_bgp:
+      state: present
+      as_number: 100
+      confed_id_number: 250
+      provider: "{{ cli }}"
+
+  - name: "Disable BGP"
+    ce_bgp:
+      state: absent
+      as_number: 100
+      confed_id_number: 250
+      provider: "{{ cli }}"
+
+  - name: "Create confederation peer AS num"
+    ce_bgp:
+      state: present
+      confed_peer_as_num: 260
+      provider: "{{ cli }}"

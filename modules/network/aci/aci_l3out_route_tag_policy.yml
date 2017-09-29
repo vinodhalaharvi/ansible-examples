@@ -1,0 +1,8 @@
+- aci_l3out_route_tag_policy:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    rtp: '{{ rtp_name }}'
+    tenant: production
+    tag: '{{ tag }}'
+    description: '{{ description }}'

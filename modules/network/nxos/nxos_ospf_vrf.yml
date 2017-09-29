@@ -1,0 +1,10 @@
+- nxos_ospf_vrf:
+    ospf: 1
+    timer_throttle_spf_start: 50
+    timer_throttle_spf_hold: 1000
+    timer_throttle_spf_max: 2000
+    timer_throttle_lsa_start: 60
+    timer_throttle_lsa_hold: 1100
+    timer_throttle_lsa_max: 3000
+    vrf: test
+    state: present

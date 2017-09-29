@@ -1,0 +1,40 @@
+# Note: examples below use the following provider dict to handle
+#       transport and authentication to the node.
+---
+vars:
+  cli:
+    host: "{{ inventory_hostname }}"
+    username: cisco
+    password: cisco
+    authorize: yes
+    auth_pass: cisco
+
+---
+- asa_config:
+    lines:
+      - network-object host 10.80.30.18
+      - network-object host 10.80.30.19
+      - network-object host 10.80.30.20
+    parents: ['object-group network OG-MONITORED-SERVERS']
+    provider: "{{ cli }}"
+
+- asa_config:
+    host: "{{ inventory_hostname }}"
+    lines:
+      - message-length maximum client auto
+      - message-length maximum 512
+    match: line
+    parents: ['policy-map type inspect dns PM-DNS', 'parameters']
+    authorize: yes
+    auth_pass: cisco
+    username: admin
+    password: cisco
+    context: ansible
+
+- asa_config:
+    lines:
+      - ikev1 pre-shared-key MyS3cretVPNK3y
+    parents: tunnel-group 1.1.1.1 ipsec-attributes
+    passwords: yes
+    provider: "{{ cli }}"
+

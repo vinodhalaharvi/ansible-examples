@@ -1,0 +1,9 @@
+- aci_subject_filter_binding:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    tenant: '{{ tenant }}'
+    contract: '{{ contract }}'
+    subject: '{{ subject }}'
+    filter: '{{ filter }}'
+    log: '{{ log }}'

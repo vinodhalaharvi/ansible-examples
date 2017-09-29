@@ -1,0 +1,19 @@
+- hosts: all
+  gather_facts: false
+  vars:
+    mongodb_parameters:
+      #mandatory parameters
+      database: 'local'
+      #optional
+      collection: "startup_log"
+      connection_string: "mongodb://localhost/"
+      extra_connection_parameters: { "ssl" : True , "ssl_certfile": /etc/self_signed_certificate.pem" }
+      #optional query  parameters, we accept any parameter from the normal mongodb query.
+      filter:  { "hostname": "batman" }
+      projection: { "pid": True    , "_id" : False , "hostname" : True }
+      skip: 0
+      limit: 1
+      sort:  [ [ "startTime" , "ASCENDING" ] , [ "age", "DESCENDING" ] ]
+  tasks:
+    - debug: msg="Mongo has already started with the following PID [{{ item.pid }}]"
+      with_mongodb: "{{mongodb_parameters}}"

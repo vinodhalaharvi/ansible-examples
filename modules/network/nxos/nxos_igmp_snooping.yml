@@ -1,0 +1,12 @@
+# ensure igmp snooping params supported in this module are in there default state
+- nxos_igmp_snooping:
+    state: default
+
+# ensure following igmp snooping params are in the desired state
+- nxos_igmp_snooping:
+   group_timeout: never
+   snooping: true
+   link_local_grp_supp: false
+   optimize_mcast_flood: false
+   report_supp: true
+   v3_report_supp: true

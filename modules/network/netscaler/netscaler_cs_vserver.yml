@@ -1,0 +1,20 @@
+# policy_1 must have been already created with the netscaler_cs_policy module
+# lbvserver_1 must have been already created with the netscaler_lb_vserver module
+
+- name: Setup content switching vserver
+  delegate_to: localhost
+  netscaler_cs_vserver:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+
+    state: present
+
+    name: cs_vserver_1
+    ipv46: 192.168.1.1
+    port: 80
+    servicetype: HTTP
+
+    policybindings:
+      - policyname: policy_1
+        targetlbvserver: lbvserver_1

@@ -1,0 +1,8 @@
+- aci_intf_policy_lldp:
+    hostname: '{{ hostname }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    lldp_policy: '{{ lldp_policy }}'
+    description: '{{ description }}'
+    receive_state: '{{ receive_state }}'
+    transmit_state: '{{ transmit_state }}'

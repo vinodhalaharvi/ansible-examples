@@ -1,0 +1,5 @@
+- nxos_snmp_user:
+    user: ntc
+    group: network-operator
+    authentication: md5
+    pwd: test_password

@@ -1,0 +1,21 @@
+- name: create a new user
+  iosxr_user:
+    name: ansible
+    configured_password: test
+    state: present
+- name: remove all users except admin
+  iosxr_user:
+    purge: yes
+- name: set multiple users to group sys-admin
+  iosxr_user:
+    aggregate:
+      - name: netop
+      - name: netend
+    group: sysadmin
+    state: present
+- name: Change Password for User netop
+  iosxr_user:
+    name: netop
+    configured_password: "{{ new_password }}"
+    update_password: always
+    state: present

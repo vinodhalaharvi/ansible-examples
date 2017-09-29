@@ -1,0 +1,20 @@
+- name: Create a route domain
+  bigip_routedomain:
+      id: "1234"
+      password: "secret"
+      server: "lb.mydomain.com"
+      state: "present"
+      user: "admin"
+  delegate_to: localhost
+
+- name: Set VLANs on the route domain
+  bigip_routedomain:
+      id: "1234"
+      password: "secret"
+      server: "lb.mydomain.com"
+      state: "present"
+      user: "admin"
+      vlans:
+          - net1
+          - foo
+  delegate_to: localhost

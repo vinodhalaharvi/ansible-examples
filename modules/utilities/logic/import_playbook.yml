@@ -1,0 +1,17 @@
+- name: include a play after another play
+  hosts: localhost
+  tasks:
+    - debug:
+        msg: "play1"
+
+- import_playbook: otherplays.yml
+
+
+- name: This DOES NOT WORK
+  hosts: all
+  tasks:
+    - debug:
+        msg: task1
+
+    - name: This failes because I'm inside a play already
+      import_playbook: stuff.yml

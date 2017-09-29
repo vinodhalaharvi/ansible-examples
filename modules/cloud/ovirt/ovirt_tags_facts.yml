@@ -1,0 +1,20 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all tags, which names start with C(tag):
+- ovirt_tags_facts:
+    name: tag*
+- debug:
+    var: tags
+
+# Gather facts about all tags, which are assigned to VM C(postgres):
+- ovirt_tags_facts:
+    vm: postgres
+- debug:
+    var: tags
+
+# Gather facts about all tags, which are assigned to host C(west):
+- ovirt_tags_facts:
+    host: west
+- debug:
+    var: tags

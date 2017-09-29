@@ -1,0 +1,31 @@
+- name: NTP test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: "Set NTP Server with parameters"
+    ce_ntp:
+      server: 192.8.2.6
+      vpn_name: js
+      source_int: vlanif4001
+      is_preferred: enable
+      key_id: 32
+      provider: "{{ cli }}"
+
+  - name: "Set NTP Peer with parameters"
+    ce_ntp:
+      peer: 192.8.2.6
+      vpn_name: js
+      source_int: vlanif4001
+      is_preferred: enable
+      key_id: 32
+      provider: "{{ cli }}"

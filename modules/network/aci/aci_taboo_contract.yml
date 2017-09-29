@@ -1,0 +1,7 @@
+- aci_taboo_contract:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    taboo_contract: '{{ taboo_contract }}'
+    description: '{{ descr }}'
+    tenant: '{{ tenant }}'

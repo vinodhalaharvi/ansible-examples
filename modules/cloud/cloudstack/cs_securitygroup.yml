@@ -1,0 +1,11 @@
+# Create a security group
+- local_action:
+    module: cs_securitygroup
+    name: default
+    description: default security group
+
+# Remove a security group
+- local_action:
+    module: cs_securitygroup
+    name: default
+    state: absent

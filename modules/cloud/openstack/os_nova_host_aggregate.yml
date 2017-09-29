@@ -1,0 +1,15 @@
+# Create a host aggregate
+- os_nova_host_aggregate:
+    cloud: mycloud
+    state: present
+    name: db_aggregate
+    hosts:
+      - host1
+      - host2
+    metadata:
+      type: dbcluster
+# Delete an aggregate
+- os_nova_host_aggregate:
+    cloud: mycloud
+    state: absent
+    name: db_aggregate

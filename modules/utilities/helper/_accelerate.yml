@@ -1,0 +1,8 @@
+# To use accelerate mode, simply add "accelerate: true" to your play. The initial
+# key exchange and starting up of the daemon will occur over SSH, but all commands and
+# subsequent actions will be conducted over the raw socket connection using AES encryption
+
+- hosts: devservers
+  accelerate: true
+  tasks:
+      - command: /usr/bin/anything

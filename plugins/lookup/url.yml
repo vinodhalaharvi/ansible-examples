@@ -1,0 +1,4 @@
+- name: url lookup splits lines by default
+  debug: msg="{{item}}"
+  with_url:
+    - 'https://github.com/gremlin.keys'

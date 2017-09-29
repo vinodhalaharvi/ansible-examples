@@ -1,0 +1,148 @@
+---
+# Create a new VM on an ESX server
+# Returns changed = False when the VM already exists
+# Returns changed = True and a adds ansible_facts from the new VM
+# State will set the power status of a guest upon creation. Use powered_on to create and boot.
+# Options ['state', 'vm_extra_config', 'vm_disk', 'vm_nic', 'vm_hardware', 'esxi'] are required together
+# Note: vm_floppy support added in 2.0
+
+- vsphere_guest:
+    vcenter_hostname: vcenter.mydomain.local
+    username: myuser
+    password: mypass
+    guest: newvm001
+    state: powered_on
+    vm_extra_config:
+      vcpu.hotadd: yes
+      mem.hotadd:  yes
+      notes: This is a test VM
+      folder: MyFolder
+    vm_disk:
+      disk1:
+        size_gb: 10
+        type: thin
+        datastore: storage001
+        # VMs can be put into folders. The value given here is either the full path
+        # to the folder (e.g. production/customerA/lamp) or just the last component
+        # of the path (e.g. lamp):
+        folder: production/customerA/lamp
+    vm_nic:
+      nic1:
+        type: vmxnet3
+        network: VM Network
+        network_type: standard
+      nic2:
+        type: vmxnet3
+        network: dvSwitch Network
+        network_type: dvs
+    vm_hardware:
+      memory_mb: 2048
+      num_cpus: 2
+      osid: centos64Guest
+      scsi: paravirtual
+      vm_cdrom:
+        type: "iso"
+        iso_path: "DatastoreName/cd-image.iso"
+      vm_floppy:
+        type: "image"
+        image_path: "DatastoreName/floppy-image.flp"
+    esxi:
+      datacenter: MyDatacenter
+      hostname: esx001.mydomain.local
+
+# Reconfigure the CPU and Memory on the newly created VM
+# Will return the changes made
+
+- vsphere_guest:
+    vcenter_hostname: vcenter.mydomain.local
+    username: myuser
+    password: mypass
+    guest: newvm001
+    state: reconfigured
+    vm_extra_config:
+      vcpu.hotadd: yes
+      mem.hotadd:  yes
+      notes: This is a test VM
+    vm_disk:
+      disk1:
+        size_gb: 10
+        type: thin
+        datastore: storage001
+    vm_nic:
+      nic1:
+        type: vmxnet3
+        network: VM Network
+        network_type: standard
+    vm_hardware:
+      memory_mb: 4096
+      num_cpus: 4
+      osid: centos64Guest
+      scsi: paravirtual
+    esxi:
+      datacenter: MyDatacenter
+      hostname: esx001.mydomain.local
+
+# Deploy a guest from a template
+- vsphere_guest:
+    vcenter_hostname: vcenter.mydomain.local
+    username: myuser
+    password: mypass
+    guest: newvm001
+    from_template: yes
+    template_src: centosTemplate
+    cluster: MainCluster
+    resource_pool: "/Resources"
+    vm_extra_config:
+      folder: MyFolder
+
+# Task to gather facts from a vSphere cluster only if the system is a VMware guest
+
+- vsphere_guest:
+    vcenter_hostname: vcenter.mydomain.local
+    username: myuser
+    password: mypass
+    guest: newvm001
+    vmware_guest_facts: yes
+
+---
+# Typical output of a vsphere_facts run on a guest
+# If vmware tools is not installed, ipadresses with return None
+
+- hw_eth0:
+  - addresstype: "assigned"
+    label: "Network adapter 1"
+    macaddress: "00:22:33:33:44:55"
+    macaddress_dash: "00-22-33-33-44-55"
+    ipaddresses: ['192.0.2.100', '2001:DB8:56ff:feac:4d8a']
+    summary: "VM Network"
+  hw_guest_full_name: "newvm001"
+  hw_guest_id: "rhel6_64Guest"
+  hw_memtotal_mb: 2048
+  hw_name: "centos64Guest"
+  hw_power_status: "POWERED ON"
+  hw_processor_count: 2
+  hw_product_uuid: "ef50bac8-2845-40ff-81d9-675315501dac"
+
+# hw_power_status will be one of the following values:
+#   - POWERED ON
+#   - POWERED OFF
+#   - SUSPENDED
+#   - POWERING ON
+#   - POWERING OFF
+#   - SUSPENDING
+#   - RESETTING
+#   - BLOCKED ON MSG
+#   - REVERTING TO SNAPSHOT
+#   - UNKNOWN
+# as seen in the VMPowerState-Class of PySphere: http://git.io/vlwOq
+
+---
+# Remove a vm from vSphere
+# The VM must be powered_off or you need to use force to force a shutdown
+- vsphere_guest:
+    vcenter_hostname: vcenter.mydomain.local
+    username: myuser
+    password: mypass
+    guest: newvm001
+    state: absent
+    force: yes

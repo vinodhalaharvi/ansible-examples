@@ -1,0 +1,45 @@
+# Create a simple router, not attached to a gateway or subnets.
+- os_router:
+    cloud: mycloud
+    state: present
+    name: simple_router
+
+# Create a simple router, not attached to a gateway or subnets for a given project.
+- os_router:
+    cloud: mycloud
+    state: present
+    name: simple_router
+    project: myproj
+
+# Creates a router attached to ext_network1 on an IPv4 subnet and one
+# internal subnet interface.
+- os_router:
+    cloud: mycloud
+    state: present
+    name: router1
+    network: ext_network1
+    external_fixed_ips:
+      - subnet: public-subnet
+        ip: 172.24.4.2
+    interfaces:
+      - private-subnet
+
+# Update existing router1 external gateway to include the IPv6 subnet.
+# Note that since 'interfaces' is not provided, any existing internal
+# interfaces on an existing router will be left intact.
+- os_router:
+    cloud: mycloud
+    state: present
+    name: router1
+    network: ext_network1
+    external_fixed_ips:
+      - subnet: public-subnet
+        ip: 172.24.4.2
+      - subnet: ipv6-public-subnet
+        ip: 2001:db8::3
+
+# Delete router1
+- os_router:
+    cloud: mycloud
+    state: absent
+    name: router1

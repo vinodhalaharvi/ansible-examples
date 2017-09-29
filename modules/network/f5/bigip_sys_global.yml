@@ -1,0 +1,8 @@
+- name: Disable the setup utility
+  bigip_sys_global:
+      gui_setup: "disabled"
+      password: "secret"
+      server: "lb.mydomain.com"
+      user: "admin"
+      state: "present"
+  delegate_to: localhost

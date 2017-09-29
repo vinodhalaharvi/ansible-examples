@@ -1,0 +1,31 @@
+# Create a project
+- local_action:
+    module: cs_project
+    name: web
+    tags:
+      - { key: admin, value: john }
+      - { key: foo,   value: bar }
+
+# Rename a project
+- local_action:
+    module: cs_project
+    name: web
+    display_text: my web project
+
+# Suspend an existing project
+- local_action:
+    module: cs_project
+    name: web
+    state: suspended
+
+# Activate an existing project
+- local_action:
+    module: cs_project
+    name: web
+    state: active
+
+# Remove a project
+- local_action:
+    module: cs_project
+    name: web
+    state: absent

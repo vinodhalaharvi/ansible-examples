@@ -1,0 +1,18 @@
+- name: shell execution
+  local_action:
+    module: vmware_vm_shell
+    hostname: myVSphere
+    username: myUsername
+    password: mySecret
+    datacenter: myDatacenter
+    folder: /vm
+    vm_id: NameOfVM
+    vm_username: root
+    vm_password: superSecret
+    vm_shell: /bin/echo
+    vm_shell_args: " $var >> myFile "
+    vm_shell_env:
+      - "PATH=/bin"
+      - "VAR=test"
+    vm_shell_cwd: "/tmp"
+

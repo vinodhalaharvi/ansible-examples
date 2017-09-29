@@ -1,0 +1,12 @@
+- name: Set an environment variable for all users
+  win_environment:
+    state: present
+    name: TestVariable
+    value: Test value
+    level: machine
+
+- name: Remove an environment variable for the current user
+  win_environment:
+    state: absent
+    name: TestVariable
+    level: user

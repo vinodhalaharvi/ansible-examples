@@ -1,0 +1,10 @@
+# Obtain information about a registry key using short form
+- win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion
+  register: current_version
+
+# Obtain information about a registry key property
+- win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion
+    name: CommonFilesDir
+  register: common_files_dir

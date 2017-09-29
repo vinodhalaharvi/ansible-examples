@@ -1,0 +1,18 @@
+- name: Download earthrise.jpg to specified path
+  win_get_url:
+    url: http://www.example.com/earthrise.jpg
+    dest: C:\Users\RandomUser\earthrise.jpg
+
+- name: Download earthrise.jpg to specified path only if modified
+  win_get_url:
+    url: http://www.example.com/earthrise.jpg
+    dest: C:\Users\RandomUser\earthrise.jpg
+    force: no
+
+- name: Download earthrise.jpg to specified path through a proxy server.
+  win_get_url:
+    url: http://www.example.com/earthrise.jpg
+    dest: C:\Users\RandomUser\earthrise.jpg
+    proxy_url: http://10.0.0.1:8080
+    proxy_username: username
+    proxy_password: password

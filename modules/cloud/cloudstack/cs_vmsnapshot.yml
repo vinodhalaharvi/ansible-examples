@@ -1,0 +1,20 @@
+- name: Create a VM snapshot of disk and memory before an upgrade
+  local_action:
+    module: cs_vmsnapshot
+    name: Snapshot before upgrade
+    vm: web-01
+    snapshot_memory: yes
+
+- name: Revert a VM to a snapshot after a failed upgrade
+  local_action:
+    module: cs_vmsnapshot
+    name: Snapshot before upgrade
+    vm: web-01
+    state: revert
+
+- name: Remove a VM snapshot after successful upgrade
+  local_action:
+    module: cs_vmsnapshot
+    name: Snapshot before upgrade
+    vm: web-01
+    state: absent

@@ -1,0 +1,14 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create datacenter
+- ovirt_datacenter:
+    name: mydatacenter
+    local: True
+    compatibility_version: 4.0
+    quota_mode: enabled
+
+# Remove datacenter
+- ovirt_datacenter:
+    state: absent
+    name: mydatacenter

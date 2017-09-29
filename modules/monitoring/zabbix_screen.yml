@@ -1,0 +1,60 @@
+# Create/update a screen.
+- name: Create a new screen or update an existing screen's items
+  local_action:
+    module: zabbix_screen
+    server_url: http://monitor.example.com
+    login_user: username
+    login_password: password
+    screens:
+      - screen_name: ExampleScreen1
+        host_group: Example group1
+        state: present
+        graph_names:
+          - Example graph1
+          - Example graph2
+        graph_width: 200
+        graph_height: 100
+
+# Create/update multi-screen
+- name: Create two of new screens or update the existing screens' items
+  local_action:
+    module: zabbix_screen
+    server_url: http://monitor.example.com
+    login_user: username
+    login_password: password
+    screens:
+      - screen_name: ExampleScreen1
+        host_group: Example group1
+        state: present
+        graph_names:
+          - Example graph1
+          - Example graph2
+        graph_width: 200
+        graph_height: 100
+      - screen_name: ExampleScreen2
+        host_group: Example group2
+        state: present
+        graph_names:
+          - Example graph1
+          - Example graph2
+        graph_width: 200
+        graph_height: 100
+
+# Limit the Zabbix screen creations to one host since Zabbix can return an error when doing concurrent updates
+- name: Create a new screen or update an existing screen's items
+  local_action:
+    module: zabbix_screen
+    server_url: http://monitor.example.com
+    login_user: username
+    login_password: password
+    state: present
+    screens:
+      - screen_name: ExampleScreen
+        host_group: Example group
+        state: present
+        graph_names:
+          - Example graph1
+          - Example graph2
+        graph_width: 200
+        graph_height: 100
+  when: inventory_hostname==groups['group_name'][0]

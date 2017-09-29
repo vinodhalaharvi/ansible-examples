@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  connection: local
+  strategy: debug
+  tasks:
+    - name: Reserve network into Infinity IPAM
+      infinity:
+        server_ip: "80.75.107.12"
+        username: "username"
+        password: "password"
+        action: "reserve_network"
+        network_name: "reserve_new_ansible_network"
+        network_family: "4"
+        network_type: 'lan'
+        network_id: "1201"
+        network_size: "/28"
+      register: infinity
+

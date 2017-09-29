@@ -1,0 +1,63 @@
+- name: Add Bridge Domain
+  aci_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: false
+    state: present
+    tenant: prod
+    bd: web_servers
+    vrf: prod_vrf
+
+- name: Add an FC Bridge Domain
+  aci_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: false
+    state: present
+    tenant: prod
+    bd: storage
+    bd_type: fc
+    vrf: fc_vrf
+    enable_routing: no
+
+- name: Modify a Bridge Domain
+  aci_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: true
+    state: present
+    tenant: prod
+    bd: web_servers
+    arp_flooding: yes
+    l2_unknown_unicast: flood
+
+- name: Query All Bridge Domains
+  aci_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: true
+    state: query
+
+- name: Query a Bridge Domain
+  aci_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: true
+    state: query
+    tenant: prod
+    bd: web_servers
+
+- name: Delete a Bridge Domain
+  aci_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: true
+    state: absent
+    tenant: prod
+    bd: web_servers

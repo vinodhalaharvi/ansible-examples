@@ -1,0 +1,30 @@
+# Ensure dns record is present
+- ipa_dnsrecord:
+    ipa_host: spider.example.com
+    ipa_pass: Passw0rd!
+    state: present
+    zone_name: example.com
+    record_name: vm-001
+    record_type: 'AAAA'
+    record_value: '::1'
+
+# Ensure a PTR record is present
+- ipa_dnsrecord:
+    ipa_host: spider.example.com
+    ipa_pass: Passw0rd!
+    state: present
+    zone_name: 2.168.192.in-addr.arpa
+    record_name: 5
+    record_type: 'PTR'
+    record_value: 'internal.ipa.example.com'
+
+# Ensure that dns record is removed
+- ipa_dnsrecord:
+    name: host01
+    zone_name: example.com
+    record_type: 'AAAA'
+    record_value: '::1'
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret
+    state: absent

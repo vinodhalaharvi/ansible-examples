@@ -1,0 +1,36 @@
+# Ensure group is present
+- ipa_group:
+    name: oinstall
+    gidnumber: 54321
+    state: present
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret
+
+# Ensure that groups sysops and appops are assigned to ops but no other group
+- ipa_group:
+    name: ops
+    group:
+    - sysops
+    - appops
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret
+
+# Ensure that users linus and larry are assign to the group, but no other user
+- ipa_group:
+    name: sysops
+    user:
+    - linus
+    - larry
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret
+
+# Ensure group is absent
+- ipa_group:
+    name: sysops
+    state: absent
+    ipa_host: ipa.example.com
+    ipa_user: admin
+    ipa_pass: topsecret

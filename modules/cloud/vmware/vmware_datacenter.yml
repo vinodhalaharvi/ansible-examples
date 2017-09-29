@@ -1,0 +1,9 @@
+# Example vmware_datacenter command from Ansible Playbooks
+- name: Create Datacenter
+  local_action:
+    module: vmware_datacenter
+    hostname: "{{ ansible_ssh_host }}"
+    username: root
+    password: vmware
+    datacenter_name: "datacenter"
+    state: present

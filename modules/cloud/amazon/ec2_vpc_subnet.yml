@@ -1,0 +1,17 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+- name: Create subnet for database servers
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: vpc-123456
+    cidr: 10.0.1.16/28
+    resource_tags:
+      Name: Database Subnet
+  register: database_subnet
+
+- name: Remove subnet for database servers
+  ec2_vpc_subnet:
+    state: absent
+    vpc_id: vpc-123456
+    cidr: 10.0.1.16/28
+

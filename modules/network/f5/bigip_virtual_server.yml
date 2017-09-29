@@ -1,0 +1,40 @@
+- name: Add virtual server
+  bigip_virtual_server:
+      server: lb.mydomain.net
+      user: admin
+      password: secret
+      state: present
+      partition: MyPartition
+      name: myvirtualserver
+      destination: "{{ ansible_default_ipv4['address'] }}"
+      port: 443
+      pool: "{{ mypool }}"
+      snat: Automap
+      description: Test Virtual Server
+      all_profiles:
+          - http
+          - clientssl
+      enabled_vlans:
+          - /Common/vlan2
+  delegate_to: localhost
+
+- name: Modify Port of the Virtual Server
+  bigip_virtual_server:
+      server: lb.mydomain.net
+      user: admin
+      password: secret
+      state: present
+      partition: MyPartition
+      name: myvirtualserver
+      port: 8080
+  delegate_to: localhost
+
+- name: Delete virtual server
+  bigip_virtual_server:
+      server: lb.mydomain.net
+      user: admin
+      password: secret
+      state: absent
+      partition: MyPartition
+      name: myvirtualserver
+  delegate_to: localhost

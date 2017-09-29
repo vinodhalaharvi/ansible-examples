@@ -1,0 +1,95 @@
+- name: Power down server
+  imc_rest:
+    hostname: '{{ imc_hostname }}'
+    username: '{{ imc_username }}'
+    password: '{{ imc_password }}'
+    validate_certs: no
+    content: |
+      <configConfMo><inConfig>
+        <computeRackUnit dn="sys/rack-unit-1" adminPower="down"/>
+      </inConfig></configConfMo>
+  delegate_to: localhost
+
+- name: Configure IMC using multiple XML fragments
+  imc_rest:
+    hostname: '{{ imc_hostname }}'
+    username: '{{ imc_username }}'
+    password: '{{ imc_password }}'
+    validate_certs: no
+    timeout: 120
+    content: |
+      <!-- Configure Serial-on-LAN -->
+      <configConfMo><inConfig>
+        <solIf dn="sys/rack-unit-1/sol-if" adminState="enable" speed=="115200" comport="com0"/>
+      </inConfig></configConfMo>
+
+      <!-- Configure Console Redirection -->
+      <configConfMo><inConfig>
+        <biosVfConsoleRedirection dn="sys/rack-unit-1/bios/bios-settings/Console-redirection"
+          vpBaudRate="115200"
+          vpConsoleRedirection="com-0"
+          vpFlowControl="none"
+          vpTerminalType="vt100"
+          vpPuttyKeyPad="LINUX"
+          vpRedirectionAfterPOST="Always Enable"/>
+      </inConfig></configConfMo>
+  delegate_to: localhost
+
+- name: Enable PXE boot and power-cycle server
+  imc_rest:
+    hostname: '{{ imc_hostname }}'
+    username: '{{ imc_username }}'
+    password: '{{ imc_password }}'
+    validate_certs: no
+    content: |
+      <!-- Configure PXE boot -->
+      <configConfMo><inConfig>
+        <lsbootLan dn="sys/rack-unit-1/boot-policy/lan-read-only" access="read-only" order="1" prot="pxe" type="lan"/>
+      </inConfig></configConfMo>
+
+      <!-- Power cycle server -->
+      <configConfMo><inConfig>
+        <computeRackUnit dn="sys/rack-unit-1" adminPower="cycle-immediate"/>
+      </inConfig></configConfMo>
+  delegate_to: localhost
+
+- name: Reconfigure IMC to boot from storage
+  imc_rest:
+    hostname: '{{ imc_host }}'
+    username: '{{ imc_username }}'
+    password: '{{ imc_password }}'
+    validate_certs: no
+    content: |
+      <configConfMo><inConfig>
+        <lsbootStorage dn="sys/rack-unit-1/boot-policy/storage-read-write" access="read-write" order="1" type="storage"/>
+      </inConfig></configConfMo>
+  delegate_to: localhost
+
+- name: Add customer description to server
+  imc_rest:
+    hostname: '{{ imc_host }}'
+    username: '{{ imc_username }}'
+    password: '{{ imc_password }}'
+    validate_certs: no
+    content: |
+        <configConfMo><inConfig>
+          <computeRackUnit dn="sys/rack-unit-1" usrLbl="Customer Lab - POD{{ pod_id }} - {{ inventory_hostname_short }}"/>
+        </inConfig></configConfMo>
+    delegate_to: localhost
+
+- name: Disable HTTP and increase session timeout to max value 10800 secs
+  imc_rest:
+    hostname: '{{ imc_host }}'
+    username: '{{ imc_username }}'
+    password: '{{ imc_password }}'
+    validate_certs: no
+    timeout: 120
+    content: |
+        <configConfMo><inConfig>
+          <commHttp dn="sys/svc-ext/http-svc" adminState="disabled"/>
+        </inConfig></configConfMo>
+
+        <configConfMo><inConfig>
+          <commHttps dn="sys/svc-ext/https-svc" adminState="enabled" sessionTimeout="10800"/>
+        </inConfig></configConfMo>
+    delegate_to: localhost

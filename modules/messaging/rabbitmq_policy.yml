@@ -1,0 +1,14 @@
+- name: ensure the default vhost contains the HA policy via a dict
+  rabbitmq_policy:
+    name: HA
+    pattern: .*
+  args:
+    tags:
+      ha-mode: all
+
+- name: ensure the default vhost contains the HA policy
+  rabbitmq_policy:
+    name: HA
+    pattern: .*
+    tags:
+      ha-mode: all

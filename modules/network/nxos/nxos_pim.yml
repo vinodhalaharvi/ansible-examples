@@ -1,0 +1,2 @@
+- nxos_pim:
+    ssm_range: "232.0.0.0/8"

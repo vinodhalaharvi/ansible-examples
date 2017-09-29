@@ -1,0 +1,10 @@
+Tasks : The following are examples of using the module cnos_facts. These are written in the main.yml file of the tasks directory.
+---
+- name: Test Sys Info
+  cnos_facts:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/cnos_facts_{{ inventory_hostname }}_output.txt"

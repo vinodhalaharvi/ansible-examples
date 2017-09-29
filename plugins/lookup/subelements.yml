@@ -1,0 +1,52 @@
+- name: show var structure as it is needed for example to make sense
+  hosts: all
+  vars:
+    users:
+      - name: alice
+        authorized:
+          - /tmp/alice/onekey.pub
+          - /tmp/alice/twokey.pub
+        mysql:
+            password: mysql-password
+            hosts:
+              - "%"
+              - "127.0.0.1"
+              - "::1"
+              - "localhost"
+            privs:
+              - "*.*:SELECT"
+              - "DB1.*:ALL"
+        groups:
+          - wheel
+      - name: bob
+        authorized:
+          - /tmp/bob/id_rsa.pub
+        mysql:
+            password: other-mysql-password
+            hosts:
+              - "db1"
+            privs:
+              - "*.*:SELECT"
+              - "DB2.*:ALL"
+  tasks:
+    - name: Set authorized ssh key, extracting just that data from 'users'
+      authorized_key:
+        user: "{{ item.0.name }}"
+        key: "{{ lookup('file', item.1) }}"
+      with_subelements:
+         - "{{ users }}"
+         - authorized
+
+    - name: Setup MySQL users, given the mysql hosts and privs subkey lists
+      mysql_user:
+        name: "{{ item.0.name }}"
+        password: "{{ item.0.mysql.password }}"
+        host: "{{ item.1 }}"
+        priv: "{{ item.0.mysql.privs | join('/') }}"
+      with_subelements:
+        - "{{ users }}"
+        - mysql.hosts
+
+    - name: list groups for user that have them, dont error if they don't
+      debug: var=item
+      with_list: "{{lookup('subelements', users, 'groups', 'skip_missing=True')}}"

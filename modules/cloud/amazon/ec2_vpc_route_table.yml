@@ -1,0 +1,33 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Basic creation example:
+- name: Set up public subnet route table
+  ec2_vpc_route_table:
+    vpc_id: vpc-1245678
+    region: us-west-1
+    tags:
+      Name: Public
+    subnets:
+      - "{{ jumpbox_subnet.subnet.id }}"
+      - "{{ frontend_subnet.subnet.id }}"
+      - "{{ vpn_subnet.subnet_id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ igw.gateway_id }}"
+  register: public_route_table
+
+- name: Set up NAT-protected route table
+  ec2_vpc_route_table:
+    vpc_id: vpc-1245678
+    region: us-west-1
+    tags:
+      Name: Internal
+    subnets:
+      - "{{ application_subnet.subnet.id }}"
+      - 'Database Subnet'
+      - '10.0.0.0/8'
+    routes:
+      - dest: 0.0.0.0/0
+        instance_id: "{{ nat.instance_id }}"
+  register: nat_route_table
+

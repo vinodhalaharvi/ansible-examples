@@ -1,0 +1,28 @@
+- name: Enable LLDP on eth1
+  net_lldp_interface:
+    state: present
+
+- name: Enable LLDP on specific interfaces
+  net_lldp_interface:
+    interfaces:
+      - eth1
+      - eth2
+    state: present
+
+- name: Disable LLDP globally
+  net_lldp_interface:
+    state: disabled
+
+- name: Create aggregate of LLDP interface configurations
+  vyos_lldp_interface:
+    aggregate:
+    - name: eth1
+    - name: eth2
+    state: present
+
+- name: Delete aggregate of LLDP interface configurations
+  vyos_lldp_interface:
+    aggregate:
+    - name: eth1
+    - name: eth2
+    state: absent

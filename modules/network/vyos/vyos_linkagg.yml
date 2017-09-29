@@ -1,0 +1,24 @@
+- name: configure link aggregation group
+  vyos_linkagg:
+    name: bond0
+    members:
+      - eth0
+      - eth1
+
+- name: remove configuration
+  vyos_linkagg:
+    name: bond0
+    state: absent
+
+- name: Create aggregate of linkagg definitions
+  vyos_linkagg:
+    aggregate:
+        - { name: bond0, members: [eth1] }
+        - { name: bond1, members: [eth2] }
+
+- name: Remove aggregate of linkagg definitions
+  vyos_linkagg:
+    aggregate:
+      - name: bond0
+      - name: bond1
+    state: absent

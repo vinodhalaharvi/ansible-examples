@@ -1,0 +1,15 @@
+- name: Enable firewall for Domain, Public and Private profiles
+  win_firewall:
+    state: enabled
+    profiles:
+    - Domain
+    - Private
+    - Public
+  tags: enable_firewall
+
+- name: Disable Domain firewall
+  win_firewall:
+    state: disabled
+    profiles:
+    - Domain
+  tags: disable_firewall

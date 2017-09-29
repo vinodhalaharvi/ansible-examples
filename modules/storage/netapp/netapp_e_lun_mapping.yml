@@ -1,0 +1,12 @@
+---
+    - name: Lun Mapping Example
+      netapp_e_lun_mapping:
+        state: present
+        ssid: 1
+        lun: 12
+        target: Wilson
+        volume_name: Colby1
+        target_type: group
+        api_url: "{{ netapp_api_url }}"
+        api_username: "{{ netapp_api_username }}"
+        api_password: "{{ netapp_api_password }}"

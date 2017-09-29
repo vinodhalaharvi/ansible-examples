@@ -1,0 +1,8 @@
+- name: Magic 8 ball for MUDs
+  debug:
+    msg: "{{ item }}"
+  with_random_choice:
+     - "go through the door"
+     - "drink from the goblet"
+     - "press the red button"
+     - "do nothing"

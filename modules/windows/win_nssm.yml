@@ -1,0 +1,79 @@
+# Install and start the foo service
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+
+# Install and start the foo service with a key-value pair argument
+# This will yield the following command: C:\windows\foo.exe bar "true"
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    app_parameters:
+      bar: true
+
+# Install and start the foo service with a key-value pair argument, where the argument needs to start with a dash
+# This will yield the following command: C:\windows\\foo.exe -bar "true"
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    app_parameters:
+      "-bar": true
+
+# Install and start the foo service with a single parameter
+# This will yield the following command: C:\windows\\foo.exe bar
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    app_parameters:
+      _: bar
+
+# Install and start the foo service with a mix of single params, and key value pairs
+# This will yield the following command: C:\windows\\foo.exe bar -file output.bat
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    app_parameters:
+      _: bar
+      "-file": "output.bat"
+
+# Use the single line parameters option to specify an arbitrary string of parameters
+# for the service executable
+- name: Make sure the Consul service runs
+  win_nssm:
+    name: consul
+    application: C:\consul\consul.exe
+    app_parameters_free_form: agent -config-dir=C:\consul\config
+    stdout_file: C:\consul\log.txt
+    stderr_file: C:\consul\error.txt
+
+# Install and start the foo service, redirecting stdout and stderr to the same file
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    stdout_file: C:\windows\foo.log
+    stderr_file: C:\windows\foo.log
+
+# Install and start the foo service, but wait for dependencies tcpip and adf
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    dependencies: 'adf,tcpip'
+
+# Install and start the foo service with dedicated user
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    user: foouser
+    password: secret
+
+# Install the foo service but do not start it automatically
+- win_nssm:
+    name: foo
+    application: C:\windows\foo.exe
+    state: present
+    start_mode: manual
+
+# Remove the foo service
+- win_nssm:
+    name: foo
+    state: absent

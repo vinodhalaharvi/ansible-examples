@@ -1,0 +1,127 @@
+# Complete example to create and accept a local peering connection.
+- name: Create local account VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    vpc_id: vpc-12345678
+    peer_vpc_id: vpc-87654321
+    state: present
+    tags:
+      Name: Peering connection for VPC 21 to VPC 22
+      CostCode: CC1234
+      Project: phoenix
+  register: vpc_peer
+
+- name: Accept local VPC peering request
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    peering_id: "{{ vpc_peer.peering_id }}"
+    state: accept
+  register: action_peer
+
+# Complete example to delete a local peering connection.
+- name: Create local account VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    vpc_id: vpc-12345678
+    peer_vpc_id: vpc-87654321
+    state: present
+    tags:
+      Name: Peering connection for VPC 21 to VPC 22
+      CostCode: CC1234
+      Project: phoenix
+  register: vpc_peer
+
+- name: delete a local VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    peering_id: "{{ vpc_peer.peering_id }}"
+    state: absent
+  register: vpc_peer
+
+  # Complete example to create and accept a cross account peering connection.
+- name: Create cross account VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    vpc_id: vpc-12345678
+    peer_vpc_id: vpc-12345678
+    peer_owner_id: 123456789102
+    state: present
+    tags:
+      Name: Peering connection for VPC 21 to VPC 22
+      CostCode: CC1234
+      Project: phoenix
+  register: vpc_peer
+
+- name: Accept peering connection from remote account
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    peering_id: "{{ vpc_peer.peering_id }}"
+    profile: bot03_profile_for_cross_account
+    state: accept
+  register: vpc_peer
+
+# Complete example to create and reject a local peering connection.
+- name: Create local account VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    vpc_id: vpc-12345678
+    peer_vpc_id: vpc-87654321
+    state: present
+    tags:
+      Name: Peering connection for VPC 21 to VPC 22
+      CostCode: CC1234
+      Project: phoenix
+  register: vpc_peer
+
+- name: Reject a local VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    peering_id: "{{ vpc_peer.peering_id }}"
+    state: reject
+
+# Complete example to create and accept a cross account peering connection.
+- name: Create cross account VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    vpc_id: vpc-12345678
+    peer_vpc_id: vpc-12345678
+    peer_owner_id: 123456789102
+    state: present
+    tags:
+      Name: Peering connection for VPC 21 to VPC 22
+      CostCode: CC1234
+      Project: phoenix
+  register: vpc_peer
+
+- name: Accept a cross account VPC peering connection request
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    peering_id: "{{ vpc_peer.peering_id }}"
+    profile: bot03_profile_for_cross_account
+    state: accept
+    tags:
+      Name: Peering connection for VPC 21 to VPC 22
+      CostCode: CC1234
+      Project: phoenix
+
+# Complete example to create and reject a cross account peering connection.
+- name: Create cross account VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    vpc_id: vpc-12345678
+    peer_vpc_id: vpc-12345678
+    peer_owner_id: 123456789102
+    state: present
+    tags:
+      Name: Peering connection for VPC 21 to VPC 22
+      CostCode: CC1234
+      Project: phoenix
+  register: vpc_peer
+
+- name: Reject a cross account VPC peering Connection
+  ec2_vpc_peer:
+    region: ap-southeast-2
+    peering_id: "{{ vpc_peer.peering_id }}"
+    profile: bot03_profile_for_cross_account
+    state: reject
+

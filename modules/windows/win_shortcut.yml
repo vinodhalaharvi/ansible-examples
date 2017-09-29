@@ -1,0 +1,33 @@
+- name: Create an application shortcut on the desktop
+  win_shortcut:
+    src: C:\Program Files\Mozilla Firefox\Firefox.exe
+    dest: C:\Users\Public\Desktop\Mozilla Firefox.lnk
+    icon: C:\Program Files\Mozilla Firefox\Firefox.exe,0
+
+- name: Create the same shortcut using environment variables
+  win_shortcut:
+    description: The Mozilla Firefox web browser
+    src: '%ProgramFiles%\Mozilla Firefox\Firefox.exe'
+    dest: '%Public%\Desktop\Mozilla Firefox.lnk'
+    icon: '%ProgramFiles\Mozilla Firefox\Firefox.exe,0'
+    directory: '%ProgramFiles%\Mozilla Firefox'
+    hotkey: Ctrl+Alt+F
+
+- name: Create an application shortcut for an executable in PATH to your desktop
+  win_shortcut:
+    src: cmd.exe
+    dest: Desktop\Command prompt.lnk
+
+- name: Create an application shortcut for the Ansible website
+  win_shortcut:
+    src: '%ProgramFiles%\Google\Chrome\Application\chrome.exe'
+    dest: '%UserProfile%\Desktop\Ansible website.lnk'
+    args: --new-window https://ansible.com/
+    directory: '%ProgramFiles%\Google\Chrome\Application'
+    icon: '%ProgramFiles%\Google\Chrome\Application\chrome.exe,0'
+    hotkey: Ctrl+Alt+A
+
+- name: Create a URL shortcut for the Ansible website
+  win_shortcut:
+    src: https://ansible.com/
+    dest: '%Public%\Desktop\Ansible website.url'

@@ -1,0 +1,22 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Gather facts about all ec2 instances
+- ec2_remote_facts:
+
+# Gather facts about all running ec2 instances with a tag of Name:Example
+- ec2_remote_facts:
+    filters:
+      instance-state-name: running
+      "tag:Name": Example
+
+# Gather facts about instance i-123456
+- ec2_remote_facts:
+    filters:
+      instance-id: i-123456
+
+# Gather facts about all instances in vpc-123456 that are t2.small type
+- ec2_remote_facts:
+    filters:
+      vpc-id: vpc-123456
+      instance-type: t2.small
+

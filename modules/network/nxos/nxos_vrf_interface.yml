@@ -1,0 +1,11 @@
+- name: Ensure vrf ntc exists on Eth1/1
+  nxos_vrf_interface:
+    vrf: ntc
+    interface: Ethernet1/1
+    state: present
+
+- name: Ensure ntc VRF does not exist on Eth1/1
+  nxos_vrf_interface:
+    vrf: ntc
+    interface: Ethernet1/1
+    state: absent

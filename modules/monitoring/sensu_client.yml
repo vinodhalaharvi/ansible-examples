@@ -1,0 +1,42 @@
+# Minimum possible configuration
+- name: Configure Sensu client
+  sensu_client:
+    subscriptions:
+      - default
+
+# With customization
+- name: Configure Sensu client
+  sensu_client:
+    name: "{{ ansible_fqdn }}"
+    address: "{{ ansible_default_ipv4['address'] }}"
+    subscriptions:
+      - default
+      - webserver
+    redact:
+      - password
+    socket:
+      bind: 127.0.0.1
+      port: 3030
+    keepalive:
+      thresholds:
+        warning: 180
+        critical: 300
+      handlers:
+        - email
+      custom:
+        - broadcast: irc
+      occurrences: 3
+  register: client
+  notify:
+    - Restart sensu-client
+
+- name: Secure Sensu client configuration file
+  file:
+    path: "{{ client['file'] }}"
+    owner: "sensu"
+    group: "sensu"
+    mode: "0600"
+
+- name: Delete the Sensu client configuration
+  sensu_client:
+    state: "absent"

@@ -1,0 +1,56 @@
+
+- name: Add Logical Device Maps information in a Blueprint
+  aos_blueprint_param:
+    session: "{{ aos_session }}"
+    blueprint: "my-blueprint-l2"
+    name: "logical_device_maps"
+    value:
+      spine_1: CumulusVX-Spine-Switch
+      spine_2: CumulusVX-Spine-Switch
+      leaf_1: CumulusVX-Leaf-Switch
+      leaf_2: CumulusVX-Leaf-Switch
+      leaf_3: CumulusVX-Leaf-Switch
+    state: present
+
+- name: Access Logical Device Maps information from a Blueprint
+  aos_blueprint_param:
+    session: "{{ aos_session }}"
+    blueprint: "my-blueprint-l2"
+    name: "logical_device_maps"
+    state: present
+
+- name: Reset Logical Device Maps information in a Blueprint
+  aos_blueprint_param:
+    session: "{{ aos_session }}"
+    blueprint: "my-blueprint-l2"
+    name: "logical_device_maps"
+    state: absent
+
+- name: Get list of all supported Params for a blueprint
+  aos_blueprint_param:
+    session: "{{ aos_session }}"
+    blueprint: "my-blueprint-l2"
+    get_param_list: yes
+  register: params_list
+- debug: var=params_list
+
+- name: Add Resource Pools information in a Blueprint, by providing a param_map
+  aos_blueprint_param:
+    session: "{{ aos_session }}"
+    blueprint: "my-blueprint-l2"
+    name: "resource_pools"
+    value:
+        leaf_loopback_ips: ['Switches-IpAddrs']
+        spine_loopback_ips: ['Switches-IpAddrs']
+        spine_leaf_link_ips: ['Switches-IpAddrs']
+        spine_asns: ['Private-ASN-pool']
+        leaf_asns: ['Private-ASN-pool']
+        virtual_network_svi_subnets: ['Servers-IpAddrs']
+    param_map:
+        leaf_loopback_ips: IpPools
+        spine_loopback_ips: IpPools
+        spine_leaf_link_ips: IpPools
+        spine_asns: AsnPools
+        leaf_asns: AsnPools
+        virtual_network_svi_subnets: IpPools
+    state: present

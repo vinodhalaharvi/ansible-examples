@@ -1,0 +1,22 @@
+- name: Create DNS Records
+  hosts: all
+  gather_facts: False
+  tasks:
+    - name: Create A record
+      local_action:
+        module: rax_dns_record
+        credentials: ~/.raxpub
+        domain: example.org
+        name: www.example.org
+        data: "{{ rax_accessipv4 }}"
+        type: A
+      register: a_record
+
+    - name: Create PTR record
+      local_action:
+        module: rax_dns_record
+        credentials: ~/.raxpub
+        server: "{{ rax_id }}"
+        name: "{{ inventory_hostname }}"
+        region: DFW
+      register: ptr_record

@@ -1,0 +1,39 @@
+- name: Add a new EPR policy
+  aci_epr_policy:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    tenant: production
+    epr_policy: EPRPol1
+    bounce_age: 630
+    hold_interval: 300
+    local_ep_interval: 900
+    remote_ep_interval: 300
+    move_frequency: 256
+    description: test
+    state: present
+
+- name: Remove an EPR policy
+  aci_epr_policy:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    tenant: production
+    epr_policy: EPRPol1
+    state: absent
+
+- name: Query an EPR policy
+  aci_epr_policy:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    tenant: production
+    epr_policy: EPRPol1
+    state: query
+
+- name: Query all EPR policies
+  aci_epr_policy:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    state: query

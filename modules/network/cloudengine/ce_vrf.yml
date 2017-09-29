@@ -1,0 +1,25 @@
+- name: vrf module test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: Config a vpn install named vpna, description is test
+    ce_vrf:
+      vrf: vpna
+      description: test
+      state: present
+      provider: "{{ cli }}"
+  - name: Delete a vpn install named vpna
+    ce_vrf:
+      vrf: vpna
+      state: absent
+      provider: "{{ cli }}"

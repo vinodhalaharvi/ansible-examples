@@ -1,0 +1,25 @@
+- name: Export bar filesystem under foo pool as /data
+  infini_export:
+    name: /data01
+    filesystem: foo
+    user: admin
+    password: secret
+    system: ibox001
+
+- name: Export and specify client list explicitly
+  infini_export:
+    name: /data02
+    filesystem: foo
+    client_list:
+      - client: 192.168.0.2
+        access: RW
+        no_root_squash: True
+      - client: 192.168.0.100
+        access: RO
+        no_root_squash: False
+      - client: 192.168.0.10-192.168.0.20
+        access: RO
+        no_root_squash: False
+    system: ibox001
+    user: admin
+    password: secret

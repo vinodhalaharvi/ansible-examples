@@ -1,0 +1,31 @@
+   - name: Create Volume
+     sf_volume_manager:
+       hostname: "{{ solidfire_hostname }}"
+       username: "{{ solidfire_username }}"
+       password: "{{ solidfire_password }}"
+       state: present
+       name: AnsibleVol
+       qos: {minIOPS: 1000, maxIOPS: 20000, burstIOPS: 50000}
+       account_id: 3
+       enable512e: False
+       size: 1
+       size_unit: gb
+
+   - name: Update Volume
+     sf_volume_manager:
+       hostname: "{{ solidfire_hostname }}"
+       username: "{{ solidfire_username }}"
+       password: "{{ solidfire_password }}"
+       state: present
+       name: AnsibleVol
+       account_id: 3
+       access: readWrite
+
+   - name: Delete Volume
+     sf_volume_manager:
+       hostname: "{{ solidfire_hostname }}"
+       username: "{{ solidfire_username }}"
+       password: "{{ solidfire_password }}"
+       state: absent
+       name: AnsibleVol
+       account_id: 2

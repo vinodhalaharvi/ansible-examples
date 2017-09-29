@@ -1,0 +1,11 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Basic listing example
+- ecs_service_facts:
+    cluster: test-cluster
+    service: console-test-service
+    details: true
+
+# Basic listing example
+- ecs_service_facts:
+    cluster: test-cluster

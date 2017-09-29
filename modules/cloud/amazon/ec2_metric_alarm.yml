@@ -1,0 +1,18 @@
+  - name: create alarm
+    ec2_metric_alarm:
+      state: present
+      region: ap-southeast-2
+      name: "cpu-low"
+      metric: "CPUUtilization"
+      namespace: "AWS/EC2"
+      statistic: Average
+      comparison: "<="
+      threshold: 5.0
+      period: 300
+      evaluation_periods: 3
+      unit: "Percent"
+      description: "This will alarm when a bamboo slave's cpu usage average is lower than 5% for 15 minutes "
+      dimensions: {'InstanceId':'i-XXX'}
+      alarm_actions: ["action1","action2"]
+
+

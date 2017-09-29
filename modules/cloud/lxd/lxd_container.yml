@@ -1,0 +1,75 @@
+# An example for creating a Ubuntu container and install python
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Create a started container
+      lxd_container:
+        name: mycontainer
+        state: started
+        source:
+          type: image
+          mode: pull
+          server: https://images.linuxcontainers.org
+          protocol: lxd
+          alias: ubuntu/xenial/amd64
+        profiles: ["default"]
+        wait_for_ipv4_addresses: true
+        timeout: 600
+
+    - name: check python is installed in container
+      delegate_to: mycontainer
+      raw: dpkg -s python
+      register: python_install_check
+      failed_when: python_install_check.rc not in [0, 1]
+      changed_when: false
+
+    - name: install python in container
+      delegate_to: mycontainer
+      raw: apt-get install -y python
+      when: python_install_check.rc == 1
+
+# An example for deleting a container
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Delete a container
+      lxd_container:
+        name: mycontainer
+        state: absent
+
+# An example for restarting a container
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Restart a container
+      lxd_container:
+        name: mycontainer
+        state: restarted
+
+# An example for restarting a container using https to connect to the LXD server
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Restart a container
+      lxd_container:
+        url: https://127.0.0.1:8443
+        # These cert_file and key_file values are equal to the default values.
+        #cert_file: "{{ lookup('env', 'HOME') }}/.config/lxc/client.crt"
+        #key_file: "{{ lookup('env', 'HOME') }}/.config/lxc/client.key"
+        trust_password: mypassword
+        name: mycontainer
+        state: restarted
+
+# Note your container must be in the inventory for the below example.
+#
+# [containers]
+# mycontainer ansible_connection=lxd
+#
+- hosts:
+    - mycontainer
+  tasks:
+    - name: copy /etc/hosts in the created container to localhost with name "mycontainer-hosts"
+      fetch:
+        src: /etc/hosts
+        dest: /tmp/mycontainer-hosts
+        flat: true

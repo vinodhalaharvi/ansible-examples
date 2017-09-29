@@ -1,0 +1,26 @@
+- name: Gather facts about all FCoE Networks
+  oneview_fcoe_network_facts:
+    config: /etc/oneview/oneview_config.json
+  delegate_to: localhost
+
+- debug: var=fcoe_networks
+
+- name: Gather paginated, filtered and sorted facts about FCoE Networks
+  oneview_fcoe_network_facts:
+    config: /etc/oneview/oneview_config.json
+    params:
+      start: 0
+      count: 3
+      sort: 'name:descending'
+      filter: 'vlanId=2'
+  delegate_to: localhost
+
+- debug: var=fcoe_networks
+
+- name: Gather facts about a FCoE Network by name
+  oneview_fcoe_network_facts:
+    config: /etc/oneview/oneview_config.json
+    name: Test FCoE Network Facts
+  delegate_to: localhost
+
+- debug: var=fcoe_networks

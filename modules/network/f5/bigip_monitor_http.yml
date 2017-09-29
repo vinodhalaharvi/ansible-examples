@@ -1,0 +1,19 @@
+- name: BIGIP F5 | Create HTTP Monitor
+  bigip_monitor_http:
+      state: "present"
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      name: "my_http_monitor"
+      send: "http string to send"
+      receive: "http string to receive"
+  delegate_to: localhost
+
+- name: BIGIP F5 | Remove HTTP Monitor
+  bigip_monitor_http:
+    state: "absent"
+    server: "lb.mydomain.com"
+    user: "admin"
+    password: "secret"
+    name: "my_http_monitor"
+  delegate_to: localhost

@@ -1,0 +1,18 @@
+# enables the Apache2 module "wsgi"
+- apache2_module:
+    state: present
+    name: wsgi
+# disables the Apache2 module "wsgi"
+- apache2_module:
+    state: absent
+    name: wsgi
+# disable default modules for Debian
+- apache2_module:
+    state: absent
+    name: autoindex
+    force: True
+# disable mpm_worker and ignore warnings about missing mpm module
+- apache2_module:
+    state: absent
+    name: mpm_worker
+    ignore_configcheck: True

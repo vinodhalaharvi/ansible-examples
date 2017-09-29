@@ -1,0 +1,7 @@
+- nxos_igmp_interface:
+    interface: ethernet1/32
+    startup_query_interval: 30
+    state: present
+    username: "{{ un }}"
+    password: "{{ pwd }}"
+    host: "{{ inventory_hostname }}"

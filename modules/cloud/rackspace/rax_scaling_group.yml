@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - rax_scaling_group:
+        credentials: ~/.raxpub
+        region: ORD
+        cooldown: 300
+        flavor: performance1-1
+        image: bb02b1a3-bc77-4d17-ab5b-421d89850fca
+        min_entities: 5
+        max_entities: 10
+        name: ASG Test
+        server_name: asgtest
+        loadbalancers:
+            - id: 228385
+              port: 80
+      register: asg

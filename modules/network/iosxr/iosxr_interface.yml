@@ -1,0 +1,52 @@
+- name: configure interface
+  iosxr_interface:
+      name: GigabitEthernet0/0/0/2
+      description: test-interface
+      speed: 100
+      duplex: half
+      mtu: 512
+
+- name: remove interface
+  iosxr_interface:
+    name: GigabitEthernet0/0/0/2
+    state: absent
+
+- name: make interface up
+  iosxr_interface:
+    name: GigabitEthernet0/0/0/2
+    enabled: True
+
+- name: make interface down
+  iosxr_interface:
+    name: GigabitEthernet0/0/0/2
+    enabled: False
+
+- name: Create interface using aggregate
+  iosxr_interface:
+    aggregate:
+    - name: GigabitEthernet0/0/0/3
+    - name: GigabitEthernet0/0/0/2
+    speed: 100
+    duplex: full
+    mtu: 512
+    state: present
+
+- name: Delete interface using aggregate
+  iosxr_interface:
+    aggregate:
+    - name: GigabitEthernet0/0/0/3
+    - name: GigabitEthernet0/0/0/2
+    state: absent
+
+- name: Check intent arguments
+  iosxr_interface:
+    name: GigabitEthernet0/0/0/5
+    state: up
+    delay: 20
+
+- name: Config + intent
+  iosxr_interface:
+    name: GigabitEthernet0/0/0/5
+    enabled: False
+    state: down
+    delay: 20

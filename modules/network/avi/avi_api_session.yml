@@ -1,0 +1,47 @@
+
+  - name: Get Pool Information using avi_api_session
+    avi_api_session:
+      controller: "{{ controller }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      http_method: get
+      path: pool
+      params:
+        name: "{{ pool_name }}"
+      api_version: 16.4
+    register: pool_results
+
+  - name: Patch Pool with list of servers
+    avi_api_session:
+      controller: "{{ controller }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      http_method: patch
+      path: "{{ pool_path }}"
+      api_version: 16.4
+      data:
+        add:
+          servers:
+            - ip:
+                addr: 10.10.10.10
+                type: V4
+            - ip:
+                addr: 20.20.20.20
+                type: V4
+    register: updated_pool
+
+  - name: Fetch Pool metrics bandwidth and connections rate
+    avi_api_session:
+      controller: "{{ controller }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      http_method: get
+      path: analytics/metrics/pool
+      api_version: 16.4
+      params:
+        name: "{{ pool_name }}"
+        metric_id: l4_server.avg_bandwidth,l4_server.avg_complete_conns
+        step: 300
+        limit: 10
+    register: pool_metrics
+

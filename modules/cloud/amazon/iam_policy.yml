@@ -1,0 +1,45 @@
+# Create a policy with the name of 'Admin' to the group 'administrators'
+tasks:
+- name: Assign a policy called Admin to the administrators group
+  iam_policy:
+    iam_type: group
+    iam_name: administrators
+    policy_name: Admin
+    state: present
+    policy_document: admin_policy.json
+
+# Advanced example, create two new groups and add a READ-ONLY policy to both
+# groups.
+task:
+- name: Create Two Groups, Mario and Luigi
+  iam:
+    iam_type: group
+    name: "{{ item }}"
+    state: present
+  with_items:
+     - Mario
+     - Luigi
+  register: new_groups
+
+- name: Apply READ-ONLY policy to new groups that have been recently created
+  iam_policy:
+    iam_type: group
+    iam_name: "{{ item.created_group.group_name }}"
+    policy_name: "READ-ONLY"
+    policy_document: readonlypolicy.json
+    state: present
+  with_items: "{{ new_groups.results }}"
+
+# Create a new S3 policy with prefix per user
+tasks:
+- name: Create S3 policy from template
+  iam_policy:
+    iam_type: user
+    iam_name: "{{ item.user }}"
+    policy_name: "s3_limited_access_{{ item.prefix }}"
+    state: present
+    policy_json: " {{ lookup( 'template', 's3_policy.json.j2') }} "
+    with_items:
+      - user: s3_user
+        prefix: s3_user_prefix
+

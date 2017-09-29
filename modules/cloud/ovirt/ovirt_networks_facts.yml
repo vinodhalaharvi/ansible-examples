@@ -1,0 +1,8 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all networks which names start with C(vlan1):
+- ovirt_networks_facts:
+    pattern: name=vlan1*
+- debug:
+    var: ovirt_networks

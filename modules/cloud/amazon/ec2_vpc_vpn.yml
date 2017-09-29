@@ -1,0 +1,58 @@
+# Note: None of these examples set aws_access_key, aws_secret_key, or region.
+# It is assumed that their matching environment variables are set.
+
+- name: create a VPN connection
+  ec2_vpc_vpn:
+    state: present
+    vpn_gateway_id: vgw-XXXXXXXX
+    customer_gateway_id: cgw-XXXXXXXX
+
+- name: modify VPN connection tags
+  ec2_vpc_vpn:
+    state: present
+    vpn_connection_id: vpn-XXXXXXXX
+    tags:
+      Name: ansible-tag-1
+      Other: ansible-tag-2
+
+- name: delete a connection
+  ec2_vpc_vpn:
+    vpn_connection_id: vpn-XXXXXXXX
+    state: absent
+
+- name: modify VPN tags (identifying VPN by filters)
+  ec2_vpc_vpn:
+    state: present
+    filters:
+      cidr: 194.168.1.0/24
+      tag-keys:
+        - Ansible
+        - Other
+    tags:
+      New: Tag
+    purge_tags: true
+    static_only: true
+
+- name: add routes and remove any preexisting ones
+  ec2_vpc_vpn:
+    state: present
+    filters:
+      vpn: vpn-XXXXXXXX
+    routes:
+      - 195.168.2.0/24
+      - 196.168.2.0/24
+    purge_routes: true
+
+- name: remove all routes
+  ec2_vpc_vpn:
+    state: present
+    vpn_connection_id: vpn-XXXXXXXX
+    routes: []
+    purge_routes: true
+
+- name: delete a VPN identified by filters
+  ec2_vpc_vpn:
+    state: absent
+    filters:
+      tags:
+        Ansible: Tag

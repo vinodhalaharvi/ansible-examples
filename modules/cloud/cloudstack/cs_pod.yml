@@ -1,0 +1,29 @@
+# Ensure a pod is present
+- local_action:
+    module: cs_pod
+    name: pod1
+    zone: ch-zrh-ix-01
+    start_ip: 10.100.10.101
+    gateway: 10.100.10.1
+    netmask: 255.255.255.0
+
+# Ensure a pod is disabled
+- local_action:
+    module: cs_pod
+    name: pod1
+    zone: ch-zrh-ix-01
+    state: disabled
+
+# Ensure a pod is enabled
+- local_action:
+    module: cs_pod
+    name: pod1
+    zone: ch-zrh-ix-01
+    state: enabled
+
+# Ensure a pod is absent
+- local_action:
+    module: cs_pod
+    name: pod1
+    zone: ch-zrh-ix-01
+    state: absent

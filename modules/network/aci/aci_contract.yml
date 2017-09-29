@@ -1,0 +1,10 @@
+- aci_contract:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    contract: '{{ contract }}'
+    description: '{{ descr }}'
+    tenant: '{{ tenant }}'
+    scope: '{{ scope }}'
+    priority: '{{ priority }}'
+    target: '{{ target }}'

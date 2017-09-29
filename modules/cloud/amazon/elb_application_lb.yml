@@ -1,0 +1,81 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Create an ELB and attach a listener
+- elb_application_lb:
+    name: myelb
+    security_groups:
+      - sg-12345678
+      - my-sec-group
+    subnets:
+      - subnet-012345678
+      - subnet-abcdef000
+    listeners:
+      - Protocol: HTTP # Required. The protocol for connections from clients to the load balancer (HTTP or HTTPS) (case-sensitive).
+        Port: 80 # Required. The port on which the load balancer is listening.
+        # The security policy that defines which ciphers and protocols are supported. The default is the current predefined security policy.
+        SslPolicy: ELBSecurityPolicy-2015-05
+        Certificates: # The ARN of the certificate (only one certficate ARN should be provided)
+          - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
+        DefaultActions:
+          - Type: forward # Required. Only 'forward' is accepted at this time
+            TargetGroupName: # Required. The name of the target group
+    state: present
+
+# Create an ELB and attach a listener with logging enabled
+- elb_application_lb:
+    access_logs_enabled: yes
+    access_logs_s3_bucket: mybucket
+    access_logs_s3_prefix: "/logs"
+    name: myelb
+    security_groups:
+      - sg-12345678
+      - my-sec-group
+    subnets:
+      - subnet-012345678
+      - subnet-abcdef000
+    listeners:
+      - Protocol: HTTP # Required. The protocol for connections from clients to the load balancer (HTTP or HTTPS) (case-sensitive).
+        Port: 80 # Required. The port on which the load balancer is listening.
+        # The security policy that defines which ciphers and protocols are supported. The default is the current predefined security policy.
+        SslPolicy: ELBSecurityPolicy-2015-05
+        Certificates: # The ARN of the certificate (only one certficate ARN should be provided)
+          - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
+        DefaultActions:
+          - Type: forward # Required. Only 'forward' is accepted at this time
+            TargetGroupName: # Required. The name of the target group
+    state: present
+
+# Create an ALB with listeners and rules
+- elb_application_lb:
+    name: test-alb
+    subnets:
+      - subnet-12345678
+      - subnet-87654321
+    security_groups:
+      - sg-12345678
+    scheme: internal
+    listeners:
+      - Protocol: HTTPS
+        Port: 443
+        DefaultActions:
+          - Type: forward
+            TargetGroupName: test-target-group
+        Certificates:
+          - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
+        SslPolicy: ELBSecurityPolicy-2015-05
+        Rules:
+          - Conditions:
+              - Field: path-pattern
+                Values:
+                  - '/test'
+            Priority: '1'
+            Actions:
+              - TargetGroupName: test-target-group
+                Type: forward
+    state: present
+
+# Remove an ELB
+- elb_application_lb:
+    name: myelb
+    state: absent
+

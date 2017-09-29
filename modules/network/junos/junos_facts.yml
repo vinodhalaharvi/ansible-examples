@@ -1,0 +1,6 @@
+- name: collect default set of facts
+  junos_facts:
+
+- name: collect default set of facts and configuration
+  junos_facts:
+    gather_subset: config

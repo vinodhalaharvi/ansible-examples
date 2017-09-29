@@ -1,0 +1,10 @@
+# configure ACL ANSIBLE
+- nxos_acl:
+    name: ANSIBLE
+    seq: 10
+    action: permit
+    proto: tcp
+    src: 1.1.1.1/24
+    dest: any
+    state: present
+    provider: "{{ nxos_provider }}"

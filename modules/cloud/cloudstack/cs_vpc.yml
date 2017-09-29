@@ -1,0 +1,18 @@
+# Ensure a VPC is present
+- local_action:
+    module: cs_vpc
+    name: my_vpc
+    display_text: My example VPC
+    cidr: 10.10.0.0/16
+
+# Ensure a VPC is absent
+- local_action:
+    module: cs_vpc
+    name: my_vpc
+    state: absent
+
+# Ensure a VPC is restarted
+- local_action:
+    module: cs_vpc
+    name: my_vpc
+    state: restarted

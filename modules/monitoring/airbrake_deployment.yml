@@ -1,0 +1,5 @@
+- airbrake_deployment:
+    token: AAAAAA
+    environment: staging
+    user: ansible
+    revision: '4.2'

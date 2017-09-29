@@ -1,0 +1,7 @@
+- name: Example to create GslbGeoDbProfile object
+  avi_gslbgeodbprofile:
+    controller: 10.10.25.42
+    username: admin
+    password: something
+    state: present
+    name: sample_gslbgeodbprofile

@@ -1,0 +1,15 @@
+- name: Example notification plan
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+  - name: Establish who gets called when.
+    rax_mon_notification_plan:
+      credentials: ~/.rax_pub
+      state: present
+      label: defcon1
+      critical_state:
+      - "{{ everyone['notification']['id'] }}"
+      warning_state:
+      - "{{ opsfloor['notification']['id'] }}"
+    register: defcon1

@@ -1,0 +1,18 @@
+- name: reboot module test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+  - name: Reboot the device
+    ce_reboot:
+      confirm: true
+      save_config: true
+      provider: "{{ cli }}"

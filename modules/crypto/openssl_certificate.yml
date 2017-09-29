@@ -1,0 +1,97 @@
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: /etc/ssl/crt/ansible.com.crt
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    csr_path: /etc/ssl/csr/ansible.com.csr
+    provider: selfsigned
+
+- name: Generate a Let's Encrypt Certificate
+  openssl_certificate:
+    path: /etc/ssl/crt/ansible.com.crt
+    csr_path: /etc/ssl/csr/ansible.com.csr
+    provider: acme
+    acme_accountkey: /etc/ssl/private/ansible.com.pem
+    acme_challenge_path: /etc/ssl/challenges/ansible.com/
+
+- name: Force (re-)generate a new Let's Encrypt Certificate
+  openssl_certificate:
+    path: /etc/ssl/crt/ansible.com.crt
+    csr_path: /etc/ssl/csr/ansible.com.csr
+    provider: acme
+    acme_accountkey: /etc/ssl/private/ansible.com.pem
+    acme_challenge_path: /etc/ssl/challenges/ansible.com/
+    force: True
+
+# Examples for some checks one could use the assertonly provider for:
+- name: Verify that an existing certificate was issued by the Let's Encrypt CA and is currently still valid
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    issuer:
+      O: Let's Encrypt
+    has_expired: False
+
+- name: Ensure that a certificate uses a modern signature algorithm (no SHA1, MD5 or DSA)
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    signature_algorithms:
+      - sha224WithRSAEncryption
+      - sha256WithRSAEncryption
+      - sha384WithRSAEncryption
+      - sha512WithRSAEncryption
+      - sha224WithECDSAEncryption
+      - sha256WithECDSAEncryption
+      - sha384WithECDSAEncryption
+      - sha512WithECDSAEncryption
+
+- name: Ensure that the existing certificate belongs to the specified private key
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    privatekey_path: /etc/ssl/private/example.com.pem
+    provider: assertonly
+
+- name: Ensure that the existing certificate is still valid at the winter solstice 2017
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    valid_at: 20171221162800Z
+
+- name: Ensure that the existing certificate is still valid 2 weeks (1209600 seconds) from now
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    valid_in: 1209600
+
+- name: Ensure that the existing certificate is only used for digital signatures and encrypting other keys
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    key_usage:
+      - digitalSignature
+      - keyEncipherment
+    key_usage_strict: true
+
+- name: Ensure that the existing certificate can be used for client authentication
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    extended_key_usage:
+      - clientAuth
+
+- name: Ensure that the existing certificate can only be used for client authentication and time stamping
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    extended_key_usage:
+      - clientAuth
+      - 1.3.6.1.5.5.7.3.8
+    extended_key_usage_strict: true
+
+- name: Ensure that the existing certificate has a certain domain in its subjectAltName
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    provider: assertonly
+    subject_alt_name:
+      - www.example.com
+      - test.example.com

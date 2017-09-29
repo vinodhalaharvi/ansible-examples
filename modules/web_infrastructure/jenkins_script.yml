@@ -1,0 +1,27 @@
+- name: Obtaining a list of plugins
+  jenkins_script:
+    script: 'println(Jenkins.instance.pluginManager.plugins)'
+    user: admin
+    password: admin
+
+- name: Setting master using a variable to hold a more complicate script
+  vars:
+    setmaster_mode: |
+        import jenkins.model.*
+        instance = Jenkins.getInstance()
+        instance.setMode(${jenkins_mode})
+        instance.save()
+
+- name: use the variable as the script
+  jenkins_script:
+    script: "{{ setmaster_mode }}"
+    args:
+      jenkins_mode: Node.Mode.EXCLUSIVE
+
+- name: interacting with an untrusted HTTPS connection
+  jenkins_script:
+    script: "println(Jenkins.instance.pluginManager.plugins)"
+    user: admin
+    password: admin
+    url: https://localhost
+    validate_certs: no

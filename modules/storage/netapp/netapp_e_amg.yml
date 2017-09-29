@@ -1,0 +1,23 @@
+    - name: AMG removal
+      na_eseries_amg:
+        state: absent
+        ssid: "{{ ssid }}"
+        secondaryArrayId: "{{amg_secondaryArrayId}}"
+        api_url: "{{ netapp_api_url }}"
+        api_username: "{{ netapp_api_username }}"
+        api_password: "{{ netapp_api_password }}"
+        new_name: "{{amg_array_name}}"
+        name: "{{amg_name}}"
+      when: amg_create
+
+    - name: AMG create
+      netapp_e_amg:
+        state: present
+        ssid: "{{ ssid }}"
+        secondaryArrayId: "{{amg_secondaryArrayId}}"
+        api_url: "{{ netapp_api_url }}"
+        api_username: "{{ netapp_api_username }}"
+        api_password: "{{ netapp_api_password }}"
+        new_name: "{{amg_array_name}}"
+        name: "{{amg_name}}"
+      when: amg_create

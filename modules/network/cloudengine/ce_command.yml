@@ -1,0 +1,45 @@
+# Note: examples below use the following provider dict to handle
+#       transport and authentication to the node.
+
+- name: CloudEngine command test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  tasks:
+  - name: "Run display version on remote devices"
+    ce_command:
+      commands: display version
+      provider: "{{ cli }}"
+
+  - name: "Run display version and check to see if output contains HUAWEI"
+    ce_command:
+      commands: display version
+      wait_for: result[0] contains HUAWEI
+      provider: "{{ cli }}"
+
+  - name: "Run multiple commands on remote nodes"
+    ce_command:
+      commands:
+        - display version
+        - display device
+      provider: "{{ cli }}"
+
+  - name: "Run multiple commands and evaluate the output"
+    ce_command:
+      commands:
+        - display version
+        - display device
+      wait_for:
+        - result[0] contains HUAWEI
+        - result[1] contains Device
+      provider: "{{ cli }}"

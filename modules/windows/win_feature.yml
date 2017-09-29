@@ -1,0 +1,23 @@
+- name: Install IIS (Web-Server only)
+  win_feature:
+    name: Web-Server
+    state: present
+
+- name: Install IIS (Web-Server and Web-Common-Http)
+  win_feature:
+    name: Web-Server,Web-Common-Http
+    state: present
+
+- name: Install NET-Framework-Core from file
+  win_feature:
+    name: NET-Framework-Core
+    source: C:\Temp\iso\sources\sxs
+    state: present
+
+- name: Install IIS Web-Server with sub features and management tools
+  win_feature:
+    name: Web-Server
+    state: present
+    restart: True
+    include_sub_features: True
+    include_management_tools: True

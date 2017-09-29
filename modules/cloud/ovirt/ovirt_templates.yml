@@ -1,0 +1,55 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create template from vm
+- ovirt_templates:
+    cluster: Default
+    name: mytemplate
+    vm: rhel7
+    cpu_profile: Default
+    description: Test
+
+# Import template
+- ovirt_templates:
+  state: imported
+  name: mytemplate
+  export_domain: myexport
+  storage_domain: mystorage
+  cluster: mycluster
+
+# Remove template
+- ovirt_templates:
+    state: absent
+    name: mytemplate
+
+# Register template
+- ovirt_templates:
+  state: registered
+  storage_domain: mystorage
+  cluster: mycluster
+  name: mytemplate
+
+# Register template using id
+- ovirt_templates:
+  state: registered
+  storage_domain: mystorage
+  cluster: mycluster
+  id: 1111-1111-1111-1111
+
+# Register template, allowing partial import
+- ovirt_templates:
+  state: registered
+  storage_domain: mystorage
+  allow_partial_import: "True"
+  cluster: mycluster
+  id: 1111-1111-1111-1111
+
+# Import image from Glance s a template
+- ovirt_templates:
+    state: imported
+    name: mytemplate
+    image_disk: "centos7"
+    template_image_disk_name: centos7_from_glance
+    image_provider: "glance_domain"
+    storage_domain: mystorage
+    cluster: mycluster

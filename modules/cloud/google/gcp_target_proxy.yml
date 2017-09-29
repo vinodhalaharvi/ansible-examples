@@ -1,0 +1,9 @@
+- name: Create Minimum HTTP Target_Proxy
+  gcp_target_proxy:
+    service_account_email: "{{ service_account_email }}"
+    credentials_file: "{{ credentials_file }}"
+    project_id: "{{ project_id }}"
+    target_proxy_name: my-target_proxy
+    target_proxy_type: HTTP
+    url_map_name: my-url-map
+    state: present

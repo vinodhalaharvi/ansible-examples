@@ -1,0 +1,25 @@
+# Create a recordset named "www.example.net."
+- os_recordset:
+    cloud: mycloud
+    state: present
+    zone: example.net.
+    name: www
+    recordset_type: primary
+    records: ['10.1.1.1']
+    description: test recordset
+    ttl: 3600
+
+# Update the TTL on existing "www.example.net." recordset
+- os_recordset:
+    cloud: mycloud
+    state: present
+    zone: example.net.
+    name: www
+    ttl: 7200
+
+# Delete recorset named "www.example.net."
+- os_recordset:
+    cloud: mycloud
+    state: absent
+    zone: example.net.
+    name: www

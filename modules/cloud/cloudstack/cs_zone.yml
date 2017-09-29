@@ -1,0 +1,25 @@
+# Ensure a zone is present
+- local_action:
+    module: cs_zone
+    name: ch-zrh-ix-01
+    dns1: 8.8.8.8
+    dns2: 8.8.4.4
+    network_type: basic
+
+# Ensure a zone is disabled
+- local_action:
+    module: cs_zone
+    name: ch-zrh-ix-01
+    state: disabled
+
+# Ensure a zone is enabled
+- local_action:
+    module: cs_zone
+    name: ch-zrh-ix-01
+    state: enabled
+
+# Ensure a zone is absent
+- local_action:
+    module: cs_zone
+    name: ch-zrh-ix-01
+    state: absent

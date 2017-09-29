@@ -1,0 +1,19 @@
+  - name: Create an IP Address Group configuration
+    avi_ipaddrgroup:
+      controller: ''
+      username: ''
+      password: ''
+      name: Client-Source-Block
+      prefixes:
+      - ip_addr:
+          addr: 10.0.0.0
+          type: V4
+        mask: 8
+      - ip_addr:
+          addr: 172.16.0.0
+          type: V4
+        mask: 12
+      - ip_addr:
+          addr: 192.168.0.0
+          type: V4
+        mask: 16

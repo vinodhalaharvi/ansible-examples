@@ -1,0 +1,35 @@
+# Note - You must set the CLC_V2_API_USERNAME And CLC_V2_API_PASSWD Environment variables before running these examples
+
+---
+- name: Create AA Policy
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  tasks:
+    - name: Create an Anti Affinity Policy
+      clc_aa_policy:
+        name: Hammer Time
+        location: UK3
+        state: present
+      register: policy
+
+    - name: debug
+      debug:
+        var: policy
+
+---
+- name: Delete AA Policy
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  tasks:
+    - name: Delete an Anti Affinity Policy
+      clc_aa_policy:
+        name: Hammer Time
+        location: UK3
+        state: absent
+      register: policy
+
+    - name: debug
+      debug:
+        var: policy

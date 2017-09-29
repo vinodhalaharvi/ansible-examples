@@ -1,0 +1,7 @@
+- name: Example to create Scheduler object
+  avi_scheduler:
+    controller: 10.10.25.42
+    username: admin
+    password: something
+    state: present
+    name: sample_scheduler

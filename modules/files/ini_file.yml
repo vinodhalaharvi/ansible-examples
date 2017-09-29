@@ -1,0 +1,16 @@
+# Before 2.3, option 'dest' was used instead of 'path'
+- name: Ensure "fav=lemonade is in section "[drinks]" in specified file
+  ini_file:
+    path: /etc/conf
+    section: drinks
+    option: fav
+    value: lemonade
+    mode: 0600
+    backup: yes
+
+- ini_file:
+    path: /etc/anotherconf
+    section: drinks
+    option: temperature
+    value: cold
+    backup: yes

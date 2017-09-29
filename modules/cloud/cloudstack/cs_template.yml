@@ -1,0 +1,37 @@
+- name: register a systemvm template
+  local_action:
+    module: cs_template
+    name: systemvm-vmware-4.5
+    url: "http://packages.shapeblue.com/systemvmtemplate/4.5/systemvm64template-4.5-vmware.ova"
+    hypervisor: VMware
+    format: OVA
+    cross_zones: yes
+    os_type: Debian GNU/Linux 7(64-bit)
+
+- name: create a template from a stopped virtual machine's volume
+  local_action:
+    module: cs_template
+    name: debian-base-template
+    vm: debian-base-vm
+    os_type: Debian GNU/Linux 7(64-bit)
+    zone: tokio-ix
+    password_enabled: yes
+    is_public: yes
+
+- name: create a template from a virtual machine's root volume snapshot
+  local_action:
+    module: cs_template
+    name: debian-base-template
+    vm: debian-base-vm
+    snapshot: ROOT-233_2015061509114
+    os_type: Debian GNU/Linux 7(64-bit)
+    zone: tokio-ix
+    password_enabled: yes
+    is_public: yes
+
+- name: Remove a template
+  local_action:
+    module: cs_template
+    name: systemvm-4.2
+    cross_zones: yes
+    state: absent

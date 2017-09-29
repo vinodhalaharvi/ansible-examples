@@ -1,0 +1,16 @@
+- name: Attach a Block Storage Volume
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+    - name: Storage volume attach request
+      local_action:
+        module: rax_cbs_attachments
+        credentials: ~/.raxpub
+        volume: my-volume
+        server: my-server
+        device: /dev/xvdd
+        region: DFW
+        wait: yes
+        state: present
+      register: my_volume

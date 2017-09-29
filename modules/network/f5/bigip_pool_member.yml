@@ -1,0 +1,69 @@
+- name: Add pool member
+  bigip_pool_member:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      pool: "my-pool"
+      partition: "Common"
+      host: "{{ ansible_default_ipv4['address'] }}"
+      port: 80
+      description: "web server"
+      connection_limit: 100
+      rate_limit: 50
+      ratio: 2
+  delegate_to: localhost
+
+- name: Modify pool member ratio and description
+  bigip_pool_member:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      pool: "my-pool"
+      partition: "Common"
+      host: "{{ ansible_default_ipv4['address'] }}"
+      port: 80
+      ratio: 1
+      description: "nginx server"
+  delegate_to: localhost
+
+- name: Remove pool member from pool
+  bigip_pool_member:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "absent"
+      pool: "my-pool"
+      partition: "Common"
+      host: "{{ ansible_default_ipv4['address'] }}"
+      port: 80
+  delegate_to: localhost
+
+
+# The BIG-IP GUI doesn't map directly to the API calls for "Pool ->
+# Members -> State". The following states map to API monitor
+# and session states.
+#
+# Enabled (all traffic allowed):
+# monitor_state=enabled, session_state=enabled
+# Disabled (only persistent or active connections allowed):
+# monitor_state=enabled, session_state=disabled
+# Forced offline (only active connections allowed):
+# monitor_state=disabled, session_state=disabled
+#
+# See https://devcentral.f5.com/questions/icontrol-equivalent-call-for-b-node-down
+
+- name: Force pool member offline
+  bigip_pool_member:
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      session_state: "disabled"
+      monitor_state: "disabled"
+      pool: "my-pool"
+      partition: "Common"
+      host: "{{ ansible_default_ipv4['address'] }}"
+      port: 80
+  delegate_to: localhost

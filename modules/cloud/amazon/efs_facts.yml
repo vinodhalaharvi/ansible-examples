@@ -1,0 +1,17 @@
+# find all existing efs
+- efs_facts:
+  register: result
+
+- efs_facts:
+    name: myTestNameTag
+
+- efs_facts:
+    id: fs-1234abcd
+
+# Searching all EFS instances with tag Name = 'myTestNameTag', in subnet 'subnet-1a2b3c4d' and with security group 'sg-4d3c2b1a'
+- efs_facts:
+    tags:
+        name: myTestNameTag
+    targets:
+        - subnet-1a2b3c4d
+        - sg-4d3c2b1a

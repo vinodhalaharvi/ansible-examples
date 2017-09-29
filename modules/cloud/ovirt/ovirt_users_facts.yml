@@ -1,0 +1,8 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all users which first names start with C(john):
+- ovirt_users_facts:
+    pattern: name=john*
+- debug:
+    var: ovirt_users

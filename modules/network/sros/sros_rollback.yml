@@ -1,0 +1,20 @@
+# Note: examples below use the following provider dict to handle
+#       transport and authentication to the node.
+---
+vars:
+  cli:
+    host: "{{ inventory_hostname }}"
+    username: admin
+    password: admin
+    transport: cli
+
+---
+- name: configure rollback location
+  sros_rollback:
+    rollback_location: "cb3:/ansible"
+    provider: "{{ cli }}"
+
+- name: remove all rollback configuration
+  sros_rollback:
+    state: absent
+    provider: "{{ cli }}"

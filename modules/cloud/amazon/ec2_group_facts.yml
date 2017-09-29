@@ -1,0 +1,43 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Gather facts about all security groups
+- ec2_group_facts:
+
+# Gather facts about all security groups in a specific VPC
+- ec2_group_facts:
+    filters:
+      vpc-id: vpc-12345678
+
+# Gather facts about all security groups in a specific VPC
+- ec2_group_facts:
+    filters:
+      vpc-id: vpc-12345678
+
+# Gather facts about a security group
+- ec2_group_facts:
+    filters:
+      group-name: example-1
+
+# Gather facts about a security group by id
+- ec2_group_facts:
+    filters:
+      group-id: sg-12345678
+
+# Gather facts about a security group with multiple filters, also mixing the use of underscores as filter keys
+- ec2_group_facts:
+    filters:
+      group_id: sg-12345678
+      vpc-id: vpc-12345678
+
+# Gather facts about various security groups
+- ec2_group_facts:
+    filters:
+      group-name:
+        - example-1
+        - example-2
+        - example-3
+
+# Gather facts about any security group with a tag key Name and value Example. The quotes around 'tag:name' are important because of the colon in the value
+- ec2_group_facts:
+    filters:
+      "tag:Name": Example

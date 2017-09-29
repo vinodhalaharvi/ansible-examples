@@ -1,0 +1,5 @@
+- name:  Match 'Li' on the first column, return the second column (0 based index)
+  debug: msg="The atomic number of Lithium is {{ lookup('csvfile', 'Li file=elements.csv delimiter=,') }}"
+
+- name: msg="Match 'Li' on the first column, but return the 3rd column (columns start counting after the match)"
+  debug: msg="The atomic mass of Lithium is {{ lookup('csvfile', 'Li file=elements.csv delimiter=, col=2') }}"

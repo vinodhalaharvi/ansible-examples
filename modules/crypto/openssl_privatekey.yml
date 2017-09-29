@@ -1,0 +1,25 @@
+# Generate an OpenSSL private key with the default values (4096 bits, RSA)
+- openssl_privatekey:
+    path: /etc/ssl/private/ansible.com.pem
+
+# Generate an OpenSSL private key with the default values (4096 bits, RSA)
+# and a passphrase
+- openssl_privatekey:
+    path: /etc/ssl/private/ansible.com.pem
+    passphrase: ansible
+    cipher: aes256
+
+# Generate an OpenSSL private key with a different size (2048 bits)
+- openssl_privatekey:
+    path: /etc/ssl/private/ansible.com.pem
+    size: 2048
+
+# Force regenerate an OpenSSL private key if it already exists
+- openssl_privatekey:
+    path: /etc/ssl/private/ansible.com.pem
+    force: True
+
+# Generate an OpenSSL private key with a different algorithm (DSA)
+- openssl_privatekey:
+    path: /etc/ssl/private/ansible.com.pem
+    type: DSA

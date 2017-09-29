@@ -1,0 +1,5 @@
+- name: Change the widget font to "Serif 12"
+  gconftool2:
+    key: "/desktop/gnome/interface/font_name"
+    value_type: "string"
+    value: "Serif 12"

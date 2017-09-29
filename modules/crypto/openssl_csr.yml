@@ -1,0 +1,46 @@
+# Generate an OpenSSL Certificate Signing Request
+- openssl_csr:
+    path: /etc/ssl/csr/www.ansible.com.csr
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    common_name: www.ansible.com
+
+# Generate an OpenSSL Certificate Signing Request with a
+# passphrase protected private key
+- openssl_csr:
+    path: /etc/ssl/csr/www.ansible.com.csr
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    privatekey_passphrase: ansible
+    common_name: www.ansible.com
+
+# Generate an OpenSSL Certificate Signing Request with Subject information
+- openssl_csr:
+    path: /etc/ssl/csr/www.ansible.com.csr
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    country_name: FR
+    organization_name: Ansible
+    email_address: jdoe@ansible.com
+    common_name: www.ansible.com
+
+# Generate an OpenSSL Certificate Signing Request with subjectAltName extension
+- openssl_csr:
+    path: /etc/ssl/csr/www.ansible.com.csr
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    subject_alt_name: 'DNS:www.ansible.com,DNS:m.ansible.com'
+
+# Force re-generate an OpenSSL Certificate Signing Request
+- openssl_csr:
+    path: /etc/ssl/csr/www.ansible.com.csr
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    force: True
+    common_name: www.ansible.com
+
+# Generate an OpenSSL Certificate Signing Request with special key usages
+- openssl_csr:
+    path: /etc/ssl/csr/www.ansible.com.csr
+    privatekey_path: /etc/ssl/private/ansible.com.pem
+    common_name: www.ansible.com
+    key_usage:
+      - digitlaSignature
+      - keyAgreement
+    extended_key_usage:
+      - clientAuth

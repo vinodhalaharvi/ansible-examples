@@ -1,0 +1,38 @@
+- name: Create new new host
+  purefa_host:
+    host: foo
+    fa_url: 10.10.10.2
+    api_token: e31060a7-21fc-e277-6240-25983c6c4592
+
+- name: Delete host
+  purefa_host:
+    host: foo
+    fa_url: 10.10.10.2
+    api_token: e31060a7-21fc-e277-6240-25983c6c4592
+    state: absent
+
+- name: Make sure host bar is available with wwn ports
+  purefa_host:
+    host: bar
+    protocol: fc
+    wwns:
+    - 00:00:00:00:00:00:00
+    - 11:11:11:11:11:11:11
+    fa_url: 10.10.10.2
+    api_token: e31060a7-21fc-e277-6240-25983c6c4592
+
+- name: Make sure host bar is available with iSCSI ports
+  purefa_host:
+    host: bar
+    protocol: iscsi
+    iqn:
+    - iqn.1994-05.com.redhat:7d366003913
+    fa_url: 10.10.10.2
+    api_token: e31060a7-21fc-e277-6240-25983c6c4592
+
+- name: Map host foo to volume bar
+  purefa_host:
+    host: foo
+    volume: bar
+    fa_url: 10.10.10.2
+    api_token: e31060a7-21fc-e277-6240-25983c6c4592

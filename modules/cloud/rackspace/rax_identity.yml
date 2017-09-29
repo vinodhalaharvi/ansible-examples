@@ -1,0 +1,11 @@
+- name: Load Rackspace Cloud Identity
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+    - name: Load Identity
+      local_action:
+        module: rax_identity
+        credentials: ~/.raxpub
+        region: DFW
+      register: rackspace_identity

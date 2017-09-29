@@ -1,0 +1,18 @@
+- name: Create TCP Monitor
+  bigip_monitor_tcp_half_open:
+      state: "present"
+      ip: "10.10.10.10"
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      name: "my_tcp_monitor"
+  delegate_to: localhost
+
+- name: Remove TCP Monitor
+  bigip_monitor_tcp_half_open:
+      state: "absent"
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      name: "my_tcp_monitor"
+  delegate_to: localhost

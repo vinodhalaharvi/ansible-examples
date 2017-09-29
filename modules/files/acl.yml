@@ -1,0 +1,34 @@
+# Grant user Joe read access to a file
+- acl:
+    path: /etc/foo.conf
+    entity: joe
+    etype: user
+    permissions: r
+    state: present
+
+# Removes the acl for Joe on a specific file
+- acl:
+    path: /etc/foo.conf
+    entity: joe
+    etype: user
+    state: absent
+
+# Sets default acl for joe on foo.d
+- acl:
+    path: /etc/foo.d
+    entity: joe
+    etype: user
+    permissions: rw
+    default: yes
+    state: present
+
+# Same as previous but using entry shorthand
+- acl:
+    path: /etc/foo.d
+    entry: "default:user:joe:rw-"
+    state: present
+
+# Obtain the acl for a specific file
+- acl:
+    path: /etc/foo.conf
+  register: acl_info

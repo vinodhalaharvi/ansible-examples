@@ -1,0 +1,39 @@
+# Gather facts about all available flavors
+- os_flavor_facts:
+    cloud: mycloud
+
+# Gather facts for the flavor named "xlarge-flavor"
+- os_flavor_facts:
+    cloud: mycloud
+    name: "xlarge-flavor"
+
+# Get all flavors that have exactly 512 MB of RAM.
+- os_flavor_facts:
+    cloud: mycloud
+    ram: "512"
+
+# Get all flavors that have 1024 MB or more of RAM.
+- os_flavor_facts:
+    cloud: mycloud
+    ram: ">=1024"
+
+# Get a single flavor that has the minimum amount of RAM. Using the 'limit'
+# option will guarantee only a single flavor is returned.
+- os_flavor_facts:
+    cloud: mycloud
+    ram: "MIN"
+    limit: 1
+
+# Get all flavors with 1024 MB of RAM or more, AND exactly 2 virtual CPUs.
+- os_flavor_facts:
+    cloud: mycloud
+    ram: ">=1024"
+    vcpus: "2"
+
+# Get all flavors with 1024 MB of RAM or more, exactly 2 virtual CPUs, and
+# less than 30gb of ephemeral storage.
+- os_flavor_facts:
+    cloud: mycloud
+    ram: ">=1024"
+    vcpus: "2"
+    ephemeral: "<30"

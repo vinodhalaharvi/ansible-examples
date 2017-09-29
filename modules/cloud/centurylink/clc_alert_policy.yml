@@ -1,0 +1,39 @@
+# Note - You must set the CLC_V2_API_USERNAME And CLC_V2_API_PASSWD Environment variables before running these examples
+
+---
+- name: Create Alert Policy Example
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  tasks:
+    - name: Create an Alert Policy for disk above 80% for 5 minutes
+      clc_alert_policy:
+        alias: wfad
+        name: 'alert for disk > 80%'
+        alert_recipients:
+            - test1@centurylink.com
+            - test2@centurylink.com
+        metric: 'disk'
+        duration: '00:05:00'
+        threshold: 80
+        state: present
+      register: policy
+
+    - name: debug
+      debug: var=policy
+
+---
+- name: Delete Alert Policy Example
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  tasks:
+    - name: Delete an Alert Policy
+      clc_alert_policy:
+        alias: wfad
+        name: 'alert for disk > 80%'
+        state: absent
+      register: policy
+
+    - name: debug
+      debug: var=policy

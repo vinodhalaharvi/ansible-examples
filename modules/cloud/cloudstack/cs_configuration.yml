@@ -1,0 +1,27 @@
+# Ensure global configuration
+- local_action:
+    module: cs_configuration
+    name: router.reboot.when.outofband.migrated
+    value: false
+
+# Ensure zone configuration
+- local_action:
+    module: cs_configuration
+    name: router.reboot.when.outofband.migrated
+    zone: ch-gva-01
+    value: true
+
+# Ensure storage configuration
+- local_action:
+    module: cs_configuration
+    name: storage.overprovisioning.factor
+    storage: storage01
+    value: 2.0
+
+# Ensure account configuration
+- local_action:
+    module: cs_configuration
+    name: allow.public.user.templates
+    value: false
+    account: acme inc
+    domain: customers

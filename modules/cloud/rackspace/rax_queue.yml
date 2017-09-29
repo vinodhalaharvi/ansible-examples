@@ -1,0 +1,13 @@
+- name: Build a Queue
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+    - name: Queue create request
+      local_action:
+        module: rax_queue
+        credentials: ~/.raxpub
+        name: my-queue
+        region: DFW
+        state: present
+      register: my_queue

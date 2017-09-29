@@ -1,0 +1,15 @@
+Tasks : The following are examples of using the module cnos_conditional_command. These are written in the main.yml file of the tasks directory.
+---
+- name: Applying CLI template on VLAG Tier1 Leaf Switch1
+  cnos_conditional_command:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_conditional_command_{{ inventory_hostname }}_output.txt"
+      condition: "{{ hostvars[inventory_hostname]['condition']}}"
+      flag: leaf_switch2
+      command: "spanning-tree mode enable"
+      enablePassword: "anil"
+

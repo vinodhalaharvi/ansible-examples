@@ -1,0 +1,29 @@
+---
+- name: Save netscaler configuration
+  delegate_to: localhost
+  netscaler_save_config:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+
+- name: Setup server without saving  configuration
+  delegate_to: localhost
+  notify: Save configuration
+  netscaler_server:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+
+    save_config: no
+
+    name: server-1
+    ipaddress: 192.168.1.1
+
+# Under playbook's handlers
+
+- name: Save configuration
+  delegate_to: localhost
+  netscaler_save_config:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot

@@ -1,0 +1,13 @@
+- name: Create dvswitch
+  local_action:
+    module: vmware_dvswitch
+    hostname: vcenter_ip_or_hostname
+    username: vcenter_username
+    password: vcenter_password
+    datacenter_name: datacenter
+    switch_name: dvSwitch
+    mtu: 9000
+    uplink_quantity: 2
+    discovery_proto: lldp
+    discovery_operation: both
+    state: present

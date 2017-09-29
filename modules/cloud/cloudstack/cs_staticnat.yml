@@ -1,0 +1,11 @@
+# create a static NAT: 1.2.3.4 -> web01
+- local_action:
+    module: cs_staticnat
+    ip_address: 1.2.3.4
+    vm: web01
+
+# remove a static NAT
+- local_action:
+    module: cs_staticnat
+    ip_address: 1.2.3.4
+    state: absent

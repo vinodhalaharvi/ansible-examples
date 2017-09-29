@@ -1,0 +1,32 @@
+# Create a new (or update an existing) subnet on the specified network
+- os_subnet:
+    state: present
+    network_name: network1
+    name: net1subnet
+    cidr: 192.168.0.0/24
+    dns_nameservers:
+       - 8.8.8.7
+       - 8.8.8.8
+    host_routes:
+       - destination: 0.0.0.0/0
+         nexthop: 12.34.56.78
+       - destination: 192.168.0.0/24
+         nexthop: 192.168.0.1
+
+# Delete a subnet
+- os_subnet:
+    state: absent
+    name: net1subnet
+
+# Create an ipv6 stateless subnet
+- os_subnet:
+    state: present
+    name: intv6
+    network_name: internal
+    ip_version: 6
+    cidr: 2db8:1::/64
+    dns_nameservers:
+        - 2001:4860:4860::8888
+        - 2001:4860:4860::8844
+    ipv6_ra_mode: dhcpv6-stateless
+    ipv6_address_mode: dhcpv6-stateless

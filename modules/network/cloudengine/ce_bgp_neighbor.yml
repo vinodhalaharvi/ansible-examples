@@ -1,0 +1,29 @@
+
+- name: CloudEngine BGP neighbor test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: "Config bgp peer"
+    ce_bgp_neighbor:
+      state: present
+      vrf_name: js
+      peer_addr: 192.168.10.10
+      remote_as: 500
+      provider: "{{ cli }}"
+
+  - name: "Config bgp route id"
+    ce_bgp_neighbor:
+      state: absent
+      vrf_name: js
+      peer_addr: 192.168.10.10
+      provider: "{{ cli }}"

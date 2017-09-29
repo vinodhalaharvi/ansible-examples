@@ -1,0 +1,15 @@
+- name: get information about a folder
+  win_scheduled_task_stat:
+    path: \folder name
+  register: task_folder_stat
+
+- name: get information about a task in the root folder
+  win_scheduled_task_stat:
+    name: task name
+  register: task_stat
+
+- name: get information about a task in a custom folder
+  win_scheduled_task_stat:
+    path: \folder name
+    name: task name
+  register: task_stat

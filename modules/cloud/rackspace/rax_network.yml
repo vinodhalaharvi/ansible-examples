@@ -1,0 +1,11 @@
+- name: Build an Isolated Network
+  gather_facts: False
+
+  tasks:
+    - name: Network create request
+      local_action:
+        module: rax_network
+        credentials: ~/.raxpub
+        label: my-net
+        cidr: 192.168.3.0/24
+        state: present

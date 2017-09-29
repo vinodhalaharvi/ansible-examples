@@ -1,0 +1,35 @@
+- name: set ntp server in the device
+  netconf_config:
+    host: 10.0.0.1
+    username: admin
+    password: admin
+    xml: |
+        <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+            <system xmlns="urn:ietf:params:xml:ns:yang:ietf-system">
+                <ntp>
+                    <enabled>true</enabled>
+                    <server>
+                        <name>ntp1</name>
+                        <udp><address>127.0.0.1</address></udp>
+                    </server>
+                </ntp>
+            </system>
+        </config>
+
+- name: wipe ntp configuration
+  netconf_config:
+    host: 10.0.0.1
+    username: admin
+    password: admin
+    xml: |
+        <config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+            <system xmlns="urn:ietf:params:xml:ns:yang:ietf-system">
+                <ntp>
+                    <enabled>false</enabled>
+                    <server operation="remove">
+                        <name>ntp1</name>
+                    </server>
+                </ntp>
+            </system>
+        </config>
+

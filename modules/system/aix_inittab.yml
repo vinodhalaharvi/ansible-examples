@@ -1,0 +1,30 @@
+# Add service startmyservice to the inittab, directly after service existingservice.
+- name: Add startmyservice to inittab
+  aix_inittab:
+    name: startmyservice
+    runlevel: 4
+    action: once
+    command: "echo hello"
+    insertafter: existingservice
+    state: present
+  become: yes
+
+# Change inittab entry startmyservice to runlevel "2" and processaction "wait".
+- name: Change startmyservice to inittab
+  aix_inittab:
+    name: startmyservice
+    runlevel: 2
+    action: wait
+    command: "echo hello"
+    state: present
+  become: yes
+
+# Remove inittab entry startmyservice.
+- name: remove startmyservice from inittab
+  aix_inittab:
+    name: startmyservice
+    runlevel: 2
+    action: wait
+    command: "echo hello"
+    state: absent
+  become: yes

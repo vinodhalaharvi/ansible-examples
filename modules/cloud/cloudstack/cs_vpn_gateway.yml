@@ -1,0 +1,10 @@
+# Ensure a vpn gateway is present
+- local_action:
+    module: cs_vpn_gateway
+    vpc: my VPC
+
+# Ensure a vpn gateway is absent
+- local_action:
+    module: cs_vpn_gateway
+    vpc: my VPC
+    state: absent

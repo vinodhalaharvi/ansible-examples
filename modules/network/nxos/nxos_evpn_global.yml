@@ -1,0 +1,2 @@
+- nxos_evpn_global:
+    nv_overlay_evpn: true

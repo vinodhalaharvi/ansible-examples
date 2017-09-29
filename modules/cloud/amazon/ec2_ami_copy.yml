@@ -1,0 +1,45 @@
+# Basic AMI Copy
+- ec2_ami_copy:
+    source_region: us-east-1
+    region: eu-west-1
+    source_image_id: ami-xxxxxxx
+
+# AMI copy wait until available
+- ec2_ami_copy:
+    source_region: us-east-1
+    region: eu-west-1
+    source_image_id: ami-xxxxxxx
+    wait: yes
+  register: image_id
+
+# Named AMI copy
+- ec2_ami_copy:
+    source_region: us-east-1
+    region: eu-west-1
+    source_image_id: ami-xxxxxxx
+    name: My-Awesome-AMI
+    description: latest patch
+
+# Tagged AMI copy
+- ec2_ami_copy:
+    source_region: us-east-1
+    region: eu-west-1
+    source_image_id: ami-xxxxxxx
+    tags:
+        Name: My-Super-AMI
+        Patch: 1.2.3
+
+# Encrypted AMI copy
+- ec2_ami_copy:
+    source_region: us-east-1
+    region: eu-west-1
+    source_image_id: ami-xxxxxxx
+    encrypted: yes
+
+# Encrypted AMI copy with specified key
+- ec2_ami_copy:
+    source_region: us-east-1
+    region: eu-west-1
+    source_image_id: ami-xxxxxxx
+    encrypted: yes
+    kms_key_id: arn:aws:kms:us-east-1:XXXXXXXXXXXX:key/746de6ea-50a4-4bcb-8fbc-e3b29f2d367b

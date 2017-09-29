@@ -1,0 +1,20 @@
+# Execute a command in the remote shell; stdout goes to the specified
+# file on the remote.
+- win_shell: C:\somescript.ps1 >> c:\somelog.txt
+
+# Change the working directory to somedir/ before executing the command.
+- win_shell: C:\somescript.ps1 >> c:\somelog.txt chdir=c:\somedir
+
+# You can also use the 'args' form to provide the options. This command
+# will change the working directory to somedir/ and will only run when
+# somedir/somelog.txt doesn't exist.
+- win_shell: C:\somescript.ps1 >> c:\somelog.txt
+  args:
+    chdir: c:\somedir
+    creates: c:\somelog.txt
+
+# Run a command under a non-Powershell interpreter (cmd in this case)
+- win_shell: echo %HOMEDIR%
+  args:
+    executable: cmd
+  register: homedir_out

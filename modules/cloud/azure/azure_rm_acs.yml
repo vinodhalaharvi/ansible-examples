@@ -1,0 +1,94 @@
+    - name: Create an azure container services instance running Kubernetes
+      azure_rm_acs:
+        name: acctestcontservice1
+        location: eastus
+        resource_group: Testing
+        orchestration_platform: Kubernetes
+        master_profile:
+            - count: 3
+              dns_prefix: acsk8smasterdns
+        linux_profile:
+            - admin_username: azureuser
+              ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAA...
+        service_principal:
+            - client_id: "cf72ca99-f6b9-4004-b0e0-bee10c521948"
+              client_secret: "mySPNp@ssw0rd!"
+        agent_pool_profiles:
+            - name: default
+              count: 5
+              dns_prefix: acsk8sagent
+              vm_size: Standard_D2_v2
+        diagnostics_profile: false
+        tags:
+            Environment: Production
+
+    - name: Create an azure container services instance running DCOS
+      azure_rm_acs:
+        name: acctestcontservice2
+        location: eastus
+        resource_group: Testing
+        orchestration_platform: DCOS
+        master_profile:
+            - count: 3
+              dns_prefix: acsdcosmasterdns
+        linux_profile:
+            - admin_username: azureuser
+              ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAA...
+        agent_pool_profiles:
+            - name: default
+              count: 5
+              dns_prefix: acscdcosagent
+              vm_size: Standard_D2_v2
+        diagnostics_profile: false
+        tags:
+            Environment: Production
+
+    - name: Create an azure container services instance running Swarm
+      azure_rm_acs:
+        name: acctestcontservice3
+        location: eastus
+        resource_group: Testing
+        orchestration_platform: Swarm
+        master_profile:
+            - count: 3
+              dns_prefix: acsswarmmasterdns
+        linux_profile:
+            - admin_username: azureuser
+              ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAA...
+        agent_pool_profiles:
+            - name: default
+              count: 5
+              dns_prefix: acsswarmagent
+              vm_size: Standard_D2_v2
+        diagnostics_profile: false
+        tags:
+            Environment: Production
+
+# Deletes the specified container service in the specified subscription and resource group.
+# The operation does not delete other resources created as part of creating a container service,
+# including storage accounts, VMs, and availability sets. All the other resources created with the container
+# service are part of the same resource group and can be deleted individually.
+    - name: Remove an azure container services instance
+      azure_rm_acs:
+        name: acctestcontservice3
+        location: eastus
+        resource_group: Testing
+        state: absent
+        orchestration_platform: Swarm
+        master_profile:
+            - count: 1
+              dns_prefix: acstestingmasterdns5
+        linux_profile:
+            - admin_username: azureuser
+              ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAA...
+        service_principal:
+            - client_id: 7fb4173c-3ca3-4d5b-87f8-1daac941207a
+              client_secret: MPNSuM1auUuITefiLGBrpZZnLMDKBLw2
+        agent_pool_profiles:
+            - name: default
+              count: 4
+              dns_prefix: acctestagent15
+              vm_size: Standard_A0
+        diagnostics_profile: false
+        tags:
+            Ansible: azure_rm_acs

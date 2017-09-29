@@ -1,0 +1,19 @@
+- name: Build a Block Storage Volume
+  gather_facts: False
+  hosts: local
+  connection: local
+  tasks:
+    - name: Storage volume create request
+      local_action:
+        module: rax_cbs
+        credentials: ~/.raxpub
+        name: my-volume
+        description: My Volume
+        volume_type: SSD
+        size: 150
+        region: DFW
+        wait: yes
+        state: present
+        meta:
+          app: my-cool-app
+      register: my_volume

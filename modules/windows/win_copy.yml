@@ -1,0 +1,36 @@
+- name: Copy a single file
+  win_copy:
+    src: /srv/myfiles/foo.conf
+    dest: c:\Temp\renamed-foo.conf
+
+- name: Copy a single file keeping the filename
+  win_copy:
+    src: /src/myfiles/foo.conf
+    dest: c:\temp\
+
+- name: Copy folder to c:\temp (results in C:\Temp\temp_files)
+  win_copy:
+    src: files/temp_files
+    dest: c:\Temp
+
+- name: Copy folder contents recursively
+  win_copy:
+    src: files/temp_files/
+    dest: c:\Temp
+
+- name: Copy a single file where the source is on the remote host
+  win_copy:
+    src: C:\temp\foo.txt
+    dest: C:\ansible\foo.txt
+    remote_src: True
+
+- name: Copy a folder recursively where the source is on the remote host
+  win_copy:
+    src: C:\temp
+    dest: C:\ansible
+    remote_src: True
+
+- name: Set the contents of a file
+  win_copy:
+    dest: C:\temp\foo.txt
+    content: abc123

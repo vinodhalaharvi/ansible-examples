@@ -1,0 +1,11 @@
+- name: configure the remote device
+  vyos_config:
+    lines:
+      - set system host-name {{ inventory_hostname }}
+      - set service lldp
+      - delete service dhcp-server
+
+- name: backup and load from file
+  vyos_config:
+    src: vyos.cfg
+    backup: yes

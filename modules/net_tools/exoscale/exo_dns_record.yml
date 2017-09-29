@@ -1,0 +1,52 @@
+- name: Create or update an A record
+  local_action:
+    module: exo_dns_record
+    name: web-vm-1
+    domain: example.com
+    content: 1.2.3.4
+
+- name: Update an existing A record with a new IP
+  local_action:
+    module: exo_dns_record
+    name: web-vm-1
+    domain: example.com
+    content: 1.2.3.5
+
+- name: Create another A record with same name
+  local_action:
+    module: exo_dns_record
+    name: web-vm-1
+    domain: example.com
+    content: 1.2.3.6
+    multiple: yes
+
+- name: Create or update a CNAME record
+  local_action:
+    module: exo_dns_record
+    name: www
+    domain: example.com
+    record_type: CNAME
+    content: web-vm-1
+
+- name: Create or update a MX record
+  local_action:
+    module: exo_dns_record
+    domain: example.com
+    record_type: MX
+    content: mx1.example.com
+    prio: 10
+
+- name: Delete a MX record
+  local_action:
+    module: exo_dns_record
+    domain: example.com
+    record_type: MX
+    content: mx1.example.com
+    state: absent
+
+- name: Remove a record
+  local_action:
+    module: exo_dns_record
+    name: www
+    domain: example.com
+    state: absent

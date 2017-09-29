@@ -1,0 +1,32 @@
+- name: show first existin file
+  debug: var=item
+  with_first_found:
+    - "/path/to/foo.txt"
+    - "bar.txt"  # will be looked in files/ dir relative to play or in role
+    - "/path/to/biz.txt"
+
+- name: copy first existing file found to /some/file
+  copy: src={{item}} dest=/some/file
+  with_first_found:
+    - foo
+    - "{{inventory_hostname}}
+    - bar
+
+- name: same copy but specific paths
+  copy: src={{item}} dest=/some/file
+  with_first_found:
+    files:
+      - foo
+      - "{{inventory_hostname}}
+      - bar
+    paths:
+      - /tmp/production
+      - /tmp/staging
+
+- name: INTERFACES | Create Ansible header for /etc/network/interfaces
+  template:
+    src: "{{ item }}"
+    dest: "/etc/foo.conf"
+  with_first_found:
+    - "{{ ansible_virtualization_type }}_foo.conf"
+    - "default_foo.conf"

@@ -1,0 +1,70 @@
+# create a test.my.com A record to point to 127.0.0.1
+- cloudflare_dns:
+    zone: my.com
+    record: test
+    type: A
+    value: 127.0.0.1
+    account_email: test@example.com
+    account_api_token: dummyapitoken
+  register: record
+
+# create a my.com CNAME record to example.com
+- cloudflare_dns:
+    zone: my.com
+    type: CNAME
+    value: example.com
+    state: present
+    account_email: test@example.com
+    account_api_token: dummyapitoken
+
+# change it's ttl
+- cloudflare_dns:
+    zone: my.com
+    type: CNAME
+    value: example.com
+    ttl: 600
+    state: present
+    account_email: test@example.com
+    account_api_token: dummyapitoken
+
+# and delete the record
+- cloudflare_dns:
+    zone: my.com
+    type: CNAME
+    value: example.com
+    state: absent
+    account_email: test@example.com
+    account_api_token: dummyapitoken
+
+# create a my.com CNAME record to example.com and proxy through cloudflare's network
+- cloudflare_dns:
+    zone: my.com
+    type: CNAME
+    value: example.com
+    state: present
+    proxied: yes
+    account_email: test@example.com
+    account_api_token: dummyapitoken
+
+# create TXT record "test.my.com" with value "unique value"
+# delete all other TXT records named "test.my.com"
+- cloudflare_dns:
+    domain: my.com
+    record: test
+    type: TXT
+    value: unique value
+    state: present
+    solo: true
+    account_email: test@example.com
+    account_api_token: dummyapitoken
+
+# create a SRV record _foo._tcp.my.com
+- cloudflare_dns:
+    domain: my.com
+    service: foo
+    proto: tcp
+    port: 3500
+    priority: 10
+    weight: 20
+    type: SRV
+    value: fooserver.my.com

@@ -1,0 +1,21 @@
+---
+# This example saves the mysql users config from memory to disk. It uses
+# supplied credentials to connect to the proxysql admin interface.
+
+- proxysql_global_variables:
+    login_user: 'admin'
+    login_password: 'admin'
+    action: "SAVE"
+    config_settings: "MYSQL USERS"
+    direction: "FROM"
+    config_layer: "MEMORY"
+
+# This example loads the mysql query rules config from memory to to runtime. It
+# uses supplied credentials to connect to the proxysql admin interface.
+
+- proxysql_global_variables:
+    config_file: '~/proxysql.cnf'
+    action: "LOAD"
+    config_settings: "MYSQL QUERY RULES"
+    direction: "TO"
+    config_layer: "RUNTIME"

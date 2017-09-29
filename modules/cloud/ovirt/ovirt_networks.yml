@@ -1,0 +1,14 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create network
+- ovirt_networks:
+    data_center: mydatacenter
+    name: mynetwork
+    vlan_tag: 1
+    vm_network: true
+
+# Remove network
+- ovirt_networks:
+    state: absent
+    name: mynetwork

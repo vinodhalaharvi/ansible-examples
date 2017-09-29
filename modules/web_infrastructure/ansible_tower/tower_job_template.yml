@@ -1,0 +1,10 @@
+- name: Create tower Ping job template
+  tower_job_template:
+    name: Ping
+    job_type: run
+    inventory: Local
+    project: Demo
+    playbook: ping.yml
+    machine_credential: Local
+    state: present
+    tower_config_file: "~/tower_cli.cfg"

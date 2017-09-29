@@ -1,0 +1,22 @@
+# Create a zone named "example.net"
+- os_zone:
+    cloud: mycloud
+    state: present
+    name: example.net.
+    zone_type: primary
+    email: test@example.net
+    description: Test zone
+    ttl: 3600
+
+# Update the TTL on existing "example.net." zone
+- os_zone:
+    cloud: mycloud
+    state: present
+    name: example.net.
+    ttl: 7200
+
+# Delete zone named "example.net."
+- os_zone:
+    cloud: mycloud
+    state: absent
+    name: example.net.

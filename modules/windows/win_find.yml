@@ -1,0 +1,95 @@
+# Find files in path
+- win_find:
+    paths: D:\temp
+
+# Find hidden files in path
+- win_find:
+    paths: D:\temp
+    hidden: True
+
+# Find files in multiple paths
+- win_find:
+    paths: ['C:\temp', 'D:\temp']
+
+# Find files in directory while searching recursively
+- win_find:
+    paths: D:\temp
+    recurse: True
+
+# Find files in directory while following symlinks
+- win_find:
+    paths: D:\temp
+    recurse: True
+    follow: True
+
+# Find files with .log and .out extension using powershell wildcards
+- win_find:
+    paths: D:\temp
+    patterns: ['*.log', '*.out']
+
+# Find files in path based on regex pattern
+- win_find:
+    paths: D:\temp
+    patterns: 'out_\d{8}-\d{6}.log'
+
+# Find files older than 1 day
+- win_find:
+    paths: D:\temp
+    age: 86400
+
+# Find files older than 1 day based on create time
+- win_find:
+    paths: D:\temp
+    age: 86400
+    age_stamp: ctime
+
+# Find files older than 1 day with unit syntax
+- win_find:
+    paths: D:\temp
+    age: 1d
+
+# Find files newer than 1 hour
+- win_find:
+    paths: D:\temp
+    age: -3600
+
+# Find files newer than 1 hour with unit syntax
+- win_find:
+    paths: D:\temp
+    age: -1h
+
+# Find files larger than 1MB
+- win_find:
+    paths: D:\temp
+    size: 1048576
+
+# Find files larger than 1GB with unit syntax
+- win_find:
+    paths: D:\temp
+    size: 1g
+
+# Find files smaller than 1MB
+- win_find:
+    paths: D:\temp
+    size: -1048576
+
+# Find files smaller than 1GB with unit syntax
+- win_find:
+    paths: D:\temp
+    size: -1g
+
+# Find folders/symlinks in multiple paths
+- win_find:
+    paths: ['C:\temp', 'D:\temp']
+    file_type: directory
+
+# Find files and return SHA256 checksum of files found
+- win_find:
+    paths: C:\temp
+    get_checksum: True
+    checksum_algorithm: sha256
+
+# Find files and do not return the checksum
+- win_find:
+    path: C:\temp
+    get_checksum: False

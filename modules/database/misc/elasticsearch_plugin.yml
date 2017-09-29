@@ -1,0 +1,19 @@
+# Install Elasticsearch Head plugin in Elasticsearch 2.x
+- elasticsearch_plugin:
+    name: mobz/elasticsearch-head
+    state: present
+
+# Install a specific version of Elasticsearch Head in Elasticsearch 2.x
+- elasticsearch_plugin:
+    name: mobz/elasticsearch-head
+    versino: 2.0.0
+
+# Uninstall Elasticsearch head plugin in Elasticsearch 2.x
+- elasticsearch_plugin:
+    name: mobz/elasticsearch-head
+    state: absent
+
+# Install a specific plugin in Elasticsearch >= 5.0
+- elasticsearch_plugin:
+    name: analysis-icu
+    state: present

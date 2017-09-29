@@ -1,0 +1,2 @@
+# Retrieve (ohai) data from all Web servers and store in one-file per host
+ansible webservers -m ohai --tree=/tmp/ohaidata

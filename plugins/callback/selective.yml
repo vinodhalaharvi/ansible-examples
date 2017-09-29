@@ -1,0 +1,3 @@
+  - debug: msg="This will not be printed"
+  - debug: msg="But this will"
+    tags: [print_action]

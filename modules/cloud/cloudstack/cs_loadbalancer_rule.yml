@@ -1,0 +1,24 @@
+# Create a load balancer rule
+- local_action:
+    module: cs_loadbalancer_rule
+    name: balance_http
+    public_ip: 1.2.3.4
+    algorithm: leastconn
+    public_port: 80
+    private_port: 8080
+
+# update algorithm of an existing load balancer rule
+- local_action:
+    module: cs_loadbalancer_rule
+    name: balance_http
+    public_ip: 1.2.3.4
+    algorithm: roundrobin
+    public_port: 80
+    private_port: 8080
+
+# Delete a load balancer rule
+- local_action:
+    module: cs_loadbalancer_rule
+    name: balance_http
+    public_ip: 1.2.3.4
+    state: absent

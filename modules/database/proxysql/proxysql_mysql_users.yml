@@ -1,0 +1,22 @@
+---
+# This example adds a user, it saves the mysql user config to disk, but
+# avoids loading the mysql user config to runtime (this might be because
+# several users are being added and the user wants to push the config to
+# runtime in a single batch using the M(proxysql_manage_config) module).  It
+# uses supplied credentials to connect to the proxysql admin interface.
+
+- proxysql_mysql_users:
+    login_user: 'admin'
+    login_password: 'admin'
+    username: 'productiondba'
+    state: present
+    load_to_runtime: False
+
+# This example removes a user, saves the mysql user config to disk, and
+# dynamically loads the mysql user config to runtime.  It uses credentials
+# in a supplied config file to connect to the proxysql admin interface.
+
+- proxysql_mysql_users:
+    config_file: '~/proxysql.cnf'
+    username: 'mysqlboy'
+    state: absent

@@ -1,0 +1,72 @@
+# Basic task example
+- name: launch ansible cloudformation example
+  cloudformation:
+    stack_name: "ansible-cloudformation"
+    state: "present"
+    region: "us-east-1"
+    disable_rollback: true
+    template: "files/cloudformation-example.json"
+    template_parameters:
+      KeyName: "jmartin"
+      DiskType: "ephemeral"
+      InstanceType: "m1.small"
+      ClusterSize: 3
+    tags:
+      Stack: "ansible-cloudformation"
+
+# Basic role example
+- name: launch ansible cloudformation example
+  cloudformation:
+    stack_name: "ansible-cloudformation"
+    state: "present"
+    region: "us-east-1"
+    disable_rollback: true
+    template: "roles/cloudformation/files/cloudformation-example.json"
+    template_parameters:
+      KeyName: "jmartin"
+      DiskType: "ephemeral"
+      InstanceType: "m1.small"
+      ClusterSize: 3
+    tags:
+      Stack: "ansible-cloudformation"
+
+# Removal example
+- name: tear down old deployment
+  cloudformation:
+    stack_name: "ansible-cloudformation-old"
+    state: "absent"
+
+# Use a template from a URL
+- name: launch ansible cloudformation example
+  cloudformation:
+    stack_name: "ansible-cloudformation"
+    state: present
+    region: us-east-1
+    disable_rollback: true
+    template_url: https://s3.amazonaws.com/my-bucket/cloudformation.template
+  args:
+    template_parameters:
+      KeyName: jmartin
+      DiskType: ephemeral
+      InstanceType: m1.small
+      ClusterSize: 3
+    tags:
+      Stack: ansible-cloudformation
+
+# Use a template from a URL, and assume a role to execute
+- name: launch ansible cloudformation example with role assumption
+  cloudformation:
+    stack_name: "ansible-cloudformation"
+    state: present
+    region: us-east-1
+    disable_rollback: true
+    template_url: https://s3.amazonaws.com/my-bucket/cloudformation.template
+    role_arn: 'arn:aws:iam::123456789012:role/cloudformation-iam-role'
+  args:
+    template_parameters:
+      KeyName: jmartin
+      DiskType: ephemeral
+      InstanceType: m1.small
+      ClusterSize: 3
+    tags:
+      Stack: ansible-cloudformation

@@ -1,0 +1,7 @@
+---
+- name: Set cluster Online
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: get cluster state
+      pacemaker_cluster: state=online

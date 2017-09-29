@@ -1,0 +1,4 @@
+- nxos_file_copy:
+    local_file: "./test_file.txt"
+    remote_file: "test_file.txt"
+    provider: "{{ cli }}"

@@ -1,0 +1,48 @@
+# add a new read-only deploy key to a GitHub repository using basic authentication
+- github_deploy_key:
+    owner: "johndoe"
+    repo: "example"
+    name: "new-deploy-key"
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAwXxn7kIMNWzcDfou..."
+    read_only: yes
+    username: "johndoe"
+    password: "supersecretpassword"
+
+# remove an existing deploy key from a GitHub repository
+- github_deploy_key:
+    owner: "johndoe"
+    repository: "example"
+    name: "new-deploy-key"
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAwXxn7kIMNWzcDfou..."
+    force: yes
+    username: "johndoe"
+    password: "supersecretpassword"
+    state: absent
+
+# add a new deploy key to a GitHub repository, replace an existing key, use an OAuth2 token to authenticate
+- github_deploy_key:
+    owner: "johndoe"
+    repository: "example"
+    name: "new-deploy-key"
+    key: "{{ lookup('file', '~/.ssh/github.pub') }}"
+    force: yes
+    token: "ABAQDAwXxn7kIMNWzcDfo..."
+
+# re-add a deploy key to a GitHub repository but with a different name
+- github_deploy_key:
+    owner: "johndoe"
+    repository: "example"
+    name: "replace-deploy-key"
+    key: "{{ lookup('file', '~/.ssh/github.pub') }}"
+    username: "johndoe"
+    password: "supersecretpassword"
+
+# add a new deploy key to a GitHub repository using 2FA
+- github_deploy_key:
+    owner: "johndoe"
+    repo: "example"
+    name: "new-deploy-key-2"
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAwXxn7kIMNWzcDfou..."
+    username: "johndoe"
+    password: "supersecretpassword"
+    otp: 123456

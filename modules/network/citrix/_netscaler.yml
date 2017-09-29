@@ -1,0 +1,21 @@
+# Disable the server
+- netscaler:
+    nsc_host: nsc.example.com
+    user: apiuser
+    password: apipass
+
+# Enable the server
+- netscaler:
+    nsc_host: nsc.example.com
+    user: apiuser
+    password: apipass
+    action: enable
+
+# Disable the service local:8080
+- netscaler:
+    nsc_host: nsc.example.com
+    user: apiuser
+    password: apipass
+    name: 'local:8080'
+    type: service
+    action: disable

@@ -1,0 +1,67 @@
+- name: create a task to open 2 command prompts as SYSTEM
+  win_scheduled_task:
+    name: TaskName
+    description: open command prompt
+    actions:
+    - path: cmd.exe
+      arguments: /c hostname
+    - path: cmd.exe
+      arguments: /c whoami
+    triggers:
+    - type: daily
+      start_boundary: 2017-10-09T09:00:00
+    username: SYSTEM
+    state: present
+    enabled: yes
+
+- name: create task to run a PS script as NETWORK service on boot
+  win_scheduled_task:
+    name: TaskName2
+    description: Run a PowerShell script
+    actions:
+    - path: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+      arguments: -ExecutionPolicy Unrestricted -NonInteractive -File C:\TestDir\Test.ps1
+    triggers:
+    - type: boot
+    username: NETWORK SERVICE
+    run_level: highest
+    state: present
+
+- name: change above task to run under a domain user account, storing the passwords
+  win_scheduled_task:
+    name: TaskName2
+    username: DOMAIN\User
+    password: Password
+    logon_type: password
+
+- name: change the above task again, choosing not to store the password
+  win_scheduled_task:
+    name: TaskName2
+    username: DOMAIN\User
+    logon_type: s4u
+
+- name: create task with multiple triggers
+  win_scheduled_task:
+    name: TriggerTask
+    path: \Custom
+    actions:
+    - path: cmd.exe
+    triggers:
+    - type: daily
+    - type: monthlydow
+    username: SYSTEM
+
+- name: set logon type to password but don't force update the password
+  win_scheduled_task:
+    name: TriggerTask
+    path: \Custom
+    actions:
+    - path: cmd.exe
+    username: Administrator
+    password: password
+    update_password: no
+
+- name: disable a task that already exists
+  win_scheduled_task:
+    name: TaskToDisable
+    enabled: no

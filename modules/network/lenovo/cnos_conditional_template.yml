@@ -1,0 +1,19 @@
+Tasks : The following are examples of using the module cnos_conditional_template. These are written in the main.yml file of the tasks directory.
+---
+- name: Applying CLI template on VLAG Tier1 Leaf Switch1
+  cnos_conditional_template:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      outputfile: "./results/vlag_1tier_leaf_switch1_{{ inventory_hostname }}_output.txt"
+      condition: "{{ hostvars[inventory_hostname]['condition']}}"
+      flag: "leaf_switch1"
+      commandfile: "./commands/vlag_1tier_leaf_switch1_{{ inventory_hostname }}_commands.txt"
+      enablePassword: "anil"
+      stp_mode1: "disable"
+      port_range1: "17,18,29,30"
+      portchannel_interface_number1: 1001
+      portchannel_mode1: active
+      slot_chassis_number1: 1/48
+      switchport_mode1: trunk

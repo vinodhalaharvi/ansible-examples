@@ -1,0 +1,19 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Add user user1 from authorization provider example.com-authz
+- ovirt_permissions:
+    user_name: user1
+    authz_name: example.com-authz
+    object_type: vm
+    object_name: myvm
+    role: UserVmManager
+
+# Remove permission from user
+- ovirt_permissions:
+    state: absent
+    user_name: user1
+    authz_name: example.com-authz
+    object_type: cluster
+    object_name: mycluster
+    role: ClusterAdmin

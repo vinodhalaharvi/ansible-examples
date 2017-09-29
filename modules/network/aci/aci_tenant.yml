@@ -1,0 +1,31 @@
+- name: Add a new tenant
+  aci_tenant:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    tenant: production
+    description: Production tenant
+    state: present
+
+- name: Remove a tenant
+  aci_tenant:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    tenant: production
+    state: absent
+
+- name: Query a tenant
+  aci_tenant:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    tenant: production
+    state: query
+
+- name: Query all tenants
+  aci_tenant:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    state: query

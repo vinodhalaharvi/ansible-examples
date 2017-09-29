@@ -1,0 +1,29 @@
+- name: Sync the contents of one directory to another
+  win_robocopy:
+    src: C:\DirectoryOne
+    dest: C:\DirectoryTwo
+
+- name: Sync the contents of one directory to another, including subdirectories
+  win_robocopy:
+    src: C:\DirectoryOne
+    dest: C:\DirectoryTwo
+    recurse: yes
+
+- name: Sync the contents of one directory to another, and remove any files/directories found in destination that do not exist in the source
+  win_robocopy:
+    src: C:\DirectoryOne
+    dest: C:\DirectoryTwo
+    purge: yes
+
+- name: Sync content in recursive mode, removing any files/directories found in destination that do not exist in the source
+  win_robocopy:
+    src: C:\DirectoryOne
+    dest: C:\DirectoryTwo
+    recurse: yes
+    purge: yes
+
+- name: Sync two directories in recursive and purging mode, specifying additional special flags
+  win_robocopy:
+    src: C:\DirectoryOne
+    dest: C:\DirectoryTwo
+    flags: /E /PURGE /XD SOME_DIR /XF SOME_FILE /MT:32

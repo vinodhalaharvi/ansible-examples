@@ -1,0 +1,8 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all groups which names start with C(admin):
+- ovirt_group_facts:
+    pattern: name=admin*
+- debug:
+    var: ovirt_groups

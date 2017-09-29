@@ -1,0 +1,17 @@
+# Build the default target
+- make:
+    chdir: /home/ubuntu/cool-project
+
+# Run `install` target as root
+- make:
+    chdir: /home/ubuntu/cool-project
+    target: install
+  become: yes
+
+# Pass in extra arguments to build
+- make:
+    chdir: /home/ubuntu/cool-project
+    target: all
+    params:
+      NUM_THREADS: 4
+      BACKEND: lapack

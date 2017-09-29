@@ -1,0 +1,8 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all data centers which names start with C(production):
+- ovirt_datacenter_facts:
+    pattern: name=production*
+- debug:
+    var: ovirt_datacenters

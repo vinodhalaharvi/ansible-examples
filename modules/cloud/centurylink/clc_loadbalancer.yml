@@ -1,0 +1,80 @@
+# Note - You must set the CLC_V2_API_USERNAME And CLC_V2_API_PASSWD Environment variables before running these examples
+- name: Create Loadbalancer
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Actually Create things
+      clc_loadbalancer:
+        name: test
+        description: test
+        alias: TEST
+        location: WA1
+        port: 443
+        nodes:
+          - ipAddress: 10.11.22.123
+            privatePort: 80
+        state: present
+
+- name: Add node to an existing loadbalancer pool
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Actually Create things
+      clc_loadbalancer:
+        name: test
+        description: test
+        alias: TEST
+        location: WA1
+        port: 443
+        nodes:
+          - ipAddress: 10.11.22.234
+            privatePort: 80
+        state: nodes_present
+
+- name: Remove node from an existing loadbalancer pool
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Actually Create things
+      clc_loadbalancer:
+        name: test
+        description: test
+        alias: TEST
+        location: WA1
+        port: 443
+        nodes:
+          - ipAddress: 10.11.22.234
+            privatePort: 80
+        state: nodes_absent
+
+- name: Delete LoadbalancerPool
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Actually Delete things
+      clc_loadbalancer:
+        name: test
+        description: test
+        alias: TEST
+        location: WA1
+        port: 443
+        nodes:
+          - ipAddress: 10.11.22.123
+            privatePort: 80
+        state: port_absent
+
+- name: Delete Loadbalancer
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Actually Delete things
+      clc_loadbalancer:
+        name: test
+        description: test
+        alias: TEST
+        location: WA1
+        port: 443
+        nodes:
+          - ipAddress: 10.11.22.123
+            privatePort: 80
+        state: absent

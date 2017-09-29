@@ -1,0 +1,4 @@
+- name: Ensure ntc VRF exists on switch
+  nxos_vrf:
+    vrf: ntc
+    state: present

@@ -1,0 +1,19 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Gather facts about all instances
+- ec2_instance_facts:
+
+# Gather facts about all instances in AZ ap-southeast-2a
+- ec2_instance_facts:
+    filters:
+      availability-zone: ap-southeast-2a
+
+# Gather facts about a particular instance using ID
+- ec2_instance_facts:
+    instance_ids:
+      - i-12345678
+
+# Gather facts about any instance with a tag key Name and value Example
+- ec2_instance_facts:
+    filters:
+      "tag:Name": Example

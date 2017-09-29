@@ -1,0 +1,19 @@
+examples: >
+  To enable, add this to your ansible.cfg file in the defaults block
+
+    [defaults]
+    callback_whitelist = logentries
+
+  Either set the environment variables
+    export LOGENTRIES_API=data.logentries.com
+    export LOGENTRIES_PORT=10000
+    export LOGENTRIES_ANSIBLE_TOKEN=dd21fc88-f00a-43ff-b977-e3a4233c53af
+
+  Or in the main Ansible config file
+    [callback_logentries]
+    api = data.logentries.com
+    port = 10000
+    tls_port = 20000
+    use_tls = no
+    token = dd21fc88-f00a-43ff-b977-e3a4233c53af
+    flatten = False

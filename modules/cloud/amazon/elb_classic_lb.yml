@@ -1,0 +1,219 @@
+# Note: None of these examples set aws_access_key, aws_secret_key, or region.
+# It is assumed that their matching environment variables are set.
+
+# Basic provisioning example (non-VPC)
+
+- elb_classic_lb:
+    name: "test-please-delete"
+    state: present
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http # options are http, https, ssl, tcp
+        load_balancer_port: 80
+        instance_port: 80
+        proxy_protocol: True
+      - protocol: https
+        load_balancer_port: 443
+        instance_protocol: http # optional, defaults to value of protocol setting
+        instance_port: 80
+        # ssl certificate required for https or ssl
+        ssl_certificate_id: "arn:aws:iam::123456789012:server-certificate/company/servercerts/ProdServerCert"
+  delegate_to: localhost
+
+# Internal ELB example
+
+- elb_classic_lb:
+    name: "test-vpc"
+    scheme: internal
+    state: present
+    instance_ids:
+      - i-abcd1234
+    purge_instance_ids: true
+    subnets:
+      - subnet-abcd1234
+      - subnet-1a2b3c4d
+    listeners:
+      - protocol: http # options are http, https, ssl, tcp
+        load_balancer_port: 80
+        instance_port: 80
+  delegate_to: localhost
+
+# Configure a health check and the access logs
+- elb_classic_lb:
+    name: "test-please-delete"
+    state: present
+    zones:
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+    health_check:
+        ping_protocol: http # options are http, https, ssl, tcp
+        ping_port: 80
+        ping_path: "/index.html" # not required for tcp or ssl
+        response_timeout: 5 # seconds
+        interval: 30 # seconds
+        unhealthy_threshold: 2
+        healthy_threshold: 10
+    access_logs:
+        interval: 5 # minutes (defaults to 60)
+        s3_location: "my-bucket" # This value is required if access_logs is set
+        s3_prefix: "logs"
+  delegate_to: localhost
+
+# Ensure ELB is gone
+- elb_classic_lb:
+    name: "test-please-delete"
+    state: absent
+  delegate_to: localhost
+
+# Ensure ELB is gone and wait for check (for default timeout)
+- elb_classic_lb:
+    name: "test-please-delete"
+    state: absent
+    wait: yes
+  delegate_to: localhost
+
+# Ensure ELB is gone and wait for check with timeout value
+- elb_classic_lb:
+    name: "test-please-delete"
+    state: absent
+    wait: yes
+    wait_timeout: 600
+  delegate_to: localhost
+
+# Normally, this module will purge any listeners that exist on the ELB
+# but aren't specified in the listeners parameter. If purge_listeners is
+# false it leaves them alone
+- elb_classic_lb:
+    name: "test-please-delete"
+    state: present
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+    purge_listeners: no
+  delegate_to: localhost
+
+# Normally, this module will leave availability zones that are enabled
+# on the ELB alone. If purge_zones is true, then any extraneous zones
+# will be removed
+- elb_classic_lb:
+    name: "test-please-delete"
+    state: present
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+    purge_zones: yes
+  delegate_to: localhost
+
+# Creates a ELB and assigns a list of subnets to it.
+- elb_classic_lb:
+    state: present
+    name: 'New ELB'
+    security_group_ids: 'sg-123456, sg-67890'
+    region: us-west-2
+    subnets: 'subnet-123456,subnet-67890'
+    purge_subnets: yes
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+  delegate_to: localhost
+
+# Create an ELB with connection draining, increased idle timeout and cross availability
+# zone load balancing
+- elb_classic_lb:
+    name: "New ELB"
+    state: present
+    connection_draining_timeout: 60
+    idle_timeout: 300
+    cross_az_load_balancing: "yes"
+    region: us-east-1
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+  delegate_to: localhost
+
+# Create an ELB with load balancer stickiness enabled
+- elb_classic_lb:
+    name: "New ELB"
+    state: present
+    region: us-east-1
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+    stickiness:
+      type: loadbalancer
+      enabled: yes
+      expiration: 300
+  delegate_to: localhost
+
+# Create an ELB with application stickiness enabled
+- elb_classic_lb:
+    name: "New ELB"
+    state: present
+    region: us-east-1
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+    stickiness:
+      type: application
+      enabled: yes
+      cookie: SESSIONID
+  delegate_to: localhost
+
+# Create an ELB and add tags
+- elb_classic_lb:
+    name: "New ELB"
+    state: present
+    region: us-east-1
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+    tags:
+      Name: "New ELB"
+      stack: "production"
+      client: "Bob"
+  delegate_to: localhost
+
+# Delete all tags from an ELB
+- elb_classic_lb:
+    name: "New ELB"
+    state: present
+    region: us-east-1
+    zones:
+      - us-east-1a
+      - us-east-1d
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: 80
+    tags: {}
+  delegate_to: localhost

@@ -1,0 +1,13 @@
+# Unconditionally reboot the machine with all defaults
+- win_reboot:
+
+# Apply updates and reboot if necessary
+- win_updates:
+  register: update_result
+- win_reboot:
+  when: update_result.reboot_required
+
+# Reboot a slow machine that might have lots of updates to apply
+- win_reboot:
+    shutdown_timeout: 3600
+    reboot_timeout: 3600

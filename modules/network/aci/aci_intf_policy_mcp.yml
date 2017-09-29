@@ -1,0 +1,7 @@
+- aci_mcp:
+    hostname: '{{ hostname }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    mcp: '{{ mcp }}'
+    description: '{{ descr }}'
+    admin_state: '{{ admin_state }}'

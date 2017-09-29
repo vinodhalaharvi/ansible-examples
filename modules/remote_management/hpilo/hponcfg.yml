@@ -1,0 +1,26 @@
+- name: Example hponcfg configuration XML
+  copy:
+    content: |
+      <ribcl VERSION="2.0">
+        <login USER_LOGIN="user" PASSWORD="password">
+          <rib_info MODE="WRITE">
+            <mod_global_settings>
+              <session_timeout value="0"/>
+              <ssh_status value="Y"/>
+              <ssh_port value="22"/>
+              <serial_cli_status value="3"/>
+              <serial_cli_speed value="5"/>
+            </mod_global_settings>
+          </rib_info>
+        </login>
+      </ribcl>
+    dest: /tmp/enable-ssh.xml
+
+- name: Configure HP iLO using enable-ssh.xml
+  hponcfg:
+    src: /tmp/enable-ssh.xml
+
+- name: Configure HP iLO on VMware ESXi hypervisor
+  hponcfg:
+    src: /tmp/enable-ssh.xml
+    executable: /opt/hp/tools/hponcfg

@@ -1,0 +1,18 @@
+
+# Install the etcd system container
+- atomic_container:
+    name: etcd
+    image: rhel/etcd
+    backend: ostree
+    state: latest
+    system: True
+    values:
+        - ETCD_NAME=etcd.server
+
+# Uninstall the etcd system container
+- atomic_container:
+    name: etcd
+    image: rhel/etcd
+    backend: ostree
+    state: absent
+    system: True

@@ -1,0 +1,5 @@
+    - name: "a value from a locally running etcd"
+      debug: msg={{ lookup('etcd', 'foo/bar') }}
+
+    - name: "a values from a folder on a locally running etcd"
+      debug: msg={{ lookup('etcd', 'foo') }}

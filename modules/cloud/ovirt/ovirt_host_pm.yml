@@ -1,0 +1,21 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Add fence agent to host 'myhost'
+- ovirt_host_pm:
+    name: myhost
+    address: 1.2.3.4
+    options:
+      myoption1: x
+      myoption2: y
+    username: admin
+    password: admin
+    port: 3333
+    type: ipmilan
+
+# Remove ipmilan fence agent with address 1.2.3.4 on host 'myhost'
+- ovirt_host_pm:
+    state: absent
+    name: myhost
+    address: 1.2.3.4
+    type: ipmilan

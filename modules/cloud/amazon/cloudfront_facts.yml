@@ -1,0 +1,42 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Get a summary of distributions
+- cloudfront_facts:
+    summary: true
+
+# Get information about a distribution
+- cloudfront_facts:
+    distribution: true
+    distribution_id: my-cloudfront-distribution-id
+
+# Get information about a distribution using the CNAME of the cloudfront distribution.
+- cloudfront_facts:
+    distribution: true
+    domain_name_alias: www.my-website.com
+
+# Facts are published in ansible_facts['cloudfront'][<distribution_name>]
+- debug:
+    msg: "{{ ansible_facts['cloudfront']['my-cloudfront-distribution-id'] }}"
+
+- debug:
+    msg: "{{ ansible_facts['cloudfront']['www.my-website.com'] }}"
+
+# Get all information about an invalidation for a distribution.
+- cloudfront_facts:
+    invalidation: true
+    distribution_id: my-cloudfront-distribution-id
+    invalidation_id: my-cloudfront-invalidation-id
+
+# Get all information about a cloudfront origin access identity.
+- cloudfront_facts:
+    origin_access_identity: true
+    origin_access_identity_id: my-cloudfront-origin-access-identity-id
+
+# Get all information about lists not requiring parameters (ie. list_origin_access_identities, list_distributions, list_streaming_distributions)
+- cloudfront_facts:
+    origin_access_identity: true
+    origin_access_identity_id: my-cloudfront-origin-access-identity-id
+
+# Get all information about lists not requiring parameters (ie. list_origin_access_identities, list_distributions, list_streaming_distributions)
+- cloudfront_facts:
+    all_lists: true

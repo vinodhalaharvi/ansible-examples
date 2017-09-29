@@ -1,0 +1,35 @@
+- name: Add a new filter to a tenant
+  aci_filter:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    filter: web_filter
+    description: Filter for web protocols
+    tenant: production
+    state: present
+
+- name: Remove a filter for a tenant
+  aci_filter:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    filter: web_filter
+    tenant: production
+    state: absent
+
+- name: Query a filter of a tenant
+  aci_filter:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    filter: web_filter
+    tenant: production
+    state: query
+
+- name: Query all filters for a tenant
+  aci_filter:
+    hostname: apic
+    username: admin
+    password: SomeSecretPassword
+    tenant: production
+    state: query

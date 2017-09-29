@@ -1,0 +1,51 @@
+
+- name: "Create ASN Pool"
+  aos_asn_pool:
+    session: "{{ aos_session }}"
+    name: "my-asn-pool"
+    ranges:
+      - [ 100, 200 ]
+    state: present
+  register: asnpool
+
+- name: "Save ASN Pool into a file in JSON"
+  copy:
+    content: "{{ asnpool.value | to_nice_json }}"
+    dest: resources/asn_pool_saved.json
+
+- name: "Save ASN Pool into a file in YAML"
+  copy:
+    content: "{{ asnpool.value | to_nice_yaml }}"
+    dest: resources/asn_pool_saved.yaml
+
+
+- name: "Delete ASN Pool"
+  aos_asn_pool:
+    session: "{{ aos_session }}"
+    name: "my-asn-pool"
+    state: absent
+
+- name: "Load ASN Pool from File(JSON)"
+  aos_asn_pool:
+    session: "{{ aos_session }}"
+    content: "{{ lookup('file', 'resources/asn_pool_saved.json') }}"
+    state: present
+
+- name: "Delete ASN Pool from File(JSON)"
+  aos_asn_pool:
+    session: "{{ aos_session }}"
+    content: "{{ lookup('file', 'resources/asn_pool_saved.json') }}"
+    state: absent
+
+- name: "Load ASN Pool from File(Yaml)"
+  aos_asn_pool:
+    session: "{{ aos_session }}"
+    content: "{{ lookup('file', 'resources/asn_pool_saved.yaml') }}"
+    state: present
+  register: test
+
+- name: "Delete ASN Pool from File(Yaml)"
+  aos_asn_pool:
+    session: "{{ aos_session }}"
+    content: "{{ lookup('file', 'resources/asn_pool_saved.yaml') }}"
+    state: absent

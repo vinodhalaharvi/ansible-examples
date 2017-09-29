@@ -1,0 +1,3 @@
+  # Install URLRewrite2.
+  win_webpicmd:
+    name: URLRewrite2

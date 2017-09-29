@@ -1,0 +1,6 @@
+- name: dag
+  panos_dag:
+    ip_address: "192.168.1.1"
+    password: "admin"
+    dag_name: "dag-1"
+    dag_filter: "'aws-tag.aws:cloudformation:logical-id.ServerInstance' and 'instanceState.running'"

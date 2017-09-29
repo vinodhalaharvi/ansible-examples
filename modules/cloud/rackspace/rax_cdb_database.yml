@@ -1,0 +1,11 @@
+- name: Build a database in Cloud Databases
+  tasks:
+    - name: Database build request
+      local_action:
+        module: rax_cdb_database
+        credentials: ~/.raxpub
+        region: IAD
+        cdb_id: 323e7ce0-9cb0-11e3-a5e2-0800200c9a66
+        name: db1
+        state: present
+      register: rax_db_database

@@ -1,0 +1,139 @@
+# Examples use the django example at U(https://docs.docker.com/compose/django/). Follow it to create the flask
+# directory
+
+- name: Run using a project directory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - docker_service:
+        project_src: flask
+        state: absent
+
+    - docker_service:
+        project_src: flask
+      register: output
+
+    - debug:
+        var: output
+
+    - docker_service:
+        project_src: flask
+        build: no
+      register: output
+
+    - debug:
+        var: output
+
+    - assert:
+        that: "not output.changed "
+
+    - docker_service:
+        project_src: flask
+        build: no
+        stopped: true
+      register: output
+
+    - debug:
+        var: output
+
+    - assert:
+        that:
+          - "not web.flask_web_1.state.running"
+          - "not db.flask_db_1.state.running"
+
+    - docker_service:
+        project_src: flask
+        build: no
+        restarted: true
+      register: output
+
+    - debug:
+        var: output
+
+    - assert:
+        that:
+          - "web.flask_web_1.state.running"
+          - "db.flask_db_1.state.running"
+
+- name: Scale the web service to 2
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - docker_service:
+        project_src: flask
+        scale:
+          web: 2
+      register: output
+
+    - debug:
+        var: output
+
+- name: Run with inline v2 compose
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - docker_service:
+        project_src: flask
+        state: absent
+
+    - docker_service:
+        project_name: flask
+        definition:
+          version: '2'
+          services:
+            db:
+              image: postgres
+            web:
+              build: "{{ playbook_dir }}/flask"
+              command: "python manage.py runserver 0.0.0.0:8000"
+              volumes:
+                - "{{ playbook_dir }}/flask:/code"
+              ports:
+                - "8000:8000"
+              depends_on:
+                - db
+      register: output
+
+    - debug:
+        var: output
+
+    - assert:
+        that:
+          - "web.flask_web_1.state.running"
+          - "db.flask_db_1.state.running"
+
+- name: Run with inline v1 compose
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - docker_service:
+        project_src: flask
+        state: absent
+
+    - docker_service:
+        project_name: flask
+        definition:
+            db:
+              image: postgres
+            web:
+              build: "{{ playbook_dir }}/flask"
+              command: "python manage.py runserver 0.0.0.0:8000"
+              volumes:
+                - "{{ playbook_dir }}/flask:/code"
+              ports:
+                - "8000:8000"
+              links:
+                - db
+      register: output
+
+    - debug:
+        var: output
+
+    - assert:
+        that:
+          - "web.flask_web_1.state.running"
+          - "db.flask_db_1.state.running"

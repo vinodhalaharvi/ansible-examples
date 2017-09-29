@@ -1,0 +1,23 @@
+- name: Backup current config
+  fortios_config:
+    host: 192.168.0.254
+    username: admin
+    password: password
+    backup: yes
+
+- name: Backup only address objects
+  fortios_config:
+    host: 192.168.0.254
+    username: admin
+    password: password
+    backup: yes
+    backup_path: /tmp/forti_backup/
+    filter: "firewall address"
+
+- name: Update configuration from file
+  fortios_config:
+    host: 192.168.0.254
+    username: admin
+    password: password
+    src: new_configuration.conf.j2
+

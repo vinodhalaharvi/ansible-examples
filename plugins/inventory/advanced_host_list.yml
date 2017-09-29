@@ -1,0 +1,5 @@
+    # simple range
+    # ansible -i 'host[1:10],' -m ping
+
+    # still supports w/o ranges also
+    # ansible-playbook -i 'localhost,' play.yml

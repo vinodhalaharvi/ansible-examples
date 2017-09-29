@@ -1,0 +1,7 @@
+- name: Example to create Role object
+  avi_role:
+    controller: 10.10.25.42
+    username: admin
+    password: something
+    state: present
+    name: sample_role

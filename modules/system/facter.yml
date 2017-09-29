@@ -1,0 +1,2 @@
+# Example command-line invocation
+ansible www.example.net -m facter

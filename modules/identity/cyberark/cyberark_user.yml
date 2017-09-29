@@ -1,0 +1,27 @@
+- name: Logon to CyberArk Vault using PAS Web Services SDK
+  cyberark_authentication:
+    api_base_url: "https://components.cyberark.local"
+    use_shared_logon_authentication: true
+
+- name: Create user & immediately add it to a group
+  cyberark_user:
+    username: "username"
+    initial_password: "password"
+    user_type_name: "EPVUser"
+    change_password_on_the_next_logon: false
+    group_name: "GroupOfUsers"
+    state: present
+    cyberark_session: "{{ cyberark_session }}"
+
+- name: Make sure user is present and reset user credential if present
+  cyberark_user:
+    username: "Username"
+    new_password: "password"
+    disabled: false
+    state: present
+    cyberark_session: "{{ cyberark_session }}"
+
+- name: Logoff from CyberArk Vault
+  cyberark_authentication:
+    state: absent
+    cyberark_session: "{{ cyberark_session }}"

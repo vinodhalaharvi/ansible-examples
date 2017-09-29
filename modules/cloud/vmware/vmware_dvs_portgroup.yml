@@ -1,0 +1,12 @@
+   - name: Create Management portgroup
+     local_action:
+        module: vmware_dvs_portgroup
+        hostname: vcenter_ip_or_hostname
+        username: vcenter_username
+        password: vcenter_password
+        portgroup_name: Management
+        switch_name: dvSwitch
+        vlan_id: 123
+        num_ports: 120
+        portgroup_type: earlyBinding
+        state: present

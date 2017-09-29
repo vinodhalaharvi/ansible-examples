@@ -1,0 +1,40 @@
+- name: configure hostnameprefix logging
+  iosxr_logging:
+    dest: hostnameprefix
+    name: 172.16.0.1
+    state: present
+
+- name: remove hostnameprefix logging configuration
+  iosxr_logging:
+    dest: hostnameprefix
+    name: 172.16.0.1
+    state: absent
+
+- name: configure console logging level and facility
+  iosxr_logging:
+    dest: console
+    facility: local7
+    level: debugging
+    state: present
+
+- name: enable logging to all
+  iosxr_logging:
+    dest : on
+
+- name: configure buffer size
+  iosxr_logging:
+    dest: buffered
+    size: 5000
+
+- name: Configure logging using aggregate
+  iosxr_logging:
+    aggregate:
+      - { dest: console, level: warning }
+      - { dest: buffered, size: 4800000 }
+
+- name: Delete logging using aggregate
+  iosxr_logging:
+    aggregate:
+      - { dest: console, level: warning }
+      - { dest: buffered, size: 4800000 }
+    state: absent

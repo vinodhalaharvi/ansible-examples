@@ -1,0 +1,28 @@
+# Note: These examples do net set authentication details, see the AWS guide for details.
+
+# Find all clusters
+- redshift_facts:
+  register: redshift
+
+# Find cluster(s) with matching tags
+- redshift_facts:
+    tags:
+      env: prd
+      stack: monitoring
+  register: redshift_tags
+
+# Find cluster(s) with matching name/prefix and tags
+- redshift_facts:
+    tags:
+      env: dev
+      stack: web
+    name: user-
+  register: redshift_web
+
+# Fail if no cluster(s) is/are found
+- redshift_facts:
+    tags:
+      env: stg
+      stack: db
+  register: redshift_user
+  failed_when: "{{ redshift_user.results | length == 0 }}"

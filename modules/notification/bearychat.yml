@@ -1,0 +1,21 @@
+- name: Send notification message via BearyChat
+  local_action:
+    module: bearychat
+    url: |
+      https://hook.bearychat.com/=ae2CF/incoming/e61bd5c57b164e04b11ac02e66f47f60
+    text: "{{ inventory_hostname }} completed"
+
+- name: Send notification message via BearyChat all options
+  local_action:
+    module: bearychat
+    url: |
+      https://hook.bearychat.com/=ae2CF/incoming/e61bd5c57b164e04b11ac02e66f47f60
+    text: "{{ inventory_hostname }} completed"
+    markdown: no
+    channel: "#ansible"
+    attachments:
+      - title: "Ansible on {{ inventory_hostname }}"
+        text: "May the Force be with you."
+        color: "#ffffff"
+        images:
+          - http://example.com/index.png

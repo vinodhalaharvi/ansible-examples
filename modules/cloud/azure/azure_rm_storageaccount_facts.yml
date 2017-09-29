@@ -1,0 +1,14 @@
+    - name: Get facts for one account
+      azure_rm_storageaccount_facts:
+        resource_group: Testing
+        name: clh0002
+
+    - name: Get facts for all accounts in a resource group
+      azure_rm_storageaccount_facts:
+        resource_group: Testing
+
+    - name: Get facts for all accounts by tags
+      azure_rm_storageaccount_facts:
+        tags:
+          - testing
+          - foo:bar

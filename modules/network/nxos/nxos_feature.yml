@@ -1,0 +1,14 @@
+- name: Ensure lacp is enabled
+  nxos_feature:
+    feature: lacp
+    state: enabled
+
+- name: Ensure ospf is disabled
+  nxos_feature:
+    feature: ospf
+    state: disabled
+
+- name: Ensure vpc is enabled
+  nxos_feature:
+    feature: vpc
+    state: enabled

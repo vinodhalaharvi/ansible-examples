@@ -1,0 +1,10 @@
+- name: Create a domain
+  local_action:
+    module: exo_dns_domain
+    name: example.com
+
+- name: Remove a domain
+  local_action:
+    module: exo_dns_domain
+    name: example.com
+    state: absent

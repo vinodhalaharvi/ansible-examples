@@ -1,0 +1,9 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all permissions of user with username C(john):
+- ovirt_permissions_facts:
+    user_name: john
+    authz_name: example.com-authz
+- debug:
+    var: ovirt_permissions

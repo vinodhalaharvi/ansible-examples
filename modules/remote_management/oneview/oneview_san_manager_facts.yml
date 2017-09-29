@@ -1,0 +1,26 @@
+- name: Gather facts about all SAN Managers
+  oneview_san_manager_facts:
+    config: /etc/oneview/oneview_config.json
+  delegate_to: localhost
+
+- debug: var=san_managers
+
+- name: Gather paginated, filtered and sorted facts about SAN Managers
+  oneview_san_manager_facts:
+    config: /etc/oneview/oneview_config.json
+    params:
+      start: 0
+      count: 3
+      sort: name:ascending
+      query: isInternal eq false
+  delegate_to: localhost
+
+- debug: var=san_managers
+
+- name: Gather facts about a SAN Manager by provider display name
+  oneview_san_manager_facts:
+    config: /etc/oneview/oneview_config.json
+    provider_display_name: Brocade Network Advisor
+  delegate_to: localhost
+
+- debug: var=san_managers

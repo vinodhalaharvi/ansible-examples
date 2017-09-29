@@ -1,0 +1,21 @@
+- name: Send a mms to multiple users
+  catapult:
+    src: "+15035555555"
+    dest:
+      - "+12525089000"
+      - "+12018994225"
+    media: "http://example.com/foobar.jpg"
+    msg: "Task is complete"
+    user_id: "{{ user_id }}"
+    api_token: "{{ api_token }}"
+    api_secret: "{{ api_secret }}"
+
+- name: Send a sms to a single user
+  catapult:
+    src: "+15035555555"
+    dest: "+12018994225"
+    msg: "Consider yourself notified"
+    user_id: "{{ user_id }}"
+    api_token: "{{ api_token }}"
+    api_secret: "{{ api_secret }}"
+

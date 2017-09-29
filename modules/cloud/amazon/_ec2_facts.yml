@@ -1,0 +1,6 @@
+# Gather EC2 metadata facts
+- ec2_metadata_facts:
+
+- debug:
+    msg: "This instance is a t1.micro"
+  when: ansible_ec2_instance_type == "t1.micro"

@@ -1,0 +1,36 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create cluster
+- ovirt_cluster:
+    data_center: mydatacenter
+    name: mycluster
+    cpu_type: Intel SandyBridge Family
+    description: mycluster
+    compatibility_version: 4.0
+
+# Create virt service cluster:
+- ovirt_cluster:
+    data_center: mydatacenter
+    name: mycluster
+    cpu_type: Intel Nehalem Family
+    description: mycluster
+    switch_type: legacy
+    compatibility_version: 4.0
+    ballooning: true
+    gluster: false
+    threads_as_cores: true
+    ha_reservation: true
+    trusted_service: false
+    host_reason: false
+    vm_reason: true
+    ksm_numa: true
+    memory_policy: server
+    rng_sources:
+      - hwrng
+      - random
+
+# Remove cluster
+- ovirt_cluster:
+    state: absent
+    name: mycluster

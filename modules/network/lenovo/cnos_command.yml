@@ -1,0 +1,12 @@
+Tasks : The following are examples of using the module cnos_command. These are written in the main.yml file of the tasks directory.
+---
+- name: Test Command
+  cnos_command:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      outputfile: "./results/test_command_{{ inventory_hostname }}_output.txt"
+      clicommand: "display users"
+

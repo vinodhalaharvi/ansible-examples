@@ -1,0 +1,13 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Gather facts about all launch configurations
+- ec2_lc_facts:
+
+# Gather facts about launch configuration with name "example"
+- ec2_lc_facts:
+    name: example
+
+# Gather facts sorted by created_time from most recent to least recent
+- ec2_lc_facts:
+    sort: created_time
+    sort_order: descending

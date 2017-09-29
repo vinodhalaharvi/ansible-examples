@@ -1,0 +1,7 @@
+- name: Create tower team
+  tower_team:
+    name: Team Name
+    description: Team Description
+    organization: test-org
+    state: present
+    tower_config_file: "~/tower_cli.cfg"

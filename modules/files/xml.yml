@@ -1,0 +1,99 @@
+- name: Remove the subjective attribute of the rating element
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/rating/@subjective
+    state: absent
+
+- name: Set the rating to 11
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/rating
+    value: 11
+
+# Retrieve and display the number of nodes
+- name: Get count of beers nodes
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/beers/beer
+    count: yes
+  register: hits
+
+- debug:
+    var: hits.count
+
+- name: Add a phonenumber element to the business element
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/phonenumber
+    value: 555-555-1234
+
+- name: Add several more beers to the beers element
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/beers
+    add_children:
+    - beer: Old Rasputin
+    - beer: Old Motor Oil
+    - beer: Old Curmudgeon
+
+- name: Add a validxhtml element to the website element
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/website/validxhtml
+
+- name: Add an empty validatedon attribute to the validxhtml element
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/website/validxhtml/@validatedon
+
+- name: Add or modify an attribute, add element if needed
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/website/validxhtml
+    attribute: validatedon
+    value: 1976-08-05
+
+# How to read an attrribute value and access it in Ansible
+- name: Read attribute value
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/website/validxhtml
+    content: attribute
+    attribute: validatedon
+  register: xmlresp
+
+- name: Show attribute value
+  debug:
+    var: xmlresp.matches[0].validxhtml.validatedon
+
+- name: Remove all children from the website element (option 1)
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/website/*
+    state: absent
+
+- name: Remove all children from the website element (option 2)
+  xml:
+    path: /foo/bar.xml
+    xpath: /business/website
+    children: []
+
+# In case of namespaces, like in below XML, they have to be explicitely stated
+# NOTE: there's the prefix "x" in front of the "bar", too
+#<?xml version='1.0' encoding='UTF-8'?>
+#<foo xmlns="http://x.test" xmlns:attr="http://z.test">
+#  <bar>
+#    <baz xmlns="http://y.test" attr:my_namespaced_attribute="true" />
+#  </bar>
+#</foo>
+
+- name: Set namespaced '/x:foo/x:bar/y:baz/@z:my_namespaced_attribute' to 'false'
+  xml:
+    path: foo.xml
+    xpath: /x:foo/x:bar/y:baz
+    namespaces:
+      x: http://x.test
+      y: http://y.test
+      z: http://z.test
+    attribute: z:my_namespaced_attribute
+    value: 'false'

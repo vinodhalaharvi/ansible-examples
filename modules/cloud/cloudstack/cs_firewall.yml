@@ -1,0 +1,40 @@
+# Allow inbound port 80/tcp from 1.2.3.4 to 4.3.2.1
+- local_action:
+    module: cs_firewall
+    ip_address: 4.3.2.1
+    port: 80
+    cidr: 1.2.3.4/32
+
+# Allow inbound tcp/udp port 53 to 4.3.2.1
+- local_action:
+    module: cs_firewall
+    ip_address: 4.3.2.1
+    port: 53
+    protocol: '{{ item }}'
+  with_items:
+  - tcp
+  - udp
+
+# Ensure firewall rule is removed
+- local_action:
+    module: cs_firewall
+    ip_address: 4.3.2.1
+    start_port: 8000
+    end_port: 8888
+    cidr: 17.0.0.0/8
+    state: absent
+
+# Allow all outbound traffic
+- local_action:
+    module: cs_firewall
+    network: my_network
+    type: egress
+    protocol: all
+
+# Allow only HTTP outbound traffic for an IP
+- local_action:
+    module: cs_firewall
+    network: my_network
+    type: egress
+    port: 80
+    cidr: 10.101.1.20

@@ -1,0 +1,38 @@
+# Note - You must set the CLC_V2_API_USERNAME And CLC_V2_API_PASSWD Environment variables before running these examples
+
+- name: Add Public IP to Server
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  tasks:
+    - name: Create Public IP For Servers
+      clc_publicip:
+        protocol: TCP
+        ports:
+          - 80
+        server_ids:
+          - UC1TEST-SVR01
+          - UC1TEST-SVR02
+        state: present
+      register: clc
+
+    - name: debug
+      debug:
+        var: clc
+
+- name: Delete Public IP from Server
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  tasks:
+    - name: Create Public IP For Servers
+      clc_publicip:
+        server_ids:
+          - UC1TEST-SVR01
+          - UC1TEST-SVR02
+        state: absent
+      register: clc
+
+    - name: debug
+      debug:
+        var: clc

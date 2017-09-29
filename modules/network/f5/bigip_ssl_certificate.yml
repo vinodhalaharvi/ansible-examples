@@ -1,0 +1,30 @@
+- name: Import PEM Certificate from local disk
+  bigip_ssl_certificate:
+      name: "certificate-name"
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      cert_src: "/path/to/cert.crt"
+      key_src: "/path/to/key.key"
+  delegate_to: localhost
+
+- name: Use a file lookup to import PEM Certificate
+  bigip_ssl_certificate:
+      name: "certificate-name"
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      cert_content: "{{ lookup('file', '/path/to/cert.crt') }}"
+      key_content: "{{ lookup('file', '/path/to/key.key') }}"
+  delegate_to: localhost
+
+- name: "Delete Certificate"
+  bigip_ssl_certificate:
+      name: "certificate-name"
+      server: "lb.mydomain.com"
+      user: "admin"
+      password: "secret"
+      state: "absent"
+  delegate_to: localhost

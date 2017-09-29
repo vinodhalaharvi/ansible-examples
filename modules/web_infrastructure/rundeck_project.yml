@@ -1,0 +1,14 @@
+- name: Create a rundeck project
+  rundeck_project:
+    name: "Project_01"
+    api_version: 18
+    url: "https://rundeck.example.org"
+    token: "mytoken"
+    state: present
+
+- name: Remove a rundeck project
+  rundeck_project:
+    name: "Project_02"
+    url: "https://rundeck.example.org"
+    token: "mytoken"
+    state: absent

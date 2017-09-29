@@ -1,0 +1,6 @@
+# Simple attachment action to an existing instance
+- local_action:
+    module: gce_pd
+    instance_name: notlocalhost
+    size_gb: 5
+    name: pd

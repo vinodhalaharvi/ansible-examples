@@ -1,0 +1,10 @@
+- name: creating a new vertica user with password
+  vertica_user: name=user_name password=md5<encrypted_password> db=db_name state=present
+
+- name: creating a new vertica user authenticated via ldap with roles assigned
+  vertica_user:
+    name=user_name
+    ldap=true
+    db=db_name
+    roles=schema_name_ro
+    state=present

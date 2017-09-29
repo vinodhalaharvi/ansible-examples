@@ -1,0 +1,12 @@
+# Associate an IP address conditonally
+- local_action:
+    module: cs_ip_address
+    network: My Network
+  register: ip_address
+  when: instance.public_ip is undefined
+
+# Disassociate an IP address
+- local_action:
+    module: cs_ip_address
+    ip_address: 1.2.3.4
+    state: absent

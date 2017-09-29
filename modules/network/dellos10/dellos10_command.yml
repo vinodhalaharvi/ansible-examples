@@ -1,0 +1,37 @@
+# Note: examples below use the following provider dict to handle
+#       transport and authentication to the node.
+vars:
+  cli:
+    host: "{{ inventory_hostname }}"
+    username: admin
+    password: admin
+    transport: cli
+
+tasks:
+  - name: run show version on remote devices
+    dellos10_command:
+      commands: show version
+      provider: "{{ cli }}"
+
+  - name: run show version and check to see if output contains OS10
+    dellos10_command:
+      commands: show version
+      wait_for: result[0] contains OS10
+      provider: "{{ cli }}"
+
+  - name: run multiple commands on remote nodes
+    dellos10_command:
+      commands:
+        - show version
+        - show interface
+      provider: "{{ cli }}"
+
+  - name: run multiple commands and evaluate the output
+    dellos10_command:
+      commands:
+        - show version
+        - show interface
+      wait_for:
+        - result[0] contains OS10
+        - result[1] contains Ethernet
+      provider: "{{ cli }}"

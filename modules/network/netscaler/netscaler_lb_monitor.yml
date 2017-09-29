@@ -1,0 +1,15 @@
+- name: Set lb monitor
+  local_action:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+    validate_certs: no
+
+
+    module: netscaler_lb_monitor
+    state: present
+
+    monitorname: monitor_1
+    type: HTTP-INLINE
+    action: DOWN
+    respcode: ['400']

@@ -1,0 +1,16 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create VM pool from template
+- ovirt_vmpools:
+    cluster: mycluster
+    name: myvmpool
+    template: rhel7
+    vm_count: 2
+    prestarted: 2
+    vm_per_user: 1
+
+# Remove vmpool, note that all VMs in pool will be stopped and removed:
+- ovirt_vmpools:
+    state: absent
+    name: myvmpool

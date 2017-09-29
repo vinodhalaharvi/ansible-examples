@@ -1,0 +1,8 @@
+
+- name: Approve a new device
+  aos_device:
+    session: "{{ aos_session }}"
+    name: D2060B2F105429GDABCD123
+    state: 'normal'
+    approve: true
+    location: "rack-45, ru-18"

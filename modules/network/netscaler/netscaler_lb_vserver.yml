@@ -1,0 +1,41 @@
+# Netscaler services service-http-1, service-http-2 must have been already created with the netscaler_service module
+
+- name: Create a load balancing vserver bound to services
+  delegate_to: localhost
+  netscaler_lb_vserver:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+    validate_certs: no
+
+    state: present
+
+    name: lb_vserver_1
+    servicetype: HTTP
+    timeout: 12
+    ipv46: 6.93.3.3
+    port: 80
+    servicebindings:
+        - servicename: service-http-1
+          weight: 80
+        - servicename: service-http-2
+          weight: 20
+
+# Service group service-group-1 must have been already created with the netscaler_servicegroup module
+
+- name: Create load balancing vserver bound to servicegroup
+  delegate_to: localhost
+  netscaler_lb_vserver:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+    validate_certs: no
+    state: present
+
+    name: lb_vserver_2
+    servicetype: HTTP
+    ipv46: 6.92.2.2
+    port: 80
+    timeout: 10
+    servicegroupbindings:
+        - servicegroupname: service-group-1

@@ -1,0 +1,35 @@
+- name: evpn bgp module test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: Enable peer address.
+    ce_evpn_bgp:
+      bgp_instance: 100
+      peer_address: 1.1.1.1
+      as_number: 100
+      peer_enable: true
+      provider: "{{ cli }}"
+
+  - name: Enable peer group arp.
+    ce_evpn_bgp:
+      bgp_instance: 100
+      peer_group_name: aaa
+      advertise_router_type: arp
+      provider: "{{ cli }}"
+
+  - name: Enable advertise l2vpn evpn.
+    ce_evpn_bgp:
+      bgp_instance: 100
+      vpn_name: aaa
+      advertise_l2vpn_evpn: enable
+      provider: "{{ cli }}"

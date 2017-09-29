@@ -1,0 +1,14 @@
+# Create a project
+- os_project:
+    cloud: mycloud
+    state: present
+    name: demoproject
+    description: demodescription
+    domain_id: demoid
+    enabled: True
+
+# Delete a project
+- os_project:
+    cloud: mycloud
+    state: absent
+    name: demoproject

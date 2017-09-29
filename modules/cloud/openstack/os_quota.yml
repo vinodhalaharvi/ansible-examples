@@ -1,0 +1,62 @@
+# List a Project Quota
+- os_quota:
+    cloud: mycloud
+    name: demoproject
+
+# Set a Project back to the defaults
+- os_quota:
+    cloud: mycloud
+    name: demoproject
+    state: absent
+
+# Update a Project Quota for cores
+- os_quota:
+    cloud: mycloud
+    name: demoproject
+    cores: 100
+
+# Update a Project Quota
+- os_quota:
+    name: demoproject
+    cores: 1000
+    volumes: 20
+    volumes_type:
+      - volume_lvm: 10
+
+# Complete example based on list of projects
+- name: Update quotas
+  os_quota:
+    name: "{{ item.name }}"
+    backup_gigabytes: "{{ item.backup_gigabytes }}"
+    backups: "{{ item.backups }}"
+    cores: "{{ item.cores }}"
+    fixed_ips: "{{ item.fixed_ips }}"
+    floating_ips: "{{ item.floating_ips }}"
+    floatingip: "{{ item.floatingip }}"
+    gigabytes: "{{ item.gigabytes }}"
+    injected_file_size: "{{ item.injected_file_size }}"
+    injected_files: "{{ item.injected_files }}"
+    injected_path_size: "{{ item.injected_path_size }}"
+    instances: "{{ item.instances }}"
+    key_pairs: "{{ item.key_pairs }}"
+    loadbalancer: "{{ item.loadbalancer }}"
+    per_volume_gigabytes: "{{ item.per_volume_gigabytes }}"
+    pool: "{{ item.pool }}"
+    port: "{{ item.port }}"
+    properties: "{{ item.properties }}"
+    ram: "{{ item.ram }}"
+    security_group_rule: "{{ item.security_group_rule }}"
+    security_group: "{{ item.security_group }}"
+    server_group_members: "{{ item.server_group_members }}"
+    server_groups: "{{ item.server_groups }}"
+    snapshots: "{{ item.snapshots }}"
+    volumes: "{{ item.volumes }}"
+    volumes_types:
+      volumes_lvm: "{{ item.volumes_lvm }}"
+    snapshots_types:
+      snapshots_lvm: "{{ item.snapshots_lvm }}"
+    gigabytes_types:
+      gigabytes_lvm: "{{ item.gigabytes_lvm }}"
+  with_items:
+    - "{{ projects }}"
+  when: item.state == "present"

@@ -1,0 +1,11 @@
+# Task to gather facts from a HP iLO interface only if the system is an HP server
+- hpilo_facts:
+    host: YOUR_ILO_ADDRESS
+    login: YOUR_ILO_LOGIN
+    password: YOUR_ILO_PASSWORD
+  when: cmdb_hwmodel.startswith('HP ')
+  delegate_to: localhost
+
+- fail:
+    msg: 'CMDB serial ({{ cmdb_serialno }}) does not match hardware serial ({{ hw_system_serial }}) !'
+  when: cmdb_serialno != hw_system_serial

@@ -1,0 +1,27 @@
+- include_role:
+    name: myrole
+
+- name: Run tasks/other.yml instead of 'main'
+  include_role:
+    name: myrole
+    tasks_from: other
+
+- name: Pass variables to role
+  include_role:
+    name: myrole
+  vars:
+    rolevar1: 'value from task'
+
+- name: Use role in loop
+  include_role:
+    name: myrole
+  with_items:
+    - '{{ roleinput1 }}'
+    - '{{ roleinput2 }}'
+  loop_control:
+    loop_var: roleinputvar
+
+- name: conditional role
+  include_role:
+    name: myrole
+  when: not idontwanttorun

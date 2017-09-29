@@ -1,0 +1,44 @@
+- name: eth_trunk module test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+  - name: Enables OSPF and sets the cost on an interface
+    ce_interface_ospf:
+      interface: 10GE1/0/30
+      process_id: 1
+      area: 100
+      cost: 100
+      provider: '{{ cli }}'
+
+  - name: Sets the dead interval of the OSPF neighbor
+    ce_interface_ospf:
+      interface: 10GE1/0/30
+      process_id: 1
+      area: 100
+      dead_interval: 100
+      provider: '{{ cli }}'
+
+  - name: Sets the interval for sending Hello packets on an interface
+    ce_interface_ospf:
+      interface: 10GE1/0/30
+      process_id: 1
+      area: 100
+      hello_interval: 2
+      provider: '{{ cli }}'
+
+  - name: Disables an interface from receiving and sending OSPF packets
+    ce_interface_ospf:
+      interface: 10GE1/0/30
+      process_id: 1
+      area: 100
+      silent_interface: true
+      provider: '{{ cli }}'

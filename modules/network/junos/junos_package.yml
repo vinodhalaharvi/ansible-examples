@@ -1,0 +1,11 @@
+# the required set of connection arguments have been purposely left off
+# the examples for brevity
+
+- name: install local package on remote device
+  junos_package:
+    src: junos-vsrx-12.1X46-D10.2-domestic.tgz
+
+- name: install local package on remote device without rebooting
+  junos_package:
+    src: junos-vsrx-12.1X46-D10.2-domestic.tgz
+    reboot: no

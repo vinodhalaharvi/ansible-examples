@@ -1,0 +1,15 @@
+- name: "Add OSPF area to vrouter"
+  pn_ospfarea:
+    state: present
+    pn_cliusername: admin
+    pn_clipassword: admin
+    pn_ospf_area: 1.0.0.0
+    pn_stub_type: stub
+
+- name: "Remove OSPF from vrouter"
+  pn_ospf:
+    state: absent
+    pn_cliusername: admin
+    pn_clipassword: admin
+    pn_vrouter_name: name-string
+    pn_ospf_area: 1.0.0.0

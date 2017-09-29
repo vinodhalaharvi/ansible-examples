@@ -1,0 +1,41 @@
+- name: ensure a zone scoped storage_pool is present
+  local_action:
+    module: cs_storage_pool
+    zone: zone01
+    storage_url: rbd://admin:SECRET@ceph-mons.domain/poolname
+    provider: DefaultPrimary
+    name: Ceph RBD
+    scope: zone
+    hypervisor: KVM
+
+- name: ensure a cluster scoped storage_pool is disabled
+  local_action:
+    module: cs_storage_pool
+    name: Ceph RBD
+    zone: zone01
+    cluster: cluster01
+    pod: pod01
+    storage_url: rbd://admin:SECRET@ceph-the-mons.domain/poolname
+    provider: DefaultPrimary
+    name: Ceph RBD
+    scope: cluster
+    allocation_state: disabled
+
+- name: ensure a cluster scoped storage_pool is in maintenance
+  local_action:
+    module: cs_storage_pool
+    name: Ceph RBD
+    zone: zone01
+    cluster: cluster01
+    pod: pod01
+    storage_url: rbd://admin:SECRET@ceph-the-mons.domain/poolname
+    provider: DefaultPrimary
+    name: Ceph RBD
+    scope: cluster
+    allocation_state: maintenance
+
+- name: ensure a storage_pool is absent
+  local_action:
+    module: cs_storage_pool
+    name: Ceph RBD
+    state: absent

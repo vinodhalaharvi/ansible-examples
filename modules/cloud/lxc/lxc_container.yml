@@ -1,0 +1,180 @@
+- name: Create a started container
+  lxc_container:
+    name: test-container-started
+    container_log: true
+    template: ubuntu
+    state: started
+    template_options: --release trusty
+
+- name: Create a stopped container
+  lxc_container:
+    name: test-container-stopped
+    container_log: true
+    template: ubuntu
+    state: stopped
+    template_options: --release trusty
+
+- name: Create a frozen container
+  lxc_container:
+    name: test-container-frozen
+    container_log: true
+    template: ubuntu
+    state: frozen
+    template_options: --release trusty
+    container_command: |
+      echo 'hello world.' | tee /opt/started-frozen
+
+# Create filesystem container, configure it, and archive it, and start it.
+- name: Create filesystem container
+  lxc_container:
+    name: test-container-config
+    backing_store: dir
+    container_log: true
+    template: ubuntu
+    state: started
+    archive: true
+    archive_compression: none
+    container_config:
+      - "lxc.aa_profile=unconfined"
+      - "lxc.cgroup.devices.allow=a *:* rmw"
+    template_options: --release trusty
+
+# Create an lvm container, run a complex command in it, add additional
+# configuration to it, create an archive of it, and finally leave the container
+# in a frozen state. The container archive will be compressed using bzip2
+- name: Create a frozen lvm container
+  lxc_container:
+    name: test-container-lvm
+    container_log: true
+    template: ubuntu
+    state: frozen
+    backing_store: lvm
+    template_options: --release trusty
+    container_command: |
+      apt-get update
+      apt-get install -y vim lxc-dev
+      echo 'hello world.' | tee /opt/started
+      if [[ -f "/opt/started" ]]; then
+          echo 'hello world.' | tee /opt/found-started
+      fi
+    container_config:
+      - "lxc.aa_profile=unconfined"
+      - "lxc.cgroup.devices.allow=a *:* rmw"
+    archive: true
+    archive_compression: bzip2
+  register: lvm_container_info
+
+- name: Debug info on container "test-container-lvm"
+  debug:
+    var: lvm_container_info
+
+- name: Run a command in a container and ensure its in a "stopped" state.
+  lxc_container:
+    name: test-container-started
+    state: stopped
+    container_command: |
+      echo 'hello world.' | tee /opt/stopped
+
+- name: Run a command in a container and ensure its it in a "frozen" state.
+  lxc_container:
+    name: test-container-stopped
+    state: frozen
+    container_command: |
+      echo 'hello world.' | tee /opt/frozen
+
+- name: Start a container
+  lxc_container:
+    name: test-container-stopped
+    state: started
+
+- name: Run a command in a container and then restart it
+  lxc_container:
+    name: test-container-started
+    state: restarted
+    container_command: |
+      echo 'hello world.' | tee /opt/restarted
+
+- name: Run a complex command within a "running" container
+  lxc_container:
+    name: test-container-started
+    container_command: |
+      apt-get update
+      apt-get install -y curl wget vim apache2
+      echo 'hello world.' | tee /opt/started
+      if [[ -f "/opt/started" ]]; then
+          echo 'hello world.' | tee /opt/found-started
+      fi
+
+# Create an archive of an existing container, save the archive to a defined
+# path and then destroy it.
+- name: Archive container
+  lxc_container:
+    name: test-container-started
+    state: absent
+    archive: true
+    archive_path: /opt/archives
+
+# Create a container using overlayfs, create an archive of it, create a
+# snapshot clone of the container and and finally leave the container
+# in a frozen state. The container archive will be compressed using gzip.
+- name: Create an overlayfs container archive and clone it
+  lxc_container:
+    name: test-container-overlayfs
+    container_log: true
+    template: ubuntu
+    state: started
+    backing_store: overlayfs
+    template_options: --release trusty
+    clone_snapshot: true
+    clone_name: test-container-overlayfs-clone-snapshot
+    archive: true
+    archive_compression: gzip
+  register: clone_container_info
+
+- name: debug info on container "test-container"
+  debug:
+    var: clone_container_info
+
+- name: Clone a container using snapshot
+  lxc_container:
+    name: test-container-overlayfs-clone-snapshot
+    backing_store: overlayfs
+    clone_name: test-container-overlayfs-clone-snapshot2
+    clone_snapshot: true
+
+- name: Create a new container and clone it
+  lxc_container:
+    name: test-container-new-archive
+    backing_store: dir
+    clone_name: test-container-new-archive-clone
+
+- name: Archive and clone a container then destroy it
+  lxc_container:
+    name: test-container-new-archive
+    state: absent
+    clone_name: test-container-new-archive-destroyed-clone
+    archive: true
+    archive_compression: gzip
+
+- name: Start a cloned container.
+  lxc_container:
+    name: test-container-new-archive-destroyed-clone
+    state: started
+
+- name: Destroy a container
+  lxc_container:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - test-container-stopped
+    - test-container-started
+    - test-container-frozen
+    - test-container-lvm
+    - test-container-config
+    - test-container-overlayfs
+    - test-container-overlayfs-clone
+    - test-container-overlayfs-clone-snapshot
+    - test-container-overlayfs-clone-snapshot2
+    - test-container-new-archive
+    - test-container-new-archive-clone
+    - test-container-new-archive-destroyed-clone

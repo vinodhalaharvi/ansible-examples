@@ -1,0 +1,34 @@
+- name: Create task definition
+  ecs_taskdefinition:
+    containers:
+    - name: simple-app
+      cpu: 10
+      essential: true
+      image: "httpd:2.4"
+      memory: 300
+      mountPoints:
+      - containerPath: /usr/local/apache2/htdocs
+        sourceVolume: my-vol
+      portMappings:
+      - containerPort: 80
+        hostPort: 80
+    - name: busybox
+      command:
+        - >
+          /bin/sh -c "while true; do echo '<html><head><title>Amazon ECS Sample App</title></head><body><div><h1>Amazon ECS Sample App</h1><h2>Congratulations!
+          </h2><p>Your application is now running on a container in Amazon ECS.</p>' > top; /bin/date > date ; echo '</div></body></html>' > bottom;
+          cat top date bottom > /usr/local/apache2/htdocs/index.html ; sleep 1; done"
+      cpu: 10
+      entryPoint:
+      - sh
+      - "-c"
+      essential: false
+      image: busybox
+      memory: 200
+      volumesFrom:
+      - sourceContainer: simple-app
+    volumes:
+    - name: my-vol
+    family: test-cluster-taskdef
+    state: present
+  register: task_output

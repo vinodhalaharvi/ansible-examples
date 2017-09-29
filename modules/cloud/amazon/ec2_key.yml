@@ -1,0 +1,39 @@
+# Note: None of these examples set aws_access_key, aws_secret_key, or region.
+# It is assumed that their matching environment variables are set.
+
+# Creates a new ec2 key pair named `example` if not present, returns generated
+# private key
+- name: example ec2 key
+  ec2_key:
+    name: example
+
+# Creates a new ec2 key pair named `example` if not present using provided key
+# material.  This could use the 'file' lookup plugin to pull this off disk.
+- name: example2 ec2 key
+  ec2_key:
+    name: example2
+    key_material: 'ssh-rsa AAAAxyz...== me@example.com'
+    state: present
+
+# Given example2 is already existing, the key will not be replaced because the
+# force flag was set to `false`
+- name: example2 ec2 key
+  ec2_key:
+    name: example2
+    key_material: 'ssh-rsa AAAAxyz...== me@example.com'
+    force: false
+    state: present
+
+# Creates a new ec2 key pair named `example` if not present using provided key
+# material
+- name: example3 ec2 key
+  ec2_key:
+    name: example3
+    key_material: "{{ item }}"
+  with_file: /path/to/public_key.id_rsa.pub
+
+# Removes ec2 key pair by name
+- name: remove example key
+  ec2_key:
+    name: example
+    state: absent

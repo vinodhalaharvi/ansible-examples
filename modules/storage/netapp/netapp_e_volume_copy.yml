@@ -1,0 +1,6 @@
+---
+msg:
+    description: Success message
+    returned: success
+    type: string
+    sample: Json facts for the volume copy that was created.

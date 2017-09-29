@@ -1,0 +1,9 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about all snapshots which description start with C(update) for VM named C(centos7):
+- ovirt_snapshots_facts:
+    vm: centos7
+    description: update*
+- debug:
+    var: ovirt_snapshots

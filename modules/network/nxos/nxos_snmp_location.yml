@@ -1,0 +1,9 @@
+# ensure snmp location is configured
+- nxos_snmp_location:
+    location: Test
+    state: present
+
+# ensure snmp location is not configured
+- nxos_snmp_location:
+    location: Test
+    state: absent

@@ -1,0 +1,25 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Search for the AMI tagged "project:website"
+- ec2_ami_find:
+    owner: self
+    ami_tags:
+      project: website
+    no_result_action: fail
+  register: ami_find
+
+# Search for the latest Ubuntu 14.04 AMI
+- ec2_ami_find:
+    name: "ubuntu/images/ebs/ubuntu-trusty-14.04-amd64-server-*"
+    owner: 099720109477
+    sort: name
+    sort_order: descending
+    sort_end: 1
+  register: ami_find
+
+# Launch an EC2 instance
+- ec2:
+    image: "{{ ami_find.results[0].ami_id }}"
+    instance_type: m3.medium
+    key_name: mykey
+    wait: yes

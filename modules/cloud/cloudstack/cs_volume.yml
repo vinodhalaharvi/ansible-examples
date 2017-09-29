@@ -1,0 +1,29 @@
+- name: create volume within project and zone with specified storage options
+  local_action:
+    module: cs_volume
+    name: web-vm-1-volume
+    project: Integration
+    zone: ch-zrh-ix-01
+    disk_offering: PerfPlus Storage
+    size: 20
+
+- name: create/attach volume to instance
+  local_action:
+    module: cs_volume
+    name: web-vm-1-volume
+    disk_offering: PerfPlus Storage
+    size: 20
+    vm: web-vm-1
+    state: attached
+
+- name: detach volume
+  local_action:
+    module: cs_volume
+    name: web-vm-1-volume
+    state: detached
+
+- name: remove volume
+  local_action:
+    module: cs_volume
+    name: web-vm-1-volume
+    state: absent

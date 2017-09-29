@@ -1,0 +1,9 @@
+# create a new neighbor
+- nxos_bgp_neighbor:
+    asn: 65535
+    neighbor: 3.3.3.3
+    local_as: 20
+    remote_as: 30
+    description: "just a description"
+    update_source: Ethernet1/3
+    state: present

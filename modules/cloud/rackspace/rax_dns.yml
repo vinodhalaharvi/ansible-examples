@@ -1,0 +1,11 @@
+- name: Create domain
+  hosts: all
+  gather_facts: False
+  tasks:
+    - name: Domain create request
+      local_action:
+        module: rax_dns
+        credentials: ~/.raxpub
+        name: example.org
+        email: admin@example.org
+      register: rax_dns

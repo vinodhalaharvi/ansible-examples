@@ -1,0 +1,7 @@
+- aci_tenant_action_rule_profile:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    action_rule: '{{ action_rule }}'
+    description: '{{ descr }}'
+    tenant: '{{ tenant }}'

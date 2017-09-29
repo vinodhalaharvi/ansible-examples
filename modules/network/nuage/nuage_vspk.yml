@@ -1,0 +1,203 @@
+# This can be executed as a single role, with the following vars
+# vars:
+#   auth:
+#     api_username: csproot
+#     api_password: csproot
+#     api_enterprise: csp
+#     api_url: https://10.0.0.10:8443
+#     api_version: v5_0
+#   enterprise_name: Ansible-Enterprise
+#   enterprise_new_name: Ansible-Updated-Enterprise
+#
+# or, for certificate based authentication
+# vars:
+#   auth:
+#     api_username: csproot
+#     api_certificate: /path/to/user-certificate.pem
+#     api_key: /path/to/user-Key.pem
+#     api_enterprise: csp
+#     api_url: https://10.0.0.10:8443
+#     api_version: v5_0
+#   enterprise_name: Ansible-Enterprise
+#   enterprise_new_name: Ansible-Updated-Enterprise
+
+# Creating a new enterprise
+- name: Create Enterprise
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: Enterprise
+    state: present
+    properties:
+      name: "{{ enterprise_name }}-basic"
+  register: nuage_enterprise
+
+# Checking if an Enterprise with the new name already exists
+- name: Check if an Enterprise exists with the new name
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: Enterprise
+    command: find
+    properties:
+      name: "{{ enterprise_new_name }}-basic"
+  ignore_errors: yes
+  register: nuage_check_enterprise
+
+# Updating an enterprise's name
+- name: Update Enterprise name
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: Enterprise
+    id: "{{ nuage_enterprise.id }}"
+    state: present
+    properties:
+      name: "{{ enterprise_new_name }}-basic"
+  when: nuage_check_enterprise | failed
+
+# Creating a User in an Enterprise
+- name: Create admin user
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: User
+    parent_id: "{{ nuage_enterprise.id }}"
+    parent_type: Enterprise
+    state: present
+    match_filter: "userName == 'ansible-admin'"
+    properties:
+      email: "ansible@localhost.local"
+      first_name: "Ansible"
+      last_name: "Admin"
+      password: "ansible-password"
+      user_name: "ansible-admin"
+  register: nuage_user
+
+# Updating password for User
+- name: Update admin password
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: User
+    id: "{{ nuage_user.id }}"
+    command: change_password
+    properties:
+      password: "ansible-new-password"
+  ignore_errors: yes
+
+# Finding a group in an enterprise
+- name: Find Administrators group in Enterprise
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: Group
+    parent_id: "{{ nuage_enterprise.id }}"
+    parent_type: Enterprise
+    command: find
+    properties:
+      name: "Administrators"
+  register: nuage_group
+
+# Assign the user to the group
+- name: Assign admin user to administrators
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: User
+    id: "{{ nuage_user.id }}"
+    parent_id: "{{ nuage_group.id }}"
+    parent_type: Group
+    state: present
+
+# Creating multiple DomainTemplates
+- name: Create multiple DomainTemplates
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: DomainTemplate
+    parent_id: "{{ nuage_enterprise.id }}"
+    parent_type: Enterprise
+    state: present
+    properties:
+      name: "{{ item }}"
+      description: "Created by Ansible"
+  with_items:
+    - "Template-1"
+    - "Template-2"
+
+# Finding all DomainTemplates
+- name: Fetching all DomainTemplates
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: DomainTemplate
+    parent_id: "{{ nuage_enterprise.id }}"
+    parent_type: Enterprise
+    command: find
+  register: nuage_domain_templates
+
+# Deleting all DomainTemplates
+- name: Deleting all found DomainTemplates
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: DomainTemplate
+    state: absent
+    id: "{{ item.ID }}"
+  with_items: "{{ nuage_domain_templates.entities }}"
+  when: nuage_domain_templates.entities is defined
+
+# Unassign user from group
+- name: Unassign admin user to administrators
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: User
+    id: "{{ nuage_user.id }}"
+    parent_id: "{{ nuage_group.id }}"
+    parent_type: Group
+    state: absent
+
+# Deleting an enterprise
+- name: Delete Enterprise
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: Enterprise
+    id: "{{ nuage_enterprise.id }}"
+    state: absent
+
+# Setup an enterprise with Children
+- name: Setup Enterprise and domain structure
+  connection: local
+  nuage_vspk:
+    auth: "{{ nuage_auth }}"
+    type: Enterprise
+    state: present
+    properties:
+      name: "Child-based-Enterprise"
+    children:
+    - type: L2DomainTemplate
+      properties:
+        name: "Unmanaged-Template"
+      children:
+      - type: EgressACLTemplate
+        match_filter: "name == 'Allow All'"
+        properties:
+          name: "Allow All"
+          active: true
+          default_allow_ip: true
+          default_allow_non_ip: true
+          default_install_acl_implicit_rules: true
+          description: "Created by Ansible"
+          priority_type: "TOP"
+      - type: IngressACLTemplate
+        match_filter: "name == 'Allow All'"
+        properties:
+          name: "Allow All"
+          active: true
+          default_allow_ip: true
+          default_allow_non_ip: true
+          description: "Created by Ansible"
+          priority_type: "TOP"

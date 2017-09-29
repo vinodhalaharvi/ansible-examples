@@ -1,0 +1,12 @@
+# Playbook example
+  - name: Extract zip file
+    win_dsc:
+      resource_name: archive
+      ensure: Present
+      path: "C:\\Temp\\zipfile.zip"
+      destination: "C:\\Temp\\Temp2"
+
+  - name: Invoke DSC with check mode
+    win_dsc:
+      resource_name: windowsfeature
+      name: telnet-client

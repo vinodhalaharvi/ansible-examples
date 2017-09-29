@@ -1,0 +1,8 @@
+    - name: start AMG async
+      netapp_e_amg_sync:
+        name: "{{ amg_sync_name }}"
+        state: running
+        ssid: "{{ ssid }}"
+        api_url: "{{ netapp_api_url }}"
+        api_username: "{{ netapp_api_username }}"
+        api_password: "{{ netapp_api_password }}"

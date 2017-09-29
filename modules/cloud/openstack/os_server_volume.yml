@@ -1,0 +1,11 @@
+# Attaches a volume to a compute host
+- name: attach a volume
+  hosts: localhost
+  tasks:
+  - name: attach volume to host
+    os_server_volume:
+      state: present
+      cloud: mordred
+      server: Mysql-server
+      volume: mysql-data
+      device: /dev/vdb

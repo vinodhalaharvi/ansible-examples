@@ -1,0 +1,28 @@
+   - name: Create Snapshot schedule
+     sf_snapshot_schedule_manager:
+       hostname: "{{ solidfire_hostname }}"
+       username: "{{ solidfire_username }}"
+       password: "{{ solidfire_password }}"
+       state: present
+       name: Schedule_A
+       time_interval_days: 1
+       starting_date: 2016--12--01T00:00:00Z
+       volumes: 7
+
+   - name: Update Snapshot schedule
+     sf_snapshot_schedule_manager:
+       hostname: "{{ solidfire_hostname }}"
+       username: "{{ solidfire_username }}"
+       password: "{{ solidfire_password }}"
+       state: present
+       schedule_id: 6
+       recurring: True
+       snapshot_name: AnsibleSnapshots
+
+   - name: Delete Snapshot schedule
+     sf_snapshot_schedule_manager:
+       hostname: "{{ solidfire_hostname }}"
+       username: "{{ solidfire_username }}"
+       password: "{{ solidfire_password }}"
+       state: absent
+       schedule_id: 6

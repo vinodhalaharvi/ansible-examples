@@ -1,0 +1,9 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Gather facts about quota named C<myquota> in Default datacenter:
+- ovirt_quotas_facts:
+    data_center: Default
+    name: myquota
+- debug:
+    var: ovirt_quotas

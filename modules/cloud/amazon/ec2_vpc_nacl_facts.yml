@@ -1,0 +1,15 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Gather facts about all Network ACLs:
+- name: Get All NACLs
+  register: all_nacls
+  ec2_vpc_nacl_facts:
+    region: us-west-2
+
+# Retrieve default Network ACLs:
+- name: Get Default NACLs
+  register: default_nacls
+  ec2_vpc_nacl_facts:
+    region: us-west-2
+    filters:
+      'default': 'true'

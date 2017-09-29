@@ -1,0 +1,46 @@
+- name: Mtu test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: "Config jumboframe on 40GE1/0/22"
+    ce_mtu:
+      interface: 40GE1/0/22
+      jumbo_max: 9000
+      jumbo_min: 8000
+      provider: "{{ cli }}"
+
+  - name: "Config mtu on 40GE1/0/22 (routed interface)"
+    ce_mtu:
+      interface: 40GE1/0/22
+      mtu: 1600
+      provider: "{{ cli }}"
+
+  - name: "Config mtu on 40GE1/0/23 (switched interface)"
+    ce_mtu:
+      interface: 40GE1/0/22
+      mtu: 9216
+      provider: "{{ cli }}"
+
+  - name: "Config mtu and jumboframe on 40GE1/0/22 (routed interface)"
+    ce_mtu:
+      interface: 40GE1/0/22
+      mtu: 1601
+      jumbo_max: 9001
+      jumbo_min: 8001
+      provider: "{{ cli }}"
+
+  - name: "Unconfigure mtu and jumboframe on a given interface"
+    ce_mtu:
+      state: absent
+      interface: 40GE1/0/22
+      provider: "{{ cli }}"

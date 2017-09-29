@@ -1,0 +1,7 @@
+- aci_tenant_span_dst_group:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ username }}'
+    password: '{{ password }}'
+    dst_group: '{{ dst_group }}'
+    description: '{{ descr }}'
+    tenant: '{{ tenant }}'

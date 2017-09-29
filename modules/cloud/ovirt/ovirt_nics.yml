@@ -1,0 +1,43 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Add NIC to VM
+- ovirt_nics:
+    state: present
+    vm: myvm
+    name: mynic
+    interface: e1000
+    mac_address: 00:1a:4a:16:01:56
+    profile: ovirtmgmt
+    network: ovirtmgmt
+
+# Plug NIC to VM
+- ovirt_nics:
+    state: plugged
+    vm: myvm
+    name: mynic
+
+# Unplug NIC from VM
+- ovirt_nics:
+    state: unplugged
+    vm: myvm
+    name: mynic
+
+
+# add NIC to template
+- ovirt_nics:
+    auth: "{{ ovirt_auth }}"
+    state: present
+    template: my_template
+    name: nic1
+    interface: virtio
+    profile: ovirtmgmt
+    network: ovirtmgmt
+
+
+# Remove NIC from VM
+- ovirt_nics:
+    state: absent
+    vm: myvm
+    name: mynic
+

@@ -1,0 +1,41 @@
+- name: Create new tags for a provider in ManageIQ
+  manageiq_tags:
+    resource_name: 'EngLab'
+    resource_type: 'provider'
+    tags:
+    - category: environment
+      name: prod
+    - category: owner
+      name: prod_ops
+    manageiq_connection:
+      url: 'http://127.0.0.1:3000'
+      username: 'admin'
+      password: 'smartvm'
+      verify_ssl: False
+
+- name: Remove tags for a provider in ManageIQ
+  manageiq_tags:
+    state: absent
+    resource_name: 'EngLab'
+    resource_type: 'provider'
+    tags:
+    - category: environment
+      name: prod
+    - category: owner
+      name: prod_ops
+    manageiq_connection:
+      url: 'http://127.0.0.1:3000'
+      username: 'admin'
+      password: 'smartvm'
+      verify_ssl: False
+
+- name: List current tags for a provider in ManageIQ
+  manageiq_tags:
+    state: list
+    resource_name: 'EngLab'
+    resource_type: 'provider'
+    manageiq_connection:
+      url: 'http://127.0.0.1:3000'
+      username: 'admin'
+      password: 'smartvm'
+      verify_ssl: False

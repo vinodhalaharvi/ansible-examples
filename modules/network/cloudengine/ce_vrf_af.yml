@@ -1,0 +1,46 @@
+- name: vrf af module test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: Config vpna, set address family is ipv4
+    ce_vrf_af:
+      vrf: vpna
+      vrf_aftype: v4
+      state: present
+      provider: "{{ cli }}"
+  - name: Config vpna, delete address family is ipv4
+    ce_vrf_af:
+      vrf: vpna
+      vrf_aftype: v4
+      state: absent
+      provider: "{{ cli }}"
+  - name: Config vpna, set address family is ipv4,rd=1:1,set vpn_target_type=export_extcommunity,vpn_target_value=2:2
+    ce_vrf_af:
+      vrf: vpna
+      vrf_aftype: v4
+      route_distinguisher: 1:1
+      vpn_target_type: export_extcommunity
+      vpn_target_value: 2:2
+      vpn_target_state: present
+      state: present
+      provider: "{{ cli }}"
+  - name: Config vpna, set address family is ipv4,rd=1:1,delete vpn_target_type=export_extcommunity,vpn_target_value=2:2
+    ce_vrf_af:
+      vrf: vpna
+      vrf_aftype: v4
+      route_distinguisher: 1:1
+      vpn_target_type: export_extcommunity
+      vpn_target_value: 2:2
+      vpn_target_state: absent
+      state: present
+      provider: "{{ cli }}"

@@ -1,0 +1,10 @@
+# Track nginx logs
+- logentries:
+    path: /var/log/nginx/access.log
+    state: present
+    name: nginx-access-log
+
+# Stop tracking nginx logs
+- logentries:
+    path: /var/log/nginx/error.log
+    state: absent

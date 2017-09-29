@@ -1,0 +1,91 @@
+- name: Create a server with a private IP Address
+  linode:
+     module: linode
+     api_key: 'longStringFromLinodeApi'
+     name: linode-test1
+     plan: 1
+     datacenter: 2
+     distribution: 99
+     password: 'superSecureRootPassword'
+     private_ip: yes
+     ssh_pub_key: 'ssh-rsa qwerty'
+     swap: 768
+     wait: yes
+     wait_timeout: 600
+     state: present
+  delegate_to: localhost
+
+- name: Fully configure new server
+  linode:
+     api_key: 'longStringFromLinodeApi'
+     name: linode-test1
+     plan: 4
+     datacenter: 2
+     distribution: 99
+     kernel_id: 138
+     password: 'superSecureRootPassword'
+     private_ip: yes
+     ssh_pub_key: 'ssh-rsa qwerty'
+     swap: 768
+     wait: yes
+     wait_timeout: 600
+     state: present
+     alert_bwquota_enabled: True
+     alert_bwquota_threshold: 80
+     alert_bwin_enabled: True
+     alert_bwin_threshold: 10
+     alert_cpu_enabled: True
+     alert_cpu_threshold: 210
+     alert_diskio_enabled: True
+     alert_bwout_enabled: True
+     alert_bwout_threshold: 10
+     alert_diskio_enabled: True
+     alert_diskio_threshold: 10000
+     backupweeklyday: 1
+     backupwindow: 2
+     displaygroup: 'test'
+     additional_disks:
+      - {Label: 'disk1', Size: 2500, Type: 'raw'}
+      - {Label: 'newdisk', Size: 2000}
+     watchdog: True
+  delegate_to: localhost
+
+- name: Ensure a running server (create if missing)
+  linode:
+     api_key: 'longStringFromLinodeApi'
+     name: linode-test1
+     linode_id: 12345678
+     plan: 1
+     datacenter: 2
+     distribution: 99
+     password: 'superSecureRootPassword'
+     ssh_pub_key: 'ssh-rsa qwerty'
+     swap: 768
+     wait: yes
+     wait_timeout: 600
+     state: present
+  delegate_to: localhost
+
+- name: Delete a server
+  linode:
+     api_key: 'longStringFromLinodeApi'
+     name: linode-test1
+     linode_id: 12345678
+     state: absent
+  delegate_to: localhost
+
+- name: Stop a server
+  linode:
+     api_key: 'longStringFromLinodeApi'
+     name: linode-test1
+     linode_id: 12345678
+     state: stopped
+  delegate_to: localhost
+
+- name: Reboot a server
+  linode:
+     api_key: 'longStringFromLinodeApi'
+     name: linode-test1
+     linode_id: 12345678
+     state: restarted
+  delegate_to: localhost

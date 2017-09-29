@@ -1,0 +1,19 @@
+# Monitor monitor-1 must have been already setup
+
+- name: Setup http service
+  gather_facts: False
+  delegate_to: localhost
+  netscaler_service:
+    nsip: 172.18.0.2
+    nitro_user: nsroot
+    nitro_pass: nsroot
+
+    state: present
+
+    name: service-http-1
+    servicetype: HTTP
+    ipaddress: 10.78.0.1
+    port: 80
+
+    monitor_bindings:
+      - monitor-1

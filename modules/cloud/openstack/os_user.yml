@@ -1,0 +1,26 @@
+# Create a user
+- os_user:
+    cloud: mycloud
+    state: present
+    name: demouser
+    password: secret
+    email: demo@example.com
+    domain: default
+    default_project: demo
+
+# Delete a user
+- os_user:
+    cloud: mycloud
+    state: absent
+    name: demouser
+
+# Create a user but don't update password if user exists
+- os_user:
+    cloud: mycloud
+    state: present
+    name: demouser
+    password: secret
+    update_password: on_create
+    email: demo@example.com
+    domain: default
+    default_project: demo

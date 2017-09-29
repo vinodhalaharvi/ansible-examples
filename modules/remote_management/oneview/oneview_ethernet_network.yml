@@ -1,0 +1,60 @@
+- name: Ensure that the Ethernet Network is present using the default configuration
+  oneview_ethernet_network:
+    config: '/etc/oneview/oneview_config.json'
+    state: present
+    data:
+      name: 'Test Ethernet Network'
+      vlanId: '201'
+  delegate_to: localhost
+
+- name: Update the Ethernet Network changing bandwidth and purpose
+  oneview_ethernet_network:
+    config: '/etc/oneview/oneview_config.json'
+    state: present
+    data:
+      name: 'Test Ethernet Network'
+      purpose: Management
+      bandwidth:
+          maximumBandwidth: 3000
+          typicalBandwidth: 2000
+  delegate_to: localhost
+
+- name: Ensure that the Ethernet Network is present with name 'Renamed Ethernet Network'
+  oneview_ethernet_network:
+    config: '/etc/oneview/oneview_config.json'
+    state: present
+    data:
+      name: 'Test Ethernet Network'
+      newName: 'Renamed Ethernet Network'
+  delegate_to: localhost
+
+- name: Ensure that the Ethernet Network is absent
+  oneview_ethernet_network:
+    config: '/etc/oneview/oneview_config.json'
+    state: absent
+    data:
+      name: 'New Ethernet Network'
+  delegate_to: localhost
+
+- name: Create Ethernet networks in bulk
+  oneview_ethernet_network:
+    config: '/etc/oneview/oneview_config.json'
+    state: present
+    data:
+      vlanIdRange: '1-10,15,17'
+      purpose: General
+      namePrefix: TestNetwork
+      smartLink: false
+      privateNetwork: false
+      bandwidth:
+        maximumBandwidth: 10000
+        typicalBandwidth: 2000
+  delegate_to: localhost
+
+- name: Reset to the default network connection template
+  oneview_ethernet_network:
+    config: '/etc/oneview/oneview_config.json'
+    state: default_bandwidth_reset
+    data:
+      name: 'Test Ethernet Network'
+  delegate_to: localhost

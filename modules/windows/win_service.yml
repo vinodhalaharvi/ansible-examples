@@ -1,0 +1,101 @@
+- name: Restart a service
+  win_service:
+    name: spooler
+    state: restarted
+
+- name: Set service startup mode to auto and ensure it is started
+  win_service:
+    name: spooler
+    start_mode: auto
+    state: started
+
+- name: pause a service
+  win_service:
+    name: Netlogon
+    state: paused
+
+# a new service will also default to the following values:
+# - username: LocalSystem
+# - state: stopped
+# - start_mode: auto
+- name: create a new service
+  win_service:
+    name: service name
+    path: C:\temp\test.exe
+
+- name: create a new service with extra details
+  win_service:
+    name: service name
+    path: C:\temp\test.exe
+    display_name: Service Name
+    description: A test service description
+
+- name: remove a service
+  win_service:
+    name: service name
+    state: absent
+
+- name: check if a service is installed
+  win_service:
+    name: service name
+  register: service_info
+
+- name: set the log on user to a domain account
+  win_service:
+    name: service name
+    state: restarted
+    username: DOMAIN\User
+    password: Password
+
+- name: set the log on user to a local account
+  win_service:
+    name: service name
+    state: restarted
+    username: .\Administrator
+    password: Password
+
+- name: set the log on user to Local System
+  win_service:
+    name: service name
+    state: restarted
+    username: LocalSystem
+    password: ""
+
+- name: set the log on user to Local System and allow it to interact with the desktop
+  win_service:
+    name: service name
+    state: restarted
+    username: LocalSystem
+    password: ""
+    desktop_interact: True
+
+- name: set the log on user to Network Service
+  win_service:
+    name: service name
+    state: restarted
+    username: NT AUTHORITY\NetworkService
+    password: ""
+
+- name: set the log on user to Local Service
+  win_service:
+    name: service name
+    state: restarted
+    username: NT AUTHORITY\LocalService
+    password: ""
+
+- name: set dependencies to ones only in the list
+  win_service:
+    name: service name
+    dependencies: ['service1', 'service2']
+
+- name: add dependencies to existing dependencies
+  win_service:
+    name: service name
+    dependencies: ['service1', 'service2']
+    dependency_action: add
+
+- name: remove dependencies from existing dependencies
+  win_service:
+    name: service name
+    dependencies: ['service1', 'service2']
+    dependency_action: remove

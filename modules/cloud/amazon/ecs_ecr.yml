@@ -1,0 +1,35 @@
+# If the repository does not exist, it is created. If it does exist, would not
+# affect any policies already on it.
+- name: ecr-repo
+  ecs_ecr: name=super/cool
+
+- name: destroy-ecr-repo
+  ecs_ecr: name=old/busted state=absent
+
+- name: Cross account ecr-repo
+  ecs_ecr: registry_id=999999999999 name=cross/account
+
+- name: set-policy as object
+  ecs_ecr:
+    name: needs-policy-object
+    policy:
+      Version: '2008-10-17'
+      Statement:
+        - Sid: read-only
+          Effect: Allow
+          Principal:
+            AWS: '{{ read_only_arn }}'
+          Action:
+            - ecr:GetDownloadUrlForLayer
+            - ecr:BatchGetImage
+            - ecr:BatchCheckLayerAvailability
+
+- name: set-policy as string
+  ecs_ecr:
+    name: needs-policy-string
+    policy: "{{ lookup('template', 'policy.json.j2') }}"
+
+- name: delete-policy
+  ecs_ecr:
+    name: needs-no-policy
+    delete_policy: yes

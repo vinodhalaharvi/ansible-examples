@@ -1,0 +1,4 @@
+- grove: >
+    channel_token=6Ph62VBBJOccmtTPZbubiPzdrhipZXtg
+    service=my-app
+    message=deployed {{ target }}

@@ -1,0 +1,21 @@
+# Create a server group with 'affinity' policy.
+- os_server_group:
+    state: present
+    auth:
+      auth_url: https://api.cloud.catalyst.net.nz:5000/v2.0
+      username: admin
+      password: admin
+      project_name: admin
+    name: my_server_group
+    policies:
+      - affinity
+
+# Delete 'my_server_group' server group.
+- os_server_group:
+    state: absent
+    auth:
+      auth_url: https://api.cloud.catalyst.net.nz:5000/v2.0
+      username: admin
+      password: admin
+      project_name: admin
+    name: my_server_group

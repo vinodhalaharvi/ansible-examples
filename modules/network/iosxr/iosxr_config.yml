@@ -1,0 +1,15 @@
+- name: configure top level configuration
+  iosxr_config:
+    lines: hostname {{ inventory_hostname }}
+
+- name: configure interface settings
+  iosxr_config:
+    lines:
+      - description test interface
+      - ip address 172.31.1.1 255.255.255.0
+    parents: interface GigabitEthernet0/0/0/0
+
+- name: load a config from disk and replace the current config
+  iosxr_config:
+    src: config.cfg
+    backup: yes

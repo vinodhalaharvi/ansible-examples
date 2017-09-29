@@ -1,0 +1,13 @@
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Create a VPC with dedicate tenancy and a couple of tags
+
+- ec2_vpc_net:
+    name: Module_dev2
+    cidr_block: 10.10.0.0/16
+    region: us-east-1
+    tags:
+      module: ec2_vpc_net
+      this: works
+    tenancy: dedicated
+

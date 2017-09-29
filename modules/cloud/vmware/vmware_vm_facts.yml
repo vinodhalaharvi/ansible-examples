@@ -1,0 +1,10 @@
+- name: Gather all registered virtual machines
+  vmware_vm_facts:
+    hostname: esxi_or_vcenter_ip_or_hostname
+    username: username
+    password: password
+  delegate_to: localhost
+  register: vmfacts
+
+- debug:
+    var: vmfacts.virtual_machines

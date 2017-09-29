@@ -1,0 +1,38 @@
+- name: Obtain information about a file
+  win_stat:
+    path: C:\foo.ini
+  register: file_info
+
+# Obtain information about a folder
+- win_stat:
+    path: C:\bar
+  register: folder_info
+
+# Get MD5 checksum of a file
+- win_stat:
+    path: C:\foo.ini
+    get_checksum: yes
+    checksum_algorithm: md5
+  register: md5_checksum
+
+- debug:
+    var: md5_checksum.stat.checksum
+
+# Get SHA1 checksum of file
+- win_stat:
+    path: C:\foo.ini
+    get_checksum: yes
+  register: sha1_checksum
+
+- debug:
+    var: sha1_checksum.stat.checksum
+
+# Get SHA256 checksum of file
+- win_stat:
+    path: C:\foo.ini
+    get_checksum: yes
+    checksum_algorithm: sha256
+  register: sha256_checksum
+
+- debug:
+    var: sha256_checksum.stat.checksum

@@ -1,0 +1,8 @@
+# Check for sync_binlog setting
+- mysql_variables:
+    variable: sync_binlog
+
+# Set read_only variable to 1
+- mysql_variables:
+    variable: read_only
+    value: 1

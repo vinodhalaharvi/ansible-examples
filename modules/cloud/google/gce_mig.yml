@@ -1,0 +1,78 @@
+# Following playbook creates, rebuilds instances, resizes and then deletes a MIG.
+# Notes:
+# - Two valid Instance Templates must exist in your GCE project in order to run
+#   this playbook.  Change the fields to match the templates used in your
+#   project.
+# - The use of the 'pause' module is not required, it is just for convenience.
+- name: Managed Instance Group Example
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: Create MIG
+      gce_mig:
+        name: ansible-mig-example
+        zone: us-central1-c
+        state: present
+        size: 1
+        template: my-instance-template-1
+        named_ports:
+        - name: http
+          port: 80
+        - name: foobar
+          port: 82
+
+    - name: Pause for 30 seconds
+      pause:
+        seconds: 30
+
+    - name: Recreate MIG Instances with Instance Template change.
+      gce_mig:
+        name: ansible-mig-example
+        zone: us-central1-c
+        state: present
+        template: my-instance-template-2-small
+        recreate_instances: yes
+
+    - name: Pause for 30 seconds
+      pause:
+        seconds: 30
+
+    - name: Resize MIG
+      gce_mig:
+        name: ansible-mig-example
+        zone: us-central1-c
+        state: present
+        size: 3
+
+    - name: Update MIG with Autoscaler
+      gce_mig:
+        name: ansible-mig-example
+        zone: us-central1-c
+        state: present
+        size: 3
+        template: my-instance-template-2-small
+        recreate_instances: yes
+        autoscaling:
+          enabled: yes
+          name: my-autoscaler
+          policy:
+            min_instances: 2
+            max_instances: 5
+            cool_down_period: 37
+            cpu_utilization:
+              target: .39
+            load_balancing_utilization:
+              target: 0.4
+
+    - name: Pause for 30 seconds
+      pause:
+        seconds: 30
+
+    - name: Delete MIG
+      gce_mig:
+        name: ansible-mig-example
+        zone: us-central1-c
+        state: absent
+        autoscaling:
+          enabled: no
+          name: my-autoscaler

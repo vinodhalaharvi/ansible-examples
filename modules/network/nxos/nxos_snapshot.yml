@@ -1,0 +1,32 @@
+# Create a snapshot and store it locally
+- nxos_snapshot:
+    action: create
+    snapshot_name: test_snapshot
+    description: Done with Ansible
+    save_snapshot_locally: true
+    path: /home/user/snapshots/
+
+# Delete a snapshot
+- nxos_snapshot:
+    action: delete
+    snapshot_name: test_snapshot
+
+# Delete all existing snapshots
+- nxos_snapshot:
+    action: delete_all
+
+# Add a show command for snapshots creation
+- nxos_snapshot:
+    section: myshow
+    show_command: show ip interface brief
+    row_id: ROW_intf
+    element_key1: intf-name
+
+# Compare two snapshots
+- nxos_snapshot:
+    action: compare
+    snapshot1: pre_snapshot
+    snapshot2: post_snapshot
+    comparison_results_file: compare_snapshots.txt
+    compare_option: summary
+    path: '../snapshot_reports/'

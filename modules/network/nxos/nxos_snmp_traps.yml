@@ -1,0 +1,9 @@
+# ensure lldp trap configured
+- nxos_snmp_traps:
+    group: lldp
+    state: enabled
+
+# ensure lldp trap is not configured
+- nxos_snmp_traps:
+    group: lldp
+    state: disabled

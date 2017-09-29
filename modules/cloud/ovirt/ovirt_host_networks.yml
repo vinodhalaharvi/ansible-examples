@@ -1,0 +1,49 @@
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Create bond on eth0 and eth1 interface, and put 'myvlan' network on top of it:
+- name: Bonds
+  ovirt_host_networks:
+    name: myhost
+    bond:
+      name: bond0
+      mode: 2
+      interfaces:
+        - eth1
+        - eth2
+    networks:
+      - name: myvlan
+        boot_protocol: static
+        address: 1.2.3.4
+        prefix: 24
+        gateway: 1.2.3.4
+        version: v4
+
+# Remove bond0 bond from host interfaces:
+- ovirt_host_networks:
+    state: absent
+    name: myhost
+    bond:
+      name: bond0
+
+# Assign myvlan1 and myvlan2 vlans to host eth0 interface:
+- ovirt_host_networks:
+    name: myhost
+    interface: eth0
+    networks:
+      - name: myvlan1
+      - name: myvlan2
+
+# Remove myvlan2 vlan from host eth0 interface:
+- ovirt_host_networks:
+    state: absent
+    name: myhost
+    interface: eth0
+    networks:
+      - name: myvlan2
+
+# Remove all networks/vlans from host eth0 interface:
+- ovirt_host_networks:
+    state: absent
+    name: myhost
+    interface: eth0

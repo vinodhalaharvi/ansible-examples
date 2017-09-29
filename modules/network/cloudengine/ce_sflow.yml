@@ -1,0 +1,41 @@
+---
+
+- name: sflow module test
+  hosts: ce128
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+  - name: Configuring sFlow Agent
+    ce_sflow:
+      agent_ip: 6.6.6.6
+      provider: '{{ cli }}'
+
+  - name: Configuring sFlow Collector
+    ce_sflow:
+      collector_id: 1
+      collector_ip: 7.7.7.7
+      collector_ip_vpn: vpn1
+      collector_description: Collector1
+      provider: '{{ cli }}'
+
+  - name: Configure flow sampling.
+    ce_sflow:
+      sflow_interface: 10GE2/0/2
+      sample_collector: 1
+      sample_direction: inbound
+      provider: '{{ cli }}'
+
+  - name: Configure counter sampling.
+    ce_sflow:
+      sflow_interface: 10GE2/0/2
+      counter_collector: 1
+      counter_interval: 1000
+      provider: '{{ cli }}'

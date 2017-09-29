@@ -1,0 +1,100 @@
+- name: Create a VM from a template
+  vmware_guest:
+    hostname: 192.0.2.44
+    username: administrator@vsphere.local
+    password: vmware
+    validate_certs: no
+    folder: /testvms
+    name: testvm_2
+    state: poweredon
+    template: template_el7
+    disk:
+    - size_gb: 10
+      type: thin
+      datastore: g73_datastore
+    hardware:
+      memory_mb: 512
+      num_cpus: 1
+      scsi: paravirtual
+    networks:
+    - name: VM Network
+      mac: aa:bb:dd:aa:00:14
+    wait_for_ip_address: yes
+  delegate_to: localhost
+  register: deploy
+
+- name: Clone a VM from Template and customize
+  vmware_guest:
+    hostname: 192.168.1.209
+    username: administrator@vsphere.local
+    password: vmware
+    validate_certs: no
+    datacenter: datacenter1
+    cluster: cluster
+    name: testvm-2
+    template: template_windows
+    networks:
+    - name: VM Network
+      ip: 192.168.1.100
+      netmask: 255.255.255.0
+      gateway: 192.168.1.1
+      mac: aa:bb:dd:aa:00:14
+      domain: my_domain
+      dns_servers:
+      - 192.168.1.1
+      - 192.168.1.2
+    - vlan: 1234
+      type: dhcp
+    customization:
+      autologon: yes
+      dns_servers:
+      - 192.168.1.1
+      - 192.168.1.2
+      domain: my_domain
+      password: new_vm_password
+      runonce:
+      - powershell.exe -ExecutionPolicy Unrestricted -File C:\Windows\Temp\ConfigureRemotingForAnsible.ps1 -ForceNewSSLCert -EnableCredSSP
+  delegate_to: localhost
+
+- name: Create a VM template
+  vmware_guest:
+    hostname: 192.0.2.88
+    username: administrator@vsphere.local
+    password: vmware
+    validate_certs: no
+    datacenter: datacenter1
+    cluster: vmware_cluster_esx
+    resource_pool: highperformance_pool
+    folder: /testvms
+    name: testvm_6
+    is_template: yes
+    guest_id: debian6_64Guest
+    disk:
+    - size_gb: 10
+      type: thin
+      datastore: g73_datastore
+    hardware:
+      memory_mb: 512
+      num_cpus: 1
+      scsi: lsilogic
+  delegate_to: localhost
+  register: deploy
+
+- name: Rename a VM (requires the VM's uuid)
+  vmware_guest:
+    hostname: 192.168.1.209
+    username: administrator@vsphere.local
+    password: vmware
+    uuid: 421e4592-c069-924d-ce20-7e7533fab926
+    name: new_name
+    state: present
+  delegate_to: localhost
+
+- name: Remove a VM by uuid
+  vmware_guest:
+    hostname: 192.168.1.209
+    username: administrator@vsphere.local
+    password: vmware
+    uuid: 421e4592-c069-924d-ce20-7e7533fab926
+    state: absent
+  delegate_to: localhost

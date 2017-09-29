@@ -1,0 +1,7 @@
+- name: Warn logged in users of impending upgrade (note use of async to stop the module from waiting until notification expires).
+  win_toast:
+    expire: 60
+    title: System Upgrade Notification
+    msg: Automated upgrade about to start.  Please save your work and log off before {{ deployment_start_time }}
+  async: 60
+  poll: 0

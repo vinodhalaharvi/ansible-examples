@@ -1,0 +1,40 @@
+# Create dynamo table with hash and range primary key
+- dynamodb_table:
+    name: my-table
+    region: us-east-1
+    hash_key_name: id
+    hash_key_type: STRING
+    range_key_name: create_time
+    range_key_type: NUMBER
+    read_capacity: 2
+    write_capacity: 2
+    tags:
+      tag_name: tag_value
+
+# Update capacity on existing dynamo table
+- dynamodb_table:
+    name: my-table
+    region: us-east-1
+    read_capacity: 10
+    write_capacity: 10
+
+# set index on existing dynamo table
+- dynamodb_table:
+    name: my-table
+    region: us-east-1
+    indexes:
+      - name: NamedIndex
+        type: global_include
+        hash_key_name: id
+        range_key_name: create_time
+        includes:
+          - other_field
+          - other_field2
+        read_capacity: 10
+        write_capacity: 10
+
+# Delete dynamo table
+- dynamodb_table:
+    name: my-table
+    region: us-east-1
+    state: absent
