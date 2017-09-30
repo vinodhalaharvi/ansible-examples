@@ -31,15 +31,15 @@ done
 ## You should know what you are doing to run the following commands!!!
 ### delete all but the generated yaml files
 ```
-find SOME_DIRECTORY -not -name \*.yml -exec rm {} \;
+find SOME_DIRECTORY/ansible/lib/ansible -not -name \*.yml -exec rm {} \;
 ```
 
 ### delete all empty directories
 ```
-find SOME_DIRECTORY -not -name \*.yml -exec rmdir {} \;
+find SOME_DIRECTORY/ansible/lib/ansible -not -name \*.yml -exec rmdir {} \;
 ```
 
 ### delete files with zero size
 ```
-find SOME_DIRECTORY -size 0 -name \*.yml -exec rm {} \;
+find SOME_DIRECTORY/ansible/lib/ansible -size 0 -name \*.yml -exec rm {} \;
 ```
