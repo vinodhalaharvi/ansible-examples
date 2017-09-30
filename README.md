@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ```
 
 
-### Here is now I generated it.
+### Here is how I generated it.
 ```
 cd SOME_DIRECTORY
 
