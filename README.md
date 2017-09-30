@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 cd SOME_DIRECTORY
 
 # clone this project
-https://github.com/vinodhalaharvi/ansible-examples.git
+git clone https://github.com/vinodhalaharvi/ansible-examples.git
 
 # clone ansible source code
 git clone https://github.com/ansible/ansible.git
